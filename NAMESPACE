@@ -1,0 +1,14 @@
+export(
+       read.burndown,
+       plot.burndown,
+       read.gantt,
+       plot.gantt,
+       summary.gantt,
+       trim.whitespace
+)
+S3method(plot, burndown)
+S3method(print, summary.burndown)
+S3method(summary, burndown)
+S3method(plot, gantt)
+S3method(summary, gantt)
+S3method(print, summary.gantt)

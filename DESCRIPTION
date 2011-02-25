@@ -1,0 +1,12 @@
+Package: plan
+Version: 0.3-2
+Date: 2009-07-10
+Title: Tools for project planning
+Author: Dan Kelley <Dan.Kelley@Dal.Ca>
+Maintainer: Dan Kelley <Dan.Kelley@Dal.Ca>
+Depends: R (>= 0.99)
+Description: Supports the creation of burndown charts and gantt diagrams.
+License: GPL (>= 2)
+URL: http://code.google.com/p/r-plan/
+LazyLoad: yes
+Packaged: Dan Kelley

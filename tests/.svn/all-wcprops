@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 34
+/svn/!svn/ver/4/trunk/r-plan/tests
+END
+gantt.dat
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/svn/!svn/ver/3/trunk/r-plan/tests/gantt.dat
+END
+burndown.dat
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/4/trunk/r-plan/tests/burndown.dat
+END
+gantt.R
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/svn/!svn/ver/2/trunk/r-plan/tests/gantt.R
+END
+burndown.R
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/!svn/ver/2/trunk/r-plan/tests/burndown.R
+END

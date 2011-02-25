@@ -1,0 +1,173 @@
+% -*- fill-column: 80; comment-column: 50; -*-
+
+\documentclass{article}
+
+% \VignetteIndexEntry{Introduction to plan}
+% \VignetteDepends{plan}
+% \VignetteKeyword{project planning}
+
+\usepackage{url}
+\usepackage{fullpage}
+\usepackage{boxedminipage}
+\usepackage{hyperref}
+\usepackage{makeidx}
+\usepackage{titlesec}
+\makeindex
+
+\newcommand{\code}[1]{\texttt{#1}}
+%\newcommand{\leadin}[1]{\textsc{#1}.}
+\newcommand{\leadin}[1]{\par\vspace{0.5ex plus 0.25ex minus 0.25ex}\textbf{#1}.}
+
+\parskip=1.5ex plus 1.5ex minus 1.25ex
+
+\titleformat{\section}[block]{\normalfont\large\bfseries}{\thesection}{1em}{}
+\titlespacing{\section}{0em}{1em plus 1em minus 1em}{0.1em plus 0.05em minus 0.05em}
+\titleformat{\subsection}[block]{\normalfont\itshape}{\thesubsection}{1em}{}
+\titlespacing{\subsection}{0em}{1em plus 0.5em minus 0.5em}{0.1em plus 0.1em minus 0.1em}
+
+\newcommand{\workedexercise}[2]{
+	\vspace{2ex plus 2ex minus 1ex}
+	\begin{boxedminipage}[c]{0.95\linewidth}
+		{\textbf{Exercise #1}.\hspace{1em}#2}
+	\end{boxedminipage}
+	\vspace{2ex plus 2ex minus 1ex}
+}
+\newcommand{\workedanswer}[2]{
+\goodbreak
+\vskip 1.5ex plus 0.5ex minus 0.5ex
+\noindent\textbf{Exercise #1 -- #2.}
+}
+
+
+\begin{document}
+
+\title{The plan package}
+\author{Dan E. Kelley}
+\maketitle
+
+
+%\begin{abstract}
+%
+%The \code{plan} package provides functions for planning and describing
+%projects and monitoring the progress towards completions of individual
+%tasks within projects.
+%
+%\end{abstract}
+
+\section{Introduction}
+
+This package provides (mainly graphical) tools for the planning of projects.
+This is an early version of the package, providing support for burn-down
+charts and Gantt diagrams.
+
+
+\section{Burn-down charts}
+
+\leadin{Purpose} Burndown
+charts\footnote{\url{http://alistair.cockburn.us/crystal/articles/evabc/earnedvalueandburncharts.htm}}
+are used to display a time series of the progress towards the goals of
+a project.  The format is simple.  The x axis represents time, ranging
+from the onset of the project to the deadline for completion.  The y
+axis represents the remaining effort that is require to accomplish the
+work. As the work is carried out, the chart provides a running summary
+of progress towards the deadline.  If work is proceeding smoothly
+according to schedule, the chart takes the form of a triangle, with
+the remaining effort falling from its initial value to zero at the
+deadline. For guidance, a gray line is drawn to indicate this ideal
+situation. If work is being accomplished faster than expected, the
+data will lie below this gray line. However, if the project is falling
+behind schedule, the data line will lie above the ideal line.  Thus, a
+glance at the chart indicates whether the deadline can be met.  In
+most cases, the work is divided into sub-tasks, and the remaining
+effort in each task is shown with a different colour in the
+chart. This is helpful in identifying tasks that may need more
+attention.
+
+\leadin{Example} Evaluating the following code
+<<label=burndownsummary,eval=FALSE>>=
+library(plan)
+data(burndown)
+print(summary(burndown))
+@
+\SweaveOpts{echo=false}
+\begin{table}[ht!]
+\footnotesize
+<<<echo=FALSE>>=
+library(plan)
+data(burndown)
+print(summary(burndown))
+@
+\caption{\label{table:burndown}A burndown data file, on which Figure~\ref{fig:burndown} is based.}
+\end{table}
+\SweaveOpts{echo=true}
+\noindent produces textual output shown in Table~\ref{table:burndown} (which
+serves as an example of the data format), and
+<<label=burndownplot,eval=FALSE>>=
+library(plan)
+data(burndown)
+plot(burndown)
+@
+\noindent produces a plot as shown in Figure~\ref{fig:burndown}.
+\begin{figure}[ht!]
+\begin{center}
+\setkeys{Gin}{width=\textwidth}
+<<label=burndownfig,fig=TRUE,width=9, height=4, echo=FALSE>>=
+<<burndownplot>>
+@
+\end{center}
+\caption{A burndown chart, based on data in Table~\ref{table:burndown}.}
+\label{fig:burndown}
+\end{figure}
+
+\newpage
+\section{Gantt charts}
+
+\leadin{Purpose} Gantt diagrams\footnote{\url{http://en.wikipedia.org/wiki/Gantt_Chart}}
+indicate a timetable for completion of the components of a
+project. The sample dataset \code{gantt} is a hypothetical research
+plan for an MSc project; you can see how it is graphed with
+\code{demo(gantt)} or \code{example(plot.gantt)}.
+
+\leadin{Example} Evaluating the following code
+<<label=ganttsummary,eval=FALSE>>=
+library(plan)
+data(gantt)
+print(summary(gantt))
+@
+\noindent produces textual output shown in Table~\ref{table:gantt} (which
+serves as an example of the data format), and
+<<label=ganttplot,eval=FALSE>>=
+library(plan)
+data(gantt)
+plot(gantt)
+@
+\noindent produces a plot as shown in Figure~\ref{fig:gantt}.
+
+\pagebreak
+
+\SweaveOpts{echo=false}
+\begin{table}[ht!]
+%\small
+<<<echo=FALSE>>=
+library(plan)
+data(gantt)
+print(summary(gantt))
+@
+\caption{\label{table:gantt}A gantt data file, on which Figure~\ref{fig:gantt} is based.}
+\end{table}
+\SweaveOpts{echo=true}
+
+
+\begin{figure}[ht!]
+\begin{center}
+\setkeys{Gin}{width=\textwidth}
+<<label=ganttfig,fig=TRUE,width=9, height=6, echo=FALSE>>=
+<<ganttplot>>
+@
+\end{center}
+\caption{A Gantt chart, based on data in Table~\ref{table:gantt}}
+\label{fig:gantt}
+\end{figure}
+
+\printindex
+\end{document}
