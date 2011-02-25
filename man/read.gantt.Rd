@@ -35,7 +35,7 @@
     \item A description of the task.  (This may not contain commas!)
 
     \item The start time for the task, in ISO 8601 format
-    (\code{YYYY-MM-DD} or \code{YYY-MM-DD hh:mm:ss}).
+    (\code{YYYY-MM-DD} or \code{YYYY-MM-DD hh:mm:ss}).
 
     \item The end time for the task, in the same format as the starting time.
 
