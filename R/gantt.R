@@ -4,6 +4,7 @@ plot.gantt <- function (x,
                         time.lines.by,  # = "1 month",
                         event.time = NULL,
                         event.label = NULL,
+                        event.side = 3,
                         col.done = gray(0.3),
                         col.notdone = gray(0.9),
                         col.event = gray(0.1),
@@ -16,8 +17,6 @@ plot.gantt <- function (x,
 {
     if (!inherits(x, "gantt")) stop("method is only for gantt objects")
     opar <- par(no.readonly = TRUE)
-    on.exit(par(opar))
-
 
     mgp <- c(3, 1, 0)
     half.height <- 0.33
@@ -26,14 +25,13 @@ plot.gantt <- function (x,
     charheight <- strheight("M", units = "inches")
     maxwidth <- max(strwidth(x$description, units = "inches")) * 1.1
 
-
     ## Get around some problems with autoscaling of POSIXt values
     r <- range(x$start, x$end)
     if (debug) {cat("range: ", as.character(r[1]), "to", as.character(r[2]), "\n")}
     s <- as.numeric(difftime(r[2], r[1], units="days"))
     r <- as.POSIXlt(r)
     if (s > 100) {
-        if (is.null(time.format)) time.format <- "%b/%y" # month/year
+        if (is.null(time.format)) time.format <-  "%b %Y" # month/year
         r[2] <- r[2] + 86400
         r[1:2]$hour <- r[1:2]$min <- r[1:2]$sec <- 0
         if (debug){cat("range: ", as.character(r[1]), "to", as.character(r[2]), "\n")}
@@ -56,7 +54,7 @@ plot.gantt <- function (x,
     }
 
     bottom.margin <- 0.5
-    par(mai = c(bottom.margin, maxwidth, charheight * 5, 0.1))
+    par(mai = c(bottom.margin, maxwidth, charheight * 2, 0.1))
     par(omi = c(0.1, 0.1, 0.1, 0.1), xaxs = "i", yaxs = "i")
     plot(c(r[1], r[2]), c(1,2*ndescriptions),
          ylim=c(0.5, ndescriptions + 0.5),
@@ -79,10 +77,11 @@ plot.gantt <- function (x,
     } else {
         abline(v = seq.POSIXt(as.POSIXct(xlim[1]), as.POSIXct(xlim[2]), by=time.lines.by), col = grid.col, lty=grid.lty)
     }
-
-    mtext(paste(paste(format(xlim[1:2], format="%Y-%m-%d"), collapse=" to "),
-                attr(x$data$ts$time[1], "tzone")),
-          side=3, cex=2/3, adj=0)
+    if (FALSE) {
+        mtext(paste(paste(format(xlim[1:2], format="%Y-%m-%d"), collapse=" to "),
+                    attr(x$data$ts$time[1], "tzone")),
+              side=3, cex=2/3, adj=0)
+    }
     topdown <- seq(ndescriptions, 1)
     axis(2, at = topdown, labels = x$description, las = 2, tick=FALSE, cex.axis=cex)
 
@@ -106,7 +105,7 @@ plot.gantt <- function (x,
         for (e in 1:ne) {
             t <- as.POSIXct(event.time[e])
             abline(v=t, col=col.event)
-            mtext(event.label[e], side=1, col=col.event, at=t)
+            mtext(event.label[e], side=event.side, col=col.event, at=t)
         }
     }
     ## Description

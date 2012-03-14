@@ -6,7 +6,7 @@
 
 \description{Plot a burndown object.}
 
-\usage{plot.burndown(x, col=NULL,
+\usage{\method{plot}{burndown}(x, col=NULL,
 	draw.plan=TRUE, draw.regression=TRUE, draw.lastupdate=FALSE,
 	t.stop="", 
 	y.name="Remaining Effort",
