@@ -65,7 +65,7 @@ plot.gantt <- function (x,
     if (missing(time.labels.by)) {
         xaxp <- par("xaxp")
         lines.at.0 <- axis.POSIXct(1,
-                                   at=seq(xaxp[1], xaxp[2], length.out=xaxp[3]) + t0,
+                                   at=pretty(r), #seq(xaxp[1], xaxp[2], length.out=xaxp[3]) + t0,
                                    format=time.format, cex.axis=cex, ...)
     } else {
         lines.at.0 <- axis.POSIXct(1,
