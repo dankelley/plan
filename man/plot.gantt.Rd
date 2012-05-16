@@ -7,6 +7,7 @@
 \description{Plot a Gantt object.}
 
 \usage{\method{plot}{gantt}(x,
+           xlim,
            time.format = NULL,
            time.labels.by, time.lines.by,
 	   event.time = NULL, event.label = NULL, event.side=3,
@@ -20,6 +21,8 @@
 }
 \arguments{
   \item{x}{an object of class \code{gantt}.}
+  \item{xlim}{optional range of time axis; if not provided, the range of times
+      in \code{x} will be used.}
   \item{time.format}{format for dates on time axis; defaults to 3-letter month.}
   \item{time.labels.by}{suggested label increment on time axis,
     e.g. \code{time.labels.by="2 months"} to get a two-month interval.

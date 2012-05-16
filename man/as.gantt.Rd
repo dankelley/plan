@@ -1,0 +1,68 @@
+\name{as.gantt}
+
+\alias{as.gantt}
+
+\title{Read a gantt data file}
+
+\description{Read a data file containing gantt information.}
+
+\usage{as.gantt(key, description, start, end, done, neededBy)}
+
+\arguments{
+    \item{key}{integer key for task, normally 1 for the first task, 2 for the
+        second, etc.}
+    \item{description}{character string describing the task (brief)}
+    \item{start}{start date for task (POSIXt or character string that converts
+        to POSIXt with \code{\link{as.POSIXct}}}
+    \item{end}{end date for task (POSIXt or character string that converts
+        to POSIXt with \code{\link{as.POSIXct}}}
+    \item{done}{percentage completion for the task}
+    \item{neededBy}{optional key for a dependent task}
+}
+
+\details{Creates a \code{gantt} object. See documentation for
+    \code{\link{read.gantt}}, which uses \code{as.gantt}.}
+
+\value{An object of type \code{"gantt"}; for details, see
+    \code{\link{read.gantt}}.}
+
+\examples{
+library(plan)
+arrive <- as.POSIXct("2012-09-05")
+month <- 28 * 86400
+year <- 12 * month
+leave <- arrive + 4 * year
+startT1 <- arrive
+endT1 <- startT1 + 4 * month
+startT2 <- endT1 + 1
+endT2 <- startT2 + 4 * month
+startT3 <- arrive + 12 * month
+endT3 <- startT3 + 4 * month
+startQE <- arrive + 9 * month
+endQE <- arrive + 12 * month
+QEabsoluteEnd <- arrive + 15 * month
+startProposal <- arrive + 15 * month # for example
+endProposal <- arrive + 20 * month
+startThesisWork <- arrive + 2 * month # assumes no thesis work until 2 months in
+endThesisWork <- leave - 4 * month
+startThesisWriteup <- leave - 4 * month
+endThesisWriteup <- leave
+g <- as.gantt(key=1:7, c("Term 1 classes",
+              "Term 2 classes",
+              "Qualifying Examination",
+              "Term 3 classes",
+              "Proposal Defence",
+              "Thesis Work",
+              "Thesis Writing/Defence"),
+              c(startT1, startT2, startQE, startT3, startProposal, startThesisWork, startThesisWriteup),
+              c(endT1, endT2, endQE, endT3, endProposal, endThesisWork, endThesisWriteup),
+              done=rep(0, 7))
+plot(g, xlim=c(arrive, leave))
+}
+
+\seealso{\code{\link{read.gantt}}, \code{\link{summary.gantt}} and \code{\link{plot.gantt}}}
+
+\author{Dan Kelley}
+
+\keyword{misc}
+
