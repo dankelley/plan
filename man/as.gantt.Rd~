@@ -54,10 +54,8 @@ g <- as.gantt(key=1:7, c("Term 1 classes",
               "Proposal Defence",
               "Thesis Work",
               "Thesis Writing/Defence"),
-              c(startT1, startT2, startQE, startT3, startProposal,
-                startThesisWork, startThesisWriteup),
-              c(endT1, endT2, endQE, endT3, endProposal,
-                endThesisWork, endThesisWriteup),
+              c(startT1, startT2, startQE, startT3, startProposal, startThesisWork, startThesisWriteup),
+              c(endT1, endT2, endQE, endT3, endProposal, endThesisWork, endThesisWriteup),
               done=rep(0, 7))
 plot(g, xlim=c(arrive, leave))
 }
