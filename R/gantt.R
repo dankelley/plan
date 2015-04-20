@@ -23,6 +23,13 @@ plot.gantt <- function (x,
     half.height <- 0.33
     t0 <- as.POSIXct("1970-01-01 00:00:00")
     ndescriptions <- length(x$description)
+    if (length(col.done) < ndescriptions)
+        col.done <- rep(col.done, length.out=ndescriptions)
+    if (length(col.notdone) < ndescriptions)
+        col.notdone <- rep(col.notdone, length.out=ndescriptions)
+    nevent <- length(event.time)
+    if (length(col.event) < nevent)
+        col.event <- rep(col.event, length.out=nevent)
     charheight <- strheight("M", units = "inches")
     maxwidth <- max(strwidth(x$description, units = "inches")) * 1.1
 
@@ -83,7 +90,7 @@ plot.gantt <- function (x,
                                    format=time.format, cex.axis=cex, ...)
     }
     if (!is.null(subTics))
-        rug(subTics)
+        rug(subTics, quiet=TRUE)
     if (missing(time.lines.by)) {
         abline(v=lines.at.0, col = grid.col, lty=grid.lty)
     } else {
@@ -116,8 +123,8 @@ plot.gantt <- function (x,
         ne <- length(event.time)
         for (e in 1:ne) {
             t <- as.POSIXct(event.time[e])
-            abline(v=t, col=col.event)
-            mtext(event.label[e], side=event.side, col=col.event, at=t)
+            abline(v=t, col=col.event[e])
+            mtext(event.label[e], side=event.side, col=col.event[e], at=t)
         }
     }
     ## Description
@@ -135,9 +142,9 @@ plot.gantt <- function (x,
 
         if (debug){cat(as.character(x$description[i]));cat(" done=",x$done[i]," mid=");print(mid);cat(" left=");print(left);cat("right=");print(right);cat("\n")}
 
-        rect(left, bottom, right, top, col = col.notdone,   border = FALSE)
-        rect(left, bottom, mid,   top, col = col.done,      border = FALSE)
-        rect(left, bottom, right, top, col = "transparent", border = TRUE)
+        rect(left, bottom, right, top, col = col.notdone[i], border = FALSE)
+        rect(left, bottom, mid,   top, col = col.done[i],    border = FALSE)
+        rect(left, bottom, right, top, col = "transparent",  border = TRUE)
     }
     abline(h = (topdown[1:(ndescriptions - 1)] + topdown[2:ndescriptions])/2,  col = grid.col, lty=grid.lty)
     invisible(x)

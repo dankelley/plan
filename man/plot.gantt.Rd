@@ -34,9 +34,12 @@
     be altered.}
   \item{event.label}{list of names of these events.}
   \item{event.side}{side for event labels.}
-  \item{col.done}{colour of work that has been done already.}
-  \item{col.notdone}{colour of work that has not been done already.}
-  \item{col.event}{colour of events.}
+  \item{col.done}{colour of work that has been done already. This may be a
+      vector of colours, one for each item in the gantt table.}
+  \item{col.notdone}{colour of work that has not been done yet. This may be a
+      vector of colours, one for each item in the gantt table.}
+  \item{col.event}{colour of events. This may be a vector of colours, one for
+      each event.}
   \item{col.connector}{colour of (optional) connectors between items.}
   \item{grid.col}{colour for grid}
   \item{grid.lty}{line type for grid}
@@ -62,11 +65,18 @@
 library(plan)
 data(gantt)
 summary(gantt)
+# 1. Simple plot
 plot(gantt)
-# Add a couple of event
+# 2. Plot with two events
 event.label <- c("Proposal", "AGU")
 event.time <- c("2008-01-28", "2008-12-10")
 plot(gantt, event.label=event.label,event.time=event.time)
+# 3. Control x axis (months, say)
+plot(gantt,labels=paste("M",1:6,sep=""))
+# 4. Control event colour
+plot(gantt,
+     col.done=c("black", "red", rep("black", 10)),
+     col.notdone=c("lightgray", "pink", rep("lightgray", 10)))
 }
 
 \references{Gantt diagrams are described on wikipedia
