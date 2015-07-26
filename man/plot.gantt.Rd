@@ -16,6 +16,7 @@
            grid.col = "lightgray", grid.lty = "dotted",
 	   main = "",
 	   cex=par("cex"), 
+           mgp=c(2, 0.7, 0), maiAdd=rep(0, 4),
 	   debug=FALSE,
  ...)
 }
@@ -45,6 +46,10 @@
   \item{grid.lty}{line type for grid}
   \item{main}{character string to be used as chart title.}
   \item{cex}{numeric, font-size factor.}
+  \item{mgp}{setting for \code{\link{par}(mgp)}, within-axis spacing.}
+  \item{maiAdd}{inches to add to the auto-computed margins at the bottom, left,
+      top, and right margins. The values may be negative (to tighten margins)
+      but the sum will be truncated to remain positive.}
   \item{debug}{boolean, set to \code{TRUE} to monitor the work.}
   \item{...}{extra things handed down.}
 }

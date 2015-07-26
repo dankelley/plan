@@ -13,6 +13,7 @@ plot.gantt <- function (x,
                         grid.col = "lightgray", grid.lty = "dotted",
                         main = "",
                         cex=par("cex"),
+                        mgp=c(2, 0.7, 0), maiAdd=rep(0, 4),
                         debug=FALSE,
                         ...)
 {
@@ -69,12 +70,13 @@ plot.gantt <- function (x,
             }
         }
     }
-
     bottom.margin <- 0.5
-    par(mai = c(bottom.margin, maxwidth, charheight * 2, 0.1))
-    par(omi = c(0.1, 0.1, 0.1, 0.1), xaxs = "i", yaxs = "i")
+    mai <- maiAdd + c(bottom.margin, maxwidth, 2*charheight, 0.1)
+    mai <- ifelse(mai < 0, 0, mai)
+    par(mgp=mgp, mai=mai, omi=c(0.1, 0.1, 0.1, 0.1))
     plot(c(r[1], r[2]), c(1,2*ndescriptions),
          ylim=c(0.5, ndescriptions + 0.5),
+         xaxs="i", yaxs="i",
          main = "", xlab = "", ylab = "", xaxs="r", type="n", axes = FALSE)
     xlim <- as.POSIXct(par("usr")[1:2] + t0)
     box()
