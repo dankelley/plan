@@ -1,7 +1,7 @@
 Package: plan
-Version: 0.4-3
-Date: 2015-04-20
-Title: Tools for project planning
+Version: 0.4-4
+Date: 2015-07-26
+Title: Tools for Project Planning
 Author: Dan Kelley <Dan.Kelley@Dal.Ca>
 Maintainer: Dan Kelley <Dan.Kelley@Dal.Ca>
 Depends: R (>= 0.99)
