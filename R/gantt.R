@@ -1,17 +1,18 @@
 plot.gantt <- function (x,
                         xlim,
-                        time.format = NULL,
-                        time.labels.by, # = "2 months",
-                        time.lines.by,  # = "1 month",
-                        event.time = NULL,
-                        event.label = NULL,
-                        event.side = 3,
-                        col.done = gray(0.3),
-                        col.notdone = gray(0.9),
-                        col.event = gray(0.1),
-                        col.connector = "black",
-                        grid.col = "lightgray", grid.lty = "dotted",
-                        main = "",
+                        time.format=NULL,
+                        time.labels.by, #="2 months",
+                        time.lines.by,  #="1 month",
+                        event.time=NULL,
+                        event.label=NULL,
+                        event.side=3,
+                        col.done=gray(0.3),
+                        col.notdone=gray(0.9),
+                        col.event=gray(0.1),
+                        col.connector="black",
+                        bg=par("bg"),
+                        grid.col="lightgray", grid.lty="dotted",
+                        main="",
                         cex=par("cex"),
                         mgp=c(2, 0.7, 0), maiAdd=rep(0, 4),
                         debug=FALSE,
@@ -73,11 +74,13 @@ plot.gantt <- function (x,
     bottom.margin <- 0.5
     mai <- maiAdd + c(bottom.margin, maxwidth, 2*charheight, 0.1)
     mai <- ifelse(mai < 0, 0, mai)
-    par(mgp=mgp, mai=mai, omi=c(0.1, 0.1, 0.1, 0.1))
+    opar <- par(no.readonly = TRUE)
+    par(mgp=mgp, mai=mai, omi=c(0.1, 0.1, 0.1, 0.1), bg=bg)
     plot(c(r[1], r[2]), c(1,2*ndescriptions),
          ylim=c(0.5, ndescriptions + 0.5),
          xaxs="i", yaxs="i",
-         main = "", xlab = "", ylab = "", xaxs="r", type="n", axes = FALSE)
+         bg=bg,
+         main="", xlab="", ylab="", xaxs="r", type="n", axes=FALSE)
     xlim <- as.POSIXct(par("usr")[1:2] + t0)
     box()
     if (nchar(main)) mtext(main, 3, 2, cex=cex)
@@ -149,6 +152,7 @@ plot.gantt <- function (x,
         rect(left, bottom, right, top, col = "transparent",  border = TRUE)
     }
     abline(h = (topdown[1:(ndescriptions - 1)] + topdown[2:ndescriptions])/2,  col = grid.col, lty=grid.lty)
+    par(opar)
     invisible(x)
 }
 

@@ -13,7 +13,7 @@
 	   event.time = NULL, event.label = NULL, event.side=3,
 	   col.done = gray(0.3), col.notdone = gray(0.9),
 	   col.event = gray(0.1), col.connector = "black",
-           grid.col = "lightgray", grid.lty = "dotted",
+           bg=par("bg"), grid.col = "lightgray", grid.lty = "dotted",
 	   main = "",
 	   cex=par("cex"), 
            mgp=c(2, 0.7, 0), maiAdd=rep(0, 4),
@@ -42,6 +42,7 @@
   \item{col.event}{colour of events. This may be a vector of colours, one for
       each event.}
   \item{col.connector}{colour of (optional) connectors between items.}
+  \item{bg}{background colour for plot.}
   \item{grid.col}{colour for grid}
   \item{grid.lty}{line type for grid}
   \item{main}{character string to be used as chart title.}
