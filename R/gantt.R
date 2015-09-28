@@ -9,8 +9,7 @@ plot.gantt <- function (x, xlim,
                         bg=par("bg"), grid.col="lightgray", grid.lty="dotted",
                         main="", cex.main=par("cex"),
                         mgp=c(2, 0.7, 0), maiAdd=rep(0, 4),
-                        debug=FALSE,
-                        ...)
+                        debug=FALSE, ...)
 {
     if (!inherits(x, "gantt")) stop("method is only for gantt objects")
     opar <- par(no.readonly = TRUE)
@@ -78,7 +77,8 @@ plot.gantt <- function (x, xlim,
         }
     }
     bottom.margin <- 0.5
-    mai <- maiAdd + c(bottom.margin, maxwidth, 2*charheight, 0.1)
+    topSpace <- charheight * (2 + 2*as.numeric((nchar(main) > 0)))
+    mai <- maiAdd + c(bottom.margin, maxwidth, topSpace, 0.1)
     mai <- ifelse(mai < 0, 0, mai)
     opar <- par(no.readonly = TRUE)
     par(mgp=mgp, mai=mai, omi=c(0.1, 0.1, 0.1, 0.1), bg=bg)
@@ -89,7 +89,10 @@ plot.gantt <- function (x, xlim,
          main="", xlab="", ylab="", xaxs="r", type="n", axes=FALSE)
     xlim <- as.POSIXct(par("usr")[1:2] + t0)
     box()
-    if (nchar(main)) mtext(main, 3, 2, cex=cex.main)
+    if (nchar(main)) {
+        line <- if (nevent > 0) 2 else 1
+        mtext(main, side=3, line=line, cex=cex.main)
+    }
     if (missing(time.labels.by)) {
         xaxp <- par("xaxp")
         lines.at.0 <- axis.POSIXct(1,
