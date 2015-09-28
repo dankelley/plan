@@ -1,19 +1,13 @@
-plot.gantt <- function (x,
-                        xlim,
-                        time.format=NULL,
-                        time.labels.by, #="2 months",
-                        time.lines.by,  #="1 month",
-                        event.time=NULL,
-                        event.label=NULL,
-                        event.side=3,
-                        col.done=gray(0.3),
-                        col.notdone=gray(0.9),
-                        col.event=gray(0.1),
+plot.gantt <- function (x, xlim,
+                        time.format=NULL, time.labels.by, time.lines.by,
+                        event.time=NULL, event.label=NULL, event.side=3,
                         col.connector="black",
-                        bg=par("bg"),
-                        grid.col="lightgray", grid.lty="dotted",
-                        main="",
-                        cex=par("cex"),
+                        col.done=gray(0.3), col.notdone=gray(0.9),
+                        col.eventLine=gray(0.1), col.event=par("fg"), 
+                        cex.event=par("cex"), font.event=par("font"),
+                        lty.eventLine=par("lty"), lwd.eventLine=par("lwd"),
+                        bg=par("bg"), grid.col="lightgray", grid.lty="dotted",
+                        main="", cex.main=par("cex"),
                         mgp=c(2, 0.7, 0), maiAdd=rep(0, 4),
                         debug=FALSE,
                         ...)
@@ -24,14 +18,26 @@ plot.gantt <- function (x,
     mgp <- c(3, 1, 0)
     half.height <- 0.33
     t0 <- as.POSIXct("1970-01-01 00:00:00")
+    ## Lengthen anything that can be a vector
     ndescriptions <- length(x$description)
     if (length(col.done) < ndescriptions)
         col.done <- rep(col.done, length.out=ndescriptions)
     if (length(col.notdone) < ndescriptions)
         col.notdone <- rep(col.notdone, length.out=ndescriptions)
     nevent <- length(event.time)
+    if (length(col.eventLine) < nevent)
+        col.eventLine <- rep(col.eventLine, length.out=nevent)
     if (length(col.event) < nevent)
         col.event <- rep(col.event, length.out=nevent)
+    if (length(cex.event) < nevent)
+        cex.event <- rep(cex.event, length.out=nevent)
+    if (length(font.event) < nevent)
+        font.event <- rep(font.event, length.out=nevent)
+    if (length(lty.eventLine) < nevent)
+        lty.eventLine <- rep(lty.eventLine, length.out=nevent)
+    if (length(lwd.eventLine) < nevent)
+        lwd.eventLine <- rep(lwd.eventLine, length.out=nevent)
+
     charheight <- strheight("M", units = "inches")
     maxwidth <- max(strwidth(x$description, units = "inches")) * 1.1
 
@@ -83,16 +89,16 @@ plot.gantt <- function (x,
          main="", xlab="", ylab="", xaxs="r", type="n", axes=FALSE)
     xlim <- as.POSIXct(par("usr")[1:2] + t0)
     box()
-    if (nchar(main)) mtext(main, 3, 2, cex=cex)
+    if (nchar(main)) mtext(main, 3, 2, cex=cex.main)
     if (missing(time.labels.by)) {
         xaxp <- par("xaxp")
         lines.at.0 <- axis.POSIXct(1,
                                    at=pretty(r, 10), #seq(xaxp[1], xaxp[2], length.out=xaxp[3]) + t0,
-                                   format=time.format, cex.axis=cex, ...)
+                                   format=time.format, cex.axis=par("cex.axis"), ...)
     } else {
         lines.at.0 <- axis.POSIXct(1,
                                    at=as.POSIXct(seq.POSIXt(as.POSIXct(xlim[1]), as.POSIXct(xlim[2]), by=time.labels.by)),
-                                   format=time.format, cex.axis=cex, ...)
+                                   format=time.format, cex.axis=par("cex.axis"), ...)
     }
     if (!is.null(subTics))
         rug(subTics, quiet=TRUE)
@@ -101,13 +107,13 @@ plot.gantt <- function (x,
     } else {
         abline(v = seq.POSIXt(as.POSIXct(xlim[1]), as.POSIXct(xlim[2]), by=time.lines.by), col = grid.col, lty=grid.lty)
     }
-    if (FALSE) {
-        mtext(paste(paste(format(xlim[1:2], format="%Y-%m-%d"), collapse=" to "),
-                    attr(x$data$ts$time[1], "tzone")),
-              side=3, cex=2/3, adj=0)
-    }
+    ## if (FALSE) {
+    ##     mtext(paste(paste(format(xlim[1:2], format="%Y-%m-%d"), collapse=" to "),
+    ##                 attr(x$data$ts$time[1], "tzone")),
+    ##           side=3, cex=2/3, adj=0)
+    ## }
     topdown <- seq(ndescriptions, 1)
-    axis(2, at = topdown, labels = x$description, las = 2, tick=FALSE, cex.axis=cex)
+    axis(2, at = topdown, labels = x$description, las = 2, tick=FALSE, cex.axis=par("cex.axis"))
 
     ## Connectors
     for (t in 1:ndescriptions) {
@@ -128,8 +134,9 @@ plot.gantt <- function (x,
         ne <- length(event.time)
         for (e in 1:ne) {
             t <- as.POSIXct(event.time[e])
-            abline(v=t, col=col.event[e])
-            mtext(event.label[e], side=event.side, col=col.event[e], at=t)
+            abline(v=t, col=col.event[e], lwd=lwd.eventLine[e], lty=lty.eventLine[e])
+            mtext(event.label[e], side=event.side, at=t, 
+                  col=col.event[e], font=font.event[e], cex=cex.event[e])
         }
     }
     ## Description
