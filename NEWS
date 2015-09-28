@@ -1,7 +1,5 @@
-Version 0.4
-- plot.gantt() improvements to customization
-
 Version 0.3
+- plot.gantt() improvements to customization
 - rationalize file formats
 
 Version 0.1.1
