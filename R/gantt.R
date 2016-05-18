@@ -35,6 +35,14 @@ setClass("gantt", contains="plan")
 #' @param bg background colour for plot.
 #' @param grid.col colour for grid.
 #' @param grid.lty line type for grid.
+#' @param ylabels A \code{\link{list}} with elements \code{col} for colour,
+#' \code{cex} for character-expansion factor, and \code{font} for font. These
+#' values are used in plotting the labels on the y axis. In each case, the
+#' first entry applies to the top task on the graph, etc.  If
+#' there are not enough values to match the labels, the vectors are
+#' filled out with the default values, e.g. 
+#' \code{ylabels=list(col=c("red","blue"))} sets red for the top-most label,
+#' blue for the one below, and black for any others; see Example 6.
 #' @param main character string to be used as chart title.
 #' @param cex.main numeric, font-size factor for title.
 #' @param mgp setting for \code{\link{par}(mgp)}, within-axis spacing.
@@ -89,7 +97,8 @@ setClass("gantt", contains="plan")
 #'      lwd.eventLine=1:2, lty.eventLine=1:2,
 #'      col.eventLine=c("pink", "lightblue"),
 #'      col.event=c("red", "blue"), font.event=1:2, cex.event=1:2)
-#' 
+#' # 6. Colour-coded tasks
+#' plot(gantt,ylabels=list(col=c("red","blue"),font=c(rep(1,11),2)))
 setMethod(f="plot",
           signature=signature("gantt"),
           definition=function (x, xlim,
@@ -101,6 +110,7 @@ setMethod(f="plot",
                         cex.event=par("cex"), font.event=par("font"),
                         lty.eventLine=par("lty"), lwd.eventLine=par("lwd"),
                         bg=par("bg"), grid.col="lightgray", grid.lty="dotted",
+                        ylabels=list(col="black", cex=1, font=1),
                         main="", cex.main=par("cex"),
                         mgp=c(2, 0.7, 0), maiAdd=rep(0, 4),
                         debug=FALSE, ...)
@@ -113,6 +123,20 @@ setMethod(f="plot",
     t0 <- as.POSIXct("1970-01-01 00:00:00")
     ## Lengthen anything that can be a vector
     ndescriptions <- length(x[["description"]])
+    ## Twiddle the labels, including defaulting things that a user
+    ## need not define.
+    if (!("col" %in% names(ylabels)))
+        ylabels$col <- 1
+    if (!("cex" %in% names(ylabels)))
+        ylabels$cex <- 1
+    if (!("font" %in% names(ylabels)))
+        ylabels$font <- 1
+    for (i in seq_along(ylabels)) {
+        len <- length(ylabels[[i]])
+        if (len < ndescriptions) {
+            ylabels[[i]] <- c(ylabels[[i]], rep(1, ndescriptions-len))
+        }
+    }
     if (length(col.done) < ndescriptions)
         col.done <- rep(col.done, length.out=ndescriptions)
     if (length(col.notdone) < ndescriptions)
@@ -205,7 +229,16 @@ setMethod(f="plot",
         abline(v = seq.POSIXt(as.POSIXct(xlim[1]), as.POSIXct(xlim[2]), by=time.lines.by), col = grid.col, lty=grid.lty)
     }
     topdown <- seq(ndescriptions, 1)
-    axis(2, at = topdown, labels = x[["description"]], las = 2, tick=FALSE, cex.axis=par("cex.axis"))
+    font <- rep(1, ndescriptions)
+    font[2] <- 2
+    dat <- axis(2, at=topdown, labels=rep("", ndescriptions), las=2, tick=FALSE, cex.axis=par("cex.axis"))
+    par(xpd=NA)
+    left <- par('usr')[1]
+    for (i in 1:ndescriptions) {
+        text(left, topdown[i], x[["description"]][i], pos=2,
+             col=ylabels$col[i], cex=ylabels$cex[i], font=ylabels$font[i])
+    }
+    par(xpd=FALSE)
 
     ## Connectors
     for (t in 1:ndescriptions) {
@@ -217,7 +250,7 @@ setMethod(f="plot",
                 r <- as.numeric(nb[nbi])
                 receiver.t <- as.POSIXct(x[["start"]][r])
                 receiver.y <- topdown[r]
-                lines(c(source.t,receiver.t), c(source.y,receiver.y),col=col.connector)
+                 lines(c(source.t,receiver.t), c(source.y,receiver.y),col=col.connector)
             }
         }
     }

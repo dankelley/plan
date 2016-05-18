@@ -11,9 +11,9 @@
   col.eventLine = gray(0.1), col.event = par("fg"),
   cex.event = par("cex"), font.event = par("font"),
   lty.eventLine = par("lty"), lwd.eventLine = par("lwd"), bg = par("bg"),
-  grid.col = "lightgray", grid.lty = "dotted", main = "",
-  cex.main = par("cex"), mgp = c(2, 0.7, 0), maiAdd = rep(0, 4),
-  debug = FALSE, ...)
+  grid.col = "lightgray", grid.lty = "dotted", ylabels = list(col =
+  "black", cex = 1, font = 1), main = "", cex.main = par("cex"),
+  mgp = c(2, 0.7, 0), maiAdd = rep(0, 4), debug = FALSE, ...)
 }
 \arguments{
 \item{x}{A \code{gantt} object, i.e. one inheriting from \code{\link{gantt-class}}.}
@@ -64,6 +64,15 @@ vector of colours, one for each item in the gantt table.}
 \item{grid.col}{colour for grid.}
 
 \item{grid.lty}{line type for grid.}
+
+\item{ylabels}{A \code{\link{list}} with elements \code{col} for colour,
+\code{cex} for character-expansion factor, and \code{font} for font. These
+values are used in plotting the labels on the y axis. In each case, the
+first entry applies to the top task on the graph, etc.  If
+there are not enough values to match the labels, the vectors are
+filled out with the default values, e.g. 
+\code{ylabels=list(col=c("red","blue"))} sets red for the top-most label,
+blue for the one below, and black for any others; see Example 6.}
 
 \item{main}{character string to be used as chart title.}
 
@@ -130,7 +139,8 @@ plot(gantt, event.time=event.time, event.label=event.label,
      lwd.eventLine=1:2, lty.eventLine=1:2,
      col.eventLine=c("pink", "lightblue"),
      col.event=c("red", "blue"), font.event=1:2, cex.event=1:2)
-
+# 6. Colour-coded tasks
+plot(gantt,ylabels=list(col=c("red","blue"),font=c(rep(1,11),2)))
 }
 \author{
 Dan Kelley
