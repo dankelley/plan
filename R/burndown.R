@@ -1,9 +1,16 @@
 #' Class to store burndown objects
 setClass("burndown", contains="plan")
 
+setMethod(f="initialize",
+          signature="burndown",
+          definition=function(.Object) {
+              return(.Object)
+          })
+
+
 #' Draw a burndown chart
 #' 
-#' Plots a burndown chart.
+#' Plot a burndown chart.
 #' 
 #' @param x A \code{burndown} object, i.e. one inheriting from 
 #' \code{\link{burndown-class}}.
@@ -124,7 +131,7 @@ setMethod(f="plot",
               cex <- if (length(x[["tasks"]]$description) < 5) 1 else 4/5
               legend("topright",legend=rev(x[["tasks"]]$description),fill=rev(col),cex=cex,y.intersp=1.5*cex)
               mtext(paste(paste(format(time.range), collapse=" to "),
-                          attr(x$data$ts$time[1], "tzone")),
+                          attr(x[["ts"]]$time[1], "tzone")),
                     side=3, cex=cex, adj=0)
               invisible(x)
           })

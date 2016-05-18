@@ -4,7 +4,7 @@
 \name{gantt}
 \alias{gantt}
 \title{Sample gantt dataset}
-\format{See \code{\link{read.gantt}}}
+\format{See \code{\link{read.gantt}}.}
 \description{
 This is sample gantt dataset provided for testing.
 }

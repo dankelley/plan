@@ -2,7 +2,6 @@
 #' 
 #' This is sample burndown dataset provided for testing.
 #' 
-#' 
 #' @name burndown
 #' @docType data
 #' @format See \code{\link{read.burndown}}.
@@ -16,10 +15,9 @@ NULL
 #' 
 #' This is sample gantt dataset provided for testing.
 #' 
-#' 
 #' @name gantt
 #' @docType data
-#' @format See \code{\link{read.gantt}}
+#' @format See \code{\link{read.gantt}}.
 #' @author Dan Kelley
 #' @family things related to \code{gantt} data.
 #' @family data sets provided with \code{plan}.

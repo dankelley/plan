@@ -1,4 +1,5 @@
 #' Base Class for plan Objects
+#' @slot data A list containing variable contents.
 #' @family classes provided by \code{plan}
 setClass("plan", representation(data="list"), prototype=list(data=list()))
 
@@ -13,8 +14,6 @@ setMethod(f="[[",
           signature(x="plan", i="ANY", j="ANY"),
           definition=function(x, i, j, ...) {
               if (i == "data") {
-                  return(x@data)
-              } else if (i == "data") {
                   return(x@data)
               } else {
                   return(x@data[[i]])

@@ -37,7 +37,7 @@ if not given).}
 \item{...}{extra things handed down to plotting functions.}
 }
 \description{
-Plots a burndown chart.
+Plot a burndown chart.
 }
 \examples{
 library(plan)

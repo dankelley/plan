@@ -11,8 +11,8 @@
   col.eventLine = gray(0.1), col.event = par("fg"),
   cex.event = par("cex"), font.event = par("font"),
   lty.eventLine = par("lty"), lwd.eventLine = par("lwd"), bg = par("bg"),
-  grid.col = "lightgray", grid.lty = "dotted", ylabels = list(col =
-  "black", cex = 1, font = 1), main = "", cex.main = par("cex"),
+  grid.col = "lightgray", grid.lty = "dotted", ylabels = list(col = 1, cex
+  = 1, font = 1, justification = 1), main = "", cex.main = par("cex"),
   mgp = c(2, 0.7, 0), maiAdd = rep(0, 4), debug = FALSE, ...)
 }
 \arguments{
@@ -66,13 +66,14 @@ vector of colours, one for each item in the gantt table.}
 \item{grid.lty}{line type for grid.}
 
 \item{ylabels}{A \code{\link{list}} with elements \code{col} for colour,
-\code{cex} for character-expansion factor, and \code{font} for font. These
-values are used in plotting the labels on the y axis. In each case, the
-first entry applies to the top task on the graph, etc.  If
-there are not enough values to match the labels, the vectors are
-filled out with the default values, e.g. 
-\code{ylabels=list(col=c("red","blue"))} sets red for the top-most label,
-blue for the one below, and black for any others; see Example 6.}
+\code{cex} for character-expansion factor, \code{font} for font, and \code{justification}
+for the placement in the margin (\code{0} means left-justified, and \code{1}
+means right-justified. (NOTE: left-justification is not working in the present version.)
+It often makes sense for the elements in \code{ylabels} to be vectors of the same
+length as the topic list. However, if they are shorter, then they lengthened by
+copying the default values.  For example, \code{ylabels=list(col=c("red"))}
+yields a red label for the top-most item label, with the rest defaulting to black;
+see Example 6.}
 
 \item{main}{character string to be used as chart title.}
 

@@ -4,6 +4,6 @@ all: create_gantt.out create_burndown.out
 clean:
 	-rm *~ *.rda *.out
 install:
-	cp gantt.rda ../../data
-	cp burndown.rda ../../data
+	cp gantt.rda ../data
+	cp burndown.rda ../data
 	

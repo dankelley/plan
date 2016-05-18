@@ -7,4 +7,9 @@
 \description{
 Base Class for plan Objects
 }
+\section{Slots}{
+
+\describe{
+\item{\code{data}}{A list containing variable contents.}
+}}
 

@@ -1,6 +1,12 @@
 #' Class to store \code{gantt} objects
 setClass("gantt", contains="plan")
 
+setMethod(f="initialize",
+          signature="gantt",
+          definition=function(.Object) {
+              return(.Object)
+          })
+
 
 #' Draw a Gantt diagram
 #' 
@@ -38,11 +44,12 @@ setClass("gantt", contains="plan")
 #' @param ylabels A \code{\link{list}} with elements \code{col} for colour,
 #' \code{cex} for character-expansion factor, \code{font} for font, and \code{justification}
 #' for the placement in the margin (\code{0} means left-justified, and \code{1}
-#' means right-justified. In each case, the first entry applies to the top task on the graph,
-#' the second for second-top, etc.  If there are not enough values to match the labels,
-#' the vectors are filled out with the default values, e.g. 
-#' \code{ylabels=list(col=c("red","blue"))} sets red for the top-most label,
-#' blue for the one below, and black for any others; see Example 6.
+#' means right-justified. (NOTE: left-justification is not working in the present version.)
+#' It often makes sense for the elements in \code{ylabels} to be vectors of the same
+#' length as the topic list. However, if they are shorter, then they lengthened by
+#' copying the default values.  For example, \code{ylabels=list(col=c("red"))}
+#' yields a red label for the top-most item label, with the rest defaulting to black;
+#' see Example 6.
 #' @param main character string to be used as chart title.
 #' @param cex.main numeric, font-size factor for title.
 #' @param mgp setting for \code{\link{par}(mgp)}, within-axis spacing.
@@ -204,7 +211,6 @@ setMethod(f="plot",
     mai <- ifelse(mai < 0, 0, mai)
     opar <- par(no.readonly = TRUE)
     par(mgp=mgp, mai=mai, omi=c(0.1, 0.1, 0.1, 0.1), bg=bg)
-    print(mai)
     plot(c(r[1], r[2]), c(1,2*ndescriptions),
          ylim=c(0.5, ndescriptions + 0.5),
          xaxs="i", yaxs="i",
@@ -238,7 +244,6 @@ setMethod(f="plot",
     font[2] <- 2
     dat <- axis(2, at=topdown, labels=rep("", ndescriptions), las=2, tick=FALSE, cex.axis=par("cex.axis"))
     par(xpd=NA)
-    print(ylabels$justification)
     for (i in 1:ndescriptions) {
         if (ylabels$justification[i] == 1) {
             left <- par('usr')[1]
@@ -246,7 +251,9 @@ setMethod(f="plot",
                  col=ylabels$col[i], cex=ylabels$cex[i], font=ylabels$font[i])
         } else {
             left <- grconvertX(0, 'device', 'user')
-            message("left= ", left)
+            message("justification=0 is not working well. Below is developer information.")
+            message("  left= ", left, " (the thick black line is there)")
+            message("  Q: why is this black line not at the left of the graph?")
             text(left, topdown[i], x[["description"]][i], pos=4,
                  col=ylabels$col[i], cex=ylabels$cex[i], font=ylabels$font[i])
             abline(v=left, lwd=5)
