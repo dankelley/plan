@@ -16,7 +16,7 @@
   debug = FALSE, ...)
 }
 \arguments{
-\item{x}{an object of class \code{gantt}.}
+\item{x}{A \code{gantt} object, i.e. one inheriting from \code{\link{gantt-class}}.}
 
 \item{xlim}{optional range of time axis; if not provided, the range of times
 in \code{x} will be used.}
@@ -83,15 +83,30 @@ margins) but the sum will be truncated to remain positive.}
 The gantt object, returned invisibly.
 }
 \description{
-Plot a Gantt object.
-}
-\details{
-Plots a gantt chart, possibly with events superimposed.
+Plot a gantt chart, possibly with events superimposed.
 }
 \note{
 The defaults work well for projects that take a year or two. Consider
 adjusting \code{time.labels.by} and \code{time.lines.by} for projects that
 are much shorter or longer.
+}
+\section{Sample data file}{
+
+\preformatted{
+Key, Description,                 Start,        End, Done, NeededBy
+  1, Assemble equipment,     2008-01-01, 2008-03-28, 90
+  2, Test methods,           2008-02-28, 2008-03-28, 30
+  3, Field sampling,         2008-04-01, 2008-08-14, 0
+  4, Analyse field data,     2008-06-30, 2008-11-14, 0
+  5, Write methods chapter,  2008-08-14, 2008-11-14, 0
+  6, Write results chapter,  2008-10-14, 2009-01-15, 0
+  7, Write other chapters,   2008-12-10, 2009-02-28, 0
+  8, Committee reads thesis, 2009-02-28, 2009-03-14, 0
+  9, Revise thesis,          2009-03-15, 2009-03-30, 0
+ 10, Thesis on display,      2009-04-01, 2009-04-15, 0
+ 11, Defend thesis,          2009-04-16, 2009-04-17, 0
+ 12, Finalize thesis,        2009-04-18, 2009-05-07, 0 
+}
 }
 \examples{
 

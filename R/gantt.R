@@ -4,11 +4,9 @@ setClass("gantt", contains="plan")
 
 #' Draw a Gantt diagram
 #' 
-#' Plot a Gantt object.
+#' Plot a gantt chart, possibly with events superimposed.
 #' 
-#' Plots a gantt chart, possibly with events superimposed.
-#' 
-#' @param x an object of class \code{gantt}.
+#' @param x A \code{gantt} object, i.e. one inheriting from \code{\link{gantt-class}}.
 #' @param xlim optional range of time axis; if not provided, the range of times
 #' in \code{x} will be used.
 #' @param time.format format for dates on time axis; defaults to 3-letter
@@ -53,6 +51,22 @@ setClass("gantt", contains="plan")
 #' @family things related to \code{gantt} data
 #' @references Gantt diagrams are described on wikipedia
 #' \url{http://en.wikipedia.org/wiki/Gantt_Chart}.
+#' @section Sample data file:
+#' \preformatted{
+#' Key, Description,                 Start,        End, Done, NeededBy
+#'   1, Assemble equipment,     2008-01-01, 2008-03-28, 90
+#'   2, Test methods,           2008-02-28, 2008-03-28, 30
+#'   3, Field sampling,         2008-04-01, 2008-08-14, 0
+#'   4, Analyse field data,     2008-06-30, 2008-11-14, 0
+#'   5, Write methods chapter,  2008-08-14, 2008-11-14, 0
+#'   6, Write results chapter,  2008-10-14, 2009-01-15, 0
+#'   7, Write other chapters,   2008-12-10, 2009-02-28, 0
+#'   8, Committee reads thesis, 2009-02-28, 2009-03-14, 0
+#'   9, Revise thesis,          2009-03-15, 2009-03-30, 0
+#'  10, Thesis on display,      2009-04-01, 2009-04-15, 0
+#'  11, Defend thesis,          2009-04-16, 2009-04-17, 0
+#'  12, Finalize thesis,        2009-04-18, 2009-05-07, 0 
+#' }
 #' @examples
 #' 
 #' library(plan)
@@ -251,21 +265,16 @@ setMethod(f="plot",
 #' 
 #' Prints a summary of a gantt dataset.
 #' 
-#' @param object an object of class \code{gantt}, e.g. as read by
-#' \code{\link{read.gantt}}.
-#' @param x A \code{gantt} object, i.e. one inheriting from \code{\link{gantt-class}}.
-#' @param \dots extra arguments (not used in this version).
-#' @return None.
+#' @param object A \code{gantt} object, i.e. one inheriting from \code{\link{gantt-class}}.
+#' @param ... ignored.
 #' @author Dan Kelley
 #' @family things related to \code{gantt} data
 #' @references
 #' \url{http://alistair.cockburn.us/crystal/articles/evabc/earnedvalueandburncharts.htm}.
 #' @examples
-#' 
 #' library(plan)
 #' data(gantt)
 #' summary(gantt)
-#' 
 setMethod(f="summary",
           signature="gantt",
           definition=function(object, ...) {

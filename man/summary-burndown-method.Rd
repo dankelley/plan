@@ -2,37 +2,24 @@
 % Please edit documentation in R/burndown.R
 \docType{methods}
 \name{summary,burndown-method}
-\alias{print.summary.burndown}
 \alias{summary,burndown-method}
-\alias{summary.burndown}
 \title{Summarize a burndown object}
 \usage{
 \S4method{summary}{burndown}(object, ...)
 }
 \arguments{
-\item{object}{an object of class \code{burndown}, e.g. as read by
-\code{\link{read.burndown}}.}
+\item{object}{A \code{burndown} object, i.e. one inheriting from
+\code{\link{burndown-class}}.}
 
-\item{x}{an object of class \code{summary.burndown}, as created by
-\code{summary.burndown}.}
-
-\item{\dots}{extra arguments (not used in this version).}
-}
-\value{
-None.
+\item{...}{ignored.}
 }
 \description{
-Summarizes a burndown object.
-}
-\details{
-Prints a summary of a burndown dataset.
+Print a summary of a burndown dataset.
 }
 \examples{
-
 library(plan)
 data(burndown)
 summary(burndown)
-
 }
 \author{
 Dan Kelley

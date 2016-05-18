@@ -34,7 +34,7 @@ and a time expressed in ISO 8601 format (\code{YYYY-MM-DD} or
 \item Line 2: as Line 1, but the string is to be \code{Start}, and the line
 indicates the deadline for the project.
 
-\item Line 3: a header line for a "task" list, comprising the following
+\item Line 3: a header line for a "tasks" list, comprising the following
 three words separated by commas: \code{Key}, \code{Description}, and
 \code{Effort}.
 
@@ -43,7 +43,7 @@ three words separated by commas: \code{Key}, \code{Description}, and
 "Effort" for this task, expressed as a number. The keys must be distinct,
 and they must match the keys in the progress table (see below).  The
 description should be short enough to give a reasonable-size legend as
-created by \code{\link{plot.burndown}}.  The effort may be expressed in any
+created by \code{\link{plot,burndown-method}}.  The effort may be expressed in any
 convenient unit, e.g. the number of hours or days for the task, or as a
 percentage of the overall task.
 
@@ -59,18 +59,45 @@ above.  }
 \section{Sample data file}{
 
 \preformatted{
-FILL IN
+Start, 2006-04-08 12:00:00
+Deadline, 2006-04-11 20:00:00
+Key, Description,            Effort
+  1, Code read.burndown(),    4
+  2, Code summary.burndown(), 1
+  3, Code plot.burndown(),    5
+  4, Create R package,        2
+  5, Write documentation,     2
+  6, Set up website,          1
+Key, Done, Time
+  1,    5, 2006-04-08 13:00:00
+  2,    5, 2006-04-08 13:30:00
+  1,   10, 2006-04-08 14:00:00
+  2,   50, 2006-04-08 15:00:00
+  4,    5, 2006-04-08 19:30:00
+  5,    5, 2006-04-08 20:00:00
+  4,  100, 2006-04-08 21:16:00
+  1,   50, 2006-04-09 09:10:00
+  3,    5, 2006-04-09 09:41:00
+  3,   30, 2006-04-09 10:18:00
+  3,   80, 2006-04-09 11:00:00
+  2,   60, 2006-04-09 12:00:00
+  2,  100, 2006-04-09 12:10:00
+  1,   70, 2006-04-09 12:30:00
+  5,   30, 2006-04-09 13:50:00
+  5,   90, 2006-04-09 14:20:00
+  5,  100, 2006-04-09 14:30:00
+  1,  100, 2006-04-09 14:35:00
+  3,  100, 2006-04-09 14:40:00
+  6,  100, 2006-04-09 16:00:00 
 }
 }
 \examples{
-
 \dontrun{
 library(plan)
 b <- read.burndown("burndown.dat")
 summary(b)
 plot(b)
 }
-
 }
 \author{
 Dan Kelley

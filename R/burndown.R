@@ -3,11 +3,10 @@ setClass("burndown", contains="plan")
 
 #' Draw a burndown chart
 #' 
-#' Plot a burndown object.
-#' 
 #' Plots a burndown chart.
 #' 
-#' @param x an object of class \code{burndown}, to be plotted.
+#' @param x A \code{burndown} object, i.e. one inheriting from 
+#' \code{\link{burndown-class}}.
 #' @param col list of colours for items, starting with the first key in the
 #' file (which will be at the bottom of the chart).  If not specified, the
 #' \code{\link{hcl}} scheme will be used, to generate colours that are
@@ -23,18 +22,15 @@ setClass("burndown", contains="plan")
 #' @param y.name character string, for labelling the vertical axis.
 #' @param debug boolean, set to \code{TRUE} to monitor the work.
 #' @param ... extra things handed down to plotting functions.
-#' @return The object, returned invisibly.
 #' @author Dan Kelley
 #' @family things related to \code{burndown} data
 #' @references
 #' \url{http://alistair.cockburn.us/crystal/articles/evabc/earnedvalueandburncharts.htm}.
 #' @examples
-#' 
 #' library(plan)
 #' data(burndown)
 #' summary(burndown)
 #' plot(burndown)
-#' 
 setMethod(f="plot",
           signature=signature("burndown"),
           definition=function(x, col=NULL, draw.plan=TRUE,
@@ -125,8 +121,8 @@ setMethod(f="plot",
                   ##lines(c(t[length(t)],time.max),rep(final.effort,2),col=gray(0.9),lwd=3)#,col="red",lwd=3)
               }
               ## legend
-              cex <- if (length(x[["task"]]$description) < 5) 1 else 4/5
-              legend("topright",legend=rev(x[["task"]]$description),fill=rev(col),cex=cex,y.intersp=1.5*cex)
+              cex <- if (length(x[["tasks"]]$description) < 5) 1 else 4/5
+              legend("topright",legend=rev(x[["tasks"]]$description),fill=rev(col),cex=cex,y.intersp=1.5*cex)
               mtext(paste(paste(format(time.range), collapse=" to "),
                           attr(x$data$ts$time[1], "tzone")),
                     side=3, cex=cex, adj=0)
@@ -156,7 +152,7 @@ setMethod(f="plot",
 #' \item Line 2: as Line 1, but the string is to be \code{Start}, and the line
 #' indicates the deadline for the project.
 #' 
-#' \item Line 3: a header line for a "task" list, comprising the following
+#' \item Line 3: a header line for a "tasks" list, comprising the following
 #' three words separated by commas: \code{Key}, \code{Description}, and
 #' \code{Effort}.
 #' 
@@ -165,7 +161,7 @@ setMethod(f="plot",
 #' "Effort" for this task, expressed as a number. The keys must be distinct,
 #' and they must match the keys in the progress table (see below).  The
 #' description should be short enough to give a reasonable-size legend as
-#' created by \code{\link{plot.burndown}}.  The effort may be expressed in any
+#' created by \code{\link{plot,burndown-method}}.  The effort may be expressed in any
 #' convenient unit, e.g. the number of hours or days for the task, or as a
 #' percentage of the overall task.
 #' 
@@ -180,7 +176,36 @@ setMethod(f="plot",
 #' 
 #' @section Sample data file:
 #' \preformatted{
-#' FILL IN
+#' Start, 2006-04-08 12:00:00
+#' Deadline, 2006-04-11 20:00:00
+#' Key, Description,            Effort
+#'   1, Code read.burndown(),    4
+#'   2, Code summary.burndown(), 1
+#'   3, Code plot.burndown(),    5
+#'   4, Create R package,        2
+#'   5, Write documentation,     2
+#'   6, Set up website,          1
+#' Key, Done, Time
+#'   1,    5, 2006-04-08 13:00:00
+#'   2,    5, 2006-04-08 13:30:00
+#'   1,   10, 2006-04-08 14:00:00
+#'   2,   50, 2006-04-08 15:00:00
+#'   4,    5, 2006-04-08 19:30:00
+#'   5,    5, 2006-04-08 20:00:00
+#'   4,  100, 2006-04-08 21:16:00
+#'   1,   50, 2006-04-09 09:10:00
+#'   3,    5, 2006-04-09 09:41:00
+#'   3,   30, 2006-04-09 10:18:00
+#'   3,   80, 2006-04-09 11:00:00
+#'   2,   60, 2006-04-09 12:00:00
+#'   2,  100, 2006-04-09 12:10:00
+#'   1,   70, 2006-04-09 12:30:00
+#'   5,   30, 2006-04-09 13:50:00
+#'   5,   90, 2006-04-09 14:20:00
+#'   5,  100, 2006-04-09 14:30:00
+#'   1,  100, 2006-04-09 14:35:00
+#'   3,  100, 2006-04-09 14:40:00
+#'   6,  100, 2006-04-09 16:00:00 
 #' }
 #' 
 #' @param file a connection or a character string giving the name of the file
@@ -190,14 +215,12 @@ setMethod(f="plot",
 #' @author Dan Kelley
 #' @family things related to \code{burndown} data
 #' @examples
-#' 
 #' \dontrun{
 #' library(plan)
 #' b <- read.burndown("burndown.dat")
 #' summary(b)
 #' plot(b)
 #' }
-#' 
 read.burndown <- function(file, debug=FALSE)
 {
     if (is.character(file)) {
@@ -243,14 +266,9 @@ read.burndown <- function(file, debug=FALSE)
     progress.key <- progress.done <- progress.time <- NULL
     while (TRUE) {
         tokens <- trim.whitespace(scan(file, what=character(0),nlines=1,blank.lines.skip=FALSE,quiet=quiet, sep=","))
-        message("below is tokens:")
-        print(tokens)
         if (is.na(tokens[1]))
             break
         key <- as.numeric(tokens[1])
-        message("key: ", key)
-        message("below is task.key:")
-        print(task.key)
         if (!(key %in% task.key)) {
             msg <- paste("Progress key",key,"not in the list of task keys\n\tOffending line in data file follows\n\t",tokens[1]," ",tokens[2], " ", tokens[3])
             stop(msg)
@@ -286,45 +304,37 @@ read.burndown <- function(file, debug=FALSE)
 
 #' Summarize a burndown object
 #' 
-#' Summarizes a burndown object.
+#' Print a summary of a burndown dataset.
 #' 
-#' Prints a summary of a burndown dataset.
-#' 
-#' @aliases summary.burndown print.summary.burndown
-#' @param object an object of class \code{burndown}, e.g. as read by
-#' \code{\link{read.burndown}}.
-#' @param x an object of class \code{summary.burndown}, as created by
-#' \code{summary.burndown}.
-#' @param \dots extra arguments (not used in this version).
-#' @return None.
+#' @param object A \code{burndown} object, i.e. one inheriting from
+#' \code{\link{burndown-class}}.
+#' @param ... ignored.
 #' @author Dan Kelley
 #' @family things related to \code{burndown} data
 #' @examples
-#' 
 #' library(plan)
 #' data(burndown)
 #' summary(burndown)
-#' 
 setMethod(f="summary",
           signature="burndown",
           definition=function(object, ...) {
-              cat(paste("Start,   ", format(x[["start"]])), "\n")
-              cat(paste("Deadline,", format(x[["deadline"]])), "\n")
-              num.tasks = length(x[["tasks"]]$key)
-              dspace <- max(nchar(x[["tasks"]]$description))
+              cat(paste("Start,   ", format(object[["start"]])), "\n")
+              cat(paste("Deadline,", format(object[["deadline"]])), "\n")
+              num.tasks = length(object[["tasks"]]$key)
+              dspace <- max(nchar(object[["tasks"]]$description))
               cat(sprintf("Key, Description,%s %5s\n",
                           paste(rep(" ", dspace - nchar("Description")), collapse=""),
                           "Effort"))
               for (i in 1:num.tasks) {
-                  space <- paste(rep(" ", dspace - nchar(x[["tasks"]]$description[i])), collapse="")
+                  space <- paste(rep(" ", dspace - nchar(object[["tasks"]]$description[i])), collapse="")
                   cat(sprintf("%3s, %s,%s %s\n",
-                              x[["tasks"]]$key[i], x[["tasks"]]$description[i], space, x[["tasks"]]$effort[i]))
+                              object[["tasks"]]$key[i], object[["tasks"]]$description[i], space, object[["tasks"]]$effort[i]))
               }
               cat("Key, Done,  Time\n")
-              num.progress = length(x[["progress"]]$key)
+              num.progress = length(object[["progress"]]$key)
               for (i in 1:num.progress) {
-                  cat(sprintf("%3s, %5s, ", x[["progress"]]$key[i], x[["progress"]]$progress[i]))
-                  cat(format((x[["progress"]]$time[i])))
+                  cat(sprintf("%3s, %5s, ", object[["progress"]]$key[i], object[["progress"]]$progress[i]))
+                  cat(format((object[["progress"]]$time[i])))
                   cat("\n")
               }
               invisible()

@@ -11,5 +11,7 @@ This is sample burndown dataset provided for testing.
 \author{
 Dan Kelley
 }
-\keyword{datasets}
+\seealso{
+Other data sets provided with \code{plan}.: \code{\link{gantt}}
+}
 

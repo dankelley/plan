@@ -1,5 +1,3 @@
-
-
 #' Sample burndown dataset
 #' 
 #' This is sample burndown dataset provided for testing.
@@ -10,11 +8,8 @@
 #' @format See \code{\link{read.burndown}}.
 #' @author Dan Kelley
 #' @family things related to \code{burndown} data.
-#' @keywords datasets
+#' @family data sets provided with \code{plan}.
 NULL
-
-
-
 
 
 #' Sample gantt dataset
@@ -27,24 +22,18 @@ NULL
 #' @format See \code{\link{read.gantt}}
 #' @author Dan Kelley
 #' @family things related to \code{gantt} data.
-#' @keywords datasets
+#' @family data sets provided with \code{plan}.
 NULL
-
-
-
 
 
 #' Plan, a package for project planning
 #' 
 #' This package provides tools for project planning, e.g. burndown charts,
-#' gantt diagrams, etc.
-#' 
+#' gantt diagrams, etc.; see \code{\link{burndown-class}} and
+#' \code{\link{gantt-class}} for entries to the documentation.
 #' 
 #' @name plan
 #' @docType package
 #' @author Dan Kelley
-#' @keywords misc
 NULL
-
-
 

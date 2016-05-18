@@ -8,15 +8,9 @@
 \S4method{summary}{gantt}(object, ...)
 }
 \arguments{
-\item{object}{an object of class \code{gantt}, e.g. as read by
-\code{\link{read.gantt}}.}
+\item{object}{A \code{gantt} object, i.e. one inheriting from \code{\link{gantt-class}}.}
 
-\item{x}{A \code{gantt} object, i.e. one inheriting from \code{\link{gantt-class}}.}
-
-\item{\dots}{extra arguments (not used in this version).}
-}
-\value{
-None.
+\item{...}{ignored.}
 }
 \description{
 Summarizes a gantt object.
@@ -25,11 +19,9 @@ Summarizes a gantt object.
 Prints a summary of a gantt dataset.
 }
 \examples{
-
 library(plan)
 data(gantt)
 summary(gantt)
-
 }
 \author{
 Dan Kelley

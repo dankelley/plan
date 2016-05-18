@@ -10,7 +10,8 @@
   y.name = "Remaining Effort", debug = FALSE, ...)
 }
 \arguments{
-\item{x}{an object of class \code{burndown}, to be plotted.}
+\item{x}{A \code{burndown} object, i.e. one inheriting from 
+\code{\link{burndown-class}}.}
 
 \item{col}{list of colours for items, starting with the first key in the
 file (which will be at the bottom of the chart).  If not specified, the
@@ -35,22 +36,14 @@ if not given).}
 
 \item{...}{extra things handed down to plotting functions.}
 }
-\value{
-The object, returned invisibly.
-}
 \description{
-Plot a burndown object.
-}
-\details{
 Plots a burndown chart.
 }
 \examples{
-
 library(plan)
 data(burndown)
 summary(burndown)
 plot(burndown)
-
 }
 \author{
 Dan Kelley

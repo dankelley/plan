@@ -5,7 +5,11 @@ Title: Tools for Project Planning
 Author: Dan Kelley <Dan.Kelley@Dal.Ca>
 Maintainer: Dan Kelley <Dan.Kelley@Dal.Ca>
 Depends:
-    R (>= 0.99)
+    R (>= 0.99),
+    utils,
+    methods
+Suggests:
+    knitr
 Description: Supports the creation of burndown charts and gantt diagrams.
 License: GPL (>= 2)
 URL: http://github.com/dankelley/plan

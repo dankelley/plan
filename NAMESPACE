@@ -1,7 +1,11 @@
-importFrom("graphics", "plot")
 exportMethods(plot)
 exportMethods(summary)
-export(as.gantt,
-        read.burndown,
-        read.gantt)
+    importFrom("grDevices", "gray", "hcl")
+    importFrom("graphics", "abline", "axis", "axis.POSIXct", "box",
+            "legend", "lines", "mtext", "par", "plot", "points", "polygon",
+            "rect", "rug", "strheight", "strwidth")
+    importFrom("methods", "new")
+    importFrom("stats", "lm")
+export(as.gantt, read.burndown, read.gantt, trim.whitespace)
+exportClasses(plan, burndown, gantt)
 
