@@ -36,11 +36,11 @@ setClass("gantt", contains="plan")
 #' @param grid.col colour for grid.
 #' @param grid.lty line type for grid.
 #' @param ylabels A \code{\link{list}} with elements \code{col} for colour,
-#' \code{cex} for character-expansion factor, and \code{font} for font. These
-#' values are used in plotting the labels on the y axis. In each case, the
-#' first entry applies to the top task on the graph, etc.  If
-#' there are not enough values to match the labels, the vectors are
-#' filled out with the default values, e.g. 
+#' \code{cex} for character-expansion factor, \code{font} for font, and \code{justification}
+#' for the placement in the margin (\code{0} means left-justified, and \code{1}
+#' means right-justified. In each case, the first entry applies to the top task on the graph,
+#' the second for second-top, etc.  If there are not enough values to match the labels,
+#' the vectors are filled out with the default values, e.g. 
 #' \code{ylabels=list(col=c("red","blue"))} sets red for the top-most label,
 #' blue for the one below, and black for any others; see Example 6.
 #' @param main character string to be used as chart title.
@@ -110,7 +110,7 @@ setMethod(f="plot",
                         cex.event=par("cex"), font.event=par("font"),
                         lty.eventLine=par("lty"), lwd.eventLine=par("lwd"),
                         bg=par("bg"), grid.col="lightgray", grid.lty="dotted",
-                        ylabels=list(col="black", cex=1, font=1),
+                        ylabels=list(col=1, cex=1, font=1, justification=1),
                         main="", cex.main=par("cex"),
                         mgp=c(2, 0.7, 0), maiAdd=rep(0, 4),
                         debug=FALSE, ...)
@@ -131,12 +131,16 @@ setMethod(f="plot",
         ylabels$cex <- 1
     if (!("font" %in% names(ylabels)))
         ylabels$font <- 1
+    if (!("justification" %in% names(ylabels)))
+        ylabels$justification <- 1
     for (i in seq_along(ylabels)) {
         len <- length(ylabels[[i]])
         if (len < ndescriptions) {
             ylabels[[i]] <- c(ylabels[[i]], rep(1, ndescriptions-len))
         }
     }
+    if (any(ylabels$justification != 0 && ylabels$justification != 1))
+        stop("ylabels$justification entries must be 0 or 1")
     if (length(col.done) < ndescriptions)
         col.done <- rep(col.done, length.out=ndescriptions)
     if (length(col.notdone) < ndescriptions)
@@ -200,6 +204,7 @@ setMethod(f="plot",
     mai <- ifelse(mai < 0, 0, mai)
     opar <- par(no.readonly = TRUE)
     par(mgp=mgp, mai=mai, omi=c(0.1, 0.1, 0.1, 0.1), bg=bg)
+    print(mai)
     plot(c(r[1], r[2]), c(1,2*ndescriptions),
          ylim=c(0.5, ndescriptions + 0.5),
          xaxs="i", yaxs="i",
@@ -233,10 +238,19 @@ setMethod(f="plot",
     font[2] <- 2
     dat <- axis(2, at=topdown, labels=rep("", ndescriptions), las=2, tick=FALSE, cex.axis=par("cex.axis"))
     par(xpd=NA)
-    left <- par('usr')[1]
+    print(ylabels$justification)
     for (i in 1:ndescriptions) {
-        text(left, topdown[i], x[["description"]][i], pos=2,
-             col=ylabels$col[i], cex=ylabels$cex[i], font=ylabels$font[i])
+        if (ylabels$justification[i] == 1) {
+            left <- par('usr')[1]
+            text(left, topdown[i], x[["description"]][i], pos=2,
+                 col=ylabels$col[i], cex=ylabels$cex[i], font=ylabels$font[i])
+        } else {
+            left <- grconvertX(0, 'device', 'user')
+            message("left= ", left)
+            text(left, topdown[i], x[["description"]][i], pos=4,
+                 col=ylabels$col[i], cex=ylabels$cex[i], font=ylabels$font[i])
+            abline(v=left, lwd=5)
+        }
     }
     par(xpd=FALSE)
 
@@ -250,7 +264,7 @@ setMethod(f="plot",
                 r <- as.numeric(nb[nbi])
                 receiver.t <- as.POSIXct(x[["start"]][r])
                 receiver.y <- topdown[r]
-                 lines(c(source.t,receiver.t), c(source.y,receiver.y),col=col.connector)
+                lines(c(source.t,receiver.t), c(source.y,receiver.y),col=col.connector)
             }
         }
     }
