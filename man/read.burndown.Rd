@@ -55,21 +55,12 @@ following four words separated by commas: \code{Key}, \code{Done}, and
 match a key in the task list.  The "Done" column holds the percentage of the
 task that has been completed. The "Time" is in ISO 8601 format, as described
 above.  }
+}
+\section{Sample data file}{
 
-Executing the code \preformatted{ library(plan) data(burndown)
-print(summary(burndown)) } will create the following, which may be read with
-\code{read.burndown}: \preformatted{ Start, 2006-04-08 12:00:00 Deadline,
-2006-04-11 20:00:00 Key, Description, Effort 1, code read.burndown(), 4 2,
-code summary.burndown(), 1 3, code plot.burndown(), 5 4, create R package, 2
-5, write documentation, 2 6, set up website, 1 Key, Done, Time 1, 5,
-2006-04-08 13:00:00 2, 5, 2006-04-08 13:30:00 1, 10, 2006-04-08 14:00:00 2,
-50, 2006-04-08 15:00:00 4, 5, 2006-04-08 19:30:00 5, 5, 2006-04-08 20:00:00
-4, 100, 2006-04-08 21:16:00 1, 50, 2006-04-09 09:10:00 3, 5, 2006-04-09
-09:41:00 3, 30, 2006-04-09 10:18:00 3, 80, 2006-04-09 11:00:00 2, 60,
-2006-04-09 12:00:00 2, 100, 2006-04-09 12:10:00 1, 70, 2006-04-09 12:30:00
-5, 30, 2006-04-09 13:50:00 5, 90, 2006-04-09 14:20:00 5, 100, 2006-04-09
-14:30:00 1, 100, 2006-04-09 14:35:00 3, 100, 2006-04-09 14:40:00 6, 100,
-2006-04-09 16:00:00 }
+\preformatted{
+FILL IN
+}
 }
 \examples{
 
@@ -85,7 +76,7 @@ plot(b)
 Dan Kelley
 }
 \seealso{
-\code{\link{summary.burndown}} and \code{\link{plot.burndown}}.
+Other things related to \code{burndown} data: \code{\link{plot,burndown-method}},
+  \code{\link{summary,burndown-method}}
 }
-\keyword{misc}
 

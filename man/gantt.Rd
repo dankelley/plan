@@ -11,10 +11,5 @@ This is sample gantt dataset provided for testing.
 \author{
 Dan Kelley
 }
-\seealso{
-\code{\link{read.gantt}} may be used to read such objects,
-\code{\link{summary.gantt}} to summarize them, and \code{\link{plot.gantt}}
-to plot them.
-}
 \keyword{datasets}
 

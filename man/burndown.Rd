@@ -11,10 +11,5 @@ This is sample burndown dataset provided for testing.
 \author{
 Dan Kelley
 }
-\seealso{
-\code{\link{read.burndown}} may be used to read such objects,
-\code{\link{summary.burndown}} to summarize them, and
-\code{\link{plot.burndown}} to plot them.
-}
 \keyword{datasets}
 

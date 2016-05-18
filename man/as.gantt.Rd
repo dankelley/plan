@@ -2,7 +2,7 @@
 % Please edit documentation in R/gantt.R
 \name{as.gantt}
 \alias{as.gantt}
-\title{Read a gantt data file}
+\title{Create a \code{gantt} object, i.e. one inheriting from \code{\link{gantt-class}}.}
 \usage{
 as.gantt(key, description, start, end, done, neededBy)
 }
@@ -27,11 +27,7 @@ An object of type \code{"gantt"}; for details, see
 \code{\link{read.gantt}}.
 }
 \description{
-Read a data file containing gantt information.
-}
-\details{
-Creates a \code{gantt} object. See documentation for
-\code{\link{read.gantt}}, which uses \code{as.gantt}.
+Create a \code{gantt} object, i.e. one inheriting from \code{\link{gantt-class}}.
 }
 \examples{
 
@@ -74,8 +70,8 @@ plot(g, xlim=c(arrive, leave))
 Dan Kelley
 }
 \seealso{
-\code{\link{read.gantt}}, \code{\link{summary.gantt}} and
-\code{\link{plot.gantt}}
+Other things related to \code{gantt} data: \code{\link{plot,gantt-method}},
+  \code{\link{read.gantt}},
+  \code{\link{summary,gantt-method}}
 }
-\keyword{misc}
 

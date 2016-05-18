@@ -22,13 +22,10 @@ indices of other tasks that rely on this task, or \code{NA} if none given).
 }
 \description{
 Read a data file containing gantt information.
+The data format is strict, and deviations from it may lead to error messages
+that are difficult to understand; see \dQuote{Details}.
 }
 \details{
-Reads a \code{gantt} dataset.
-
-The data format is strict, and deviations from it may lead to error messages
-that are difficult to understand.
-
 The first line is a header, and must contain the words \code{Key},
 \code{Description}, \code{Start}, \code{End}, \code{Done}, and
 \code{NeededBy}, written exactly in this way, with commas separating the
@@ -56,16 +53,21 @@ version of \code{read.gantt}.  }
 
 Executing the code \preformatted{ library(plan) data(gantt)
 print(summary(gantt)) } will create the following sample file, which may be
-read with \code{\link{read.gantt}}: \preformatted{ Key, Description, Start,
-End, Done, NeededBy 1, Assemble equipment, 2008-01-01, 2008-03-28, 90 2,
-Test methods, 2008-02-28, 2008-03-28, 30 3, Field sampling, 2008-04-01,
-2008-08-14, 0 4, Analyse field data, 2008-06-30, 2008-11-14, 0 5, Write
-methods chapter, 2008-08-14, 2008-11-14, 0 6, Write results chapter,
-2008-10-14, 2009-01-15, 0 7, Write other chapters, 2008-12-10, 2009-02-28, 0
-8, Committee reads thesis, 2009-02-28, 2009-03-14, 0 9, Revise thesis,
-2009-03-15, 2009-03-30, 0 10, Thesis on display, 2009-04-01, 2009-04-15, 0
-11, Defend thesis, 2009-04-16, 2009-04-17, 0 12, Finalize thesis,
-2009-04-18, 2009-05-07, 0 }
+read with \code{\link{read.gantt}}: \preformatted{
+Key, Description,                 Start,        End, Done, NeededBy
+  1, Assemble equipment,     2008-01-01, 2008-03-28, 90
+  2, Test methods,           2008-02-28, 2008-03-28, 30
+  3, Field sampling,         2008-04-01, 2008-08-14, 0
+  4, Analyse field data,     2008-06-30, 2008-11-14, 0
+  5, Write methods chapter,  2008-08-14, 2008-11-14, 0
+  6, Write results chapter,  2008-10-14, 2009-01-15, 0
+  7, Write other chapters,   2008-12-10, 2009-02-28, 0
+  8, Committee reads thesis, 2009-02-28, 2009-03-14, 0
+  9, Revise thesis,          2009-03-15, 2009-03-30, 0
+ 10, Thesis on display,      2009-04-01, 2009-04-15, 0
+ 11, Defend thesis,          2009-04-16, 2009-04-17, 0
+ 12, Finalize thesis,        2009-04-18, 2009-05-07, 0 
+}
 }
 \examples{
 
@@ -81,7 +83,8 @@ plot(gantt)
 Dan Kelley
 }
 \seealso{
-\code{\link{summary.gantt}} and \code{\link{plot.gantt}}
+Other things related to \code{gantt} data: \code{\link{as.gantt}},
+  \code{\link{plot,gantt-method}},
+  \code{\link{summary,gantt-method}}
 }
-\keyword{misc}
 

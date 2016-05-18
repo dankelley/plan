@@ -1,3 +1,7 @@
+#' Class to store \code{gantt} objects
+setClass("gantt", contains="plan")
+
+
 #' Draw a Gantt diagram
 #' 
 #' Plot a Gantt object.
@@ -46,11 +50,9 @@
 #' adjusting \code{time.labels.by} and \code{time.lines.by} for projects that
 #' are much shorter or longer.
 #' @author Dan Kelley
-#' @seealso Use \code{\link{read.gantt}} to read gantt data, and
-#' \code{\link{summary.gantt}} to summarize them.
+#' @family things related to \code{gantt} data
 #' @references Gantt diagrams are described on wikipedia
 #' \url{http://en.wikipedia.org/wiki/Gantt_Chart}.
-#' @keywords misc
 #' @examples
 #' 
 #' library(plan)
@@ -74,7 +76,9 @@
 #'      col.eventLine=c("pink", "lightblue"),
 #'      col.event=c("red", "blue"), font.event=1:2, cex.event=1:2)
 #' 
-plot.gantt <- function (x, xlim,
+setMethod(f="plot",
+          signature=signature("gantt"),
+          definition=function (x, xlim,
                         time.format=NULL, time.labels.by, time.lines.by,
                         event.time=NULL, event.label=NULL, event.side=3,
                         col.connector="black",
@@ -94,7 +98,7 @@ plot.gantt <- function (x, xlim,
     half.height <- 0.33
     t0 <- as.POSIXct("1970-01-01 00:00:00")
     ## Lengthen anything that can be a vector
-    ndescriptions <- length(x$description)
+    ndescriptions <- length(x[["description"]])
     if (length(col.done) < ndescriptions)
         col.done <- rep(col.done, length.out=ndescriptions)
     if (length(col.notdone) < ndescriptions)
@@ -114,10 +118,10 @@ plot.gantt <- function (x, xlim,
         lwd.eventLine <- rep(lwd.eventLine, length.out=nevent)
 
     charheight <- strheight("M", units = "inches")
-    maxwidth <- max(strwidth(x$description, units = "inches")) * 1.1
+    maxwidth <- max(strwidth(x[["description"]], units = "inches")) * 1.1
 
     ## Get around some problems with autoscaling of POSIXt values
-    r <- if (missing(xlim)) range(x$start, x$end) else xlim
+    r <- if (missing(xlim)) range(x[["start"]], x[["end"]]) else xlim
     if (debug) {cat("range: ", as.character(r[1]), "to", as.character(r[2]), "\n")}
     s <- as.numeric(difftime(r[2], r[1], units="days"))
     r <- as.POSIXlt(r)
@@ -186,23 +190,18 @@ plot.gantt <- function (x, xlim,
     } else {
         abline(v = seq.POSIXt(as.POSIXct(xlim[1]), as.POSIXct(xlim[2]), by=time.lines.by), col = grid.col, lty=grid.lty)
     }
-    ## if (FALSE) {
-    ##     mtext(paste(paste(format(xlim[1:2], format="%Y-%m-%d"), collapse=" to "),
-    ##                 attr(x$data$ts$time[1], "tzone")),
-    ##           side=3, cex=2/3, adj=0)
-    ## }
     topdown <- seq(ndescriptions, 1)
-    axis(2, at = topdown, labels = x$description, las = 2, tick=FALSE, cex.axis=par("cex.axis"))
+    axis(2, at = topdown, labels = x[["description"]], las = 2, tick=FALSE, cex.axis=par("cex.axis"))
 
     ## Connectors
     for (t in 1:ndescriptions) {
-        nb <- x$neededBy[t][[1]]
+        nb <- x[["neededBy"]][t][[1]]
         if (!is.na(nb)) {
             source.y <- topdown[t]
-            source.t <- as.POSIXct(x$end[t])
+            source.t <- as.POSIXct(x[["end"]][t])
             for (nbi in 1:length(nb)) {
                 r <- as.numeric(nb[nbi])
-                receiver.t <- as.POSIXct(x$start[r])
+                receiver.t <- as.POSIXct(x[["start"]][r])
                 receiver.y <- topdown[r]
                 lines(c(source.t,receiver.t), c(source.y,receiver.y),col=col.connector)
             }
@@ -220,18 +219,18 @@ plot.gantt <- function (x, xlim,
     }
     ## Description
     for (i in 1:ndescriptions) {
-        mid <- as.POSIXct(x$start[i]) +
-            x$done[i] * as.numeric(difftime(as.POSIXct(x$end[i]),
-                                            as.POSIXct(x$start[i]),
+        mid <- as.POSIXct(x[["start"]][i]) +
+            x[["done"]][i] * as.numeric(difftime(as.POSIXct(x[["end"]][i]),
+                                            as.POSIXct(x[["start"]][i]),
                                             units="secs")) / 100
-        if (debug) {cat(as.character(x$description[i]),"takes", as.numeric(difftime(as.POSIXct(x$end[i]), as.POSIXct(x$start[i]), units="secs")), "s\n")}
+        if (debug) {cat(as.character(x[["description"]][i]),"takes", as.numeric(difftime(as.POSIXct(x[["end"]][i]), as.POSIXct(x[["start"]][i]), units="secs")), "s\n")}
 
         bottom <- topdown[i] - half.height
         top <- topdown[i] + half.height
-        left <- as.POSIXct(x$start[i])
-        right <- as.POSIXct(x$end[i])
+        left <- as.POSIXct(x[["start"]][i])
+        right <- as.POSIXct(x[["end"]][i])
 
-        if (debug){cat(as.character(x$description[i]));cat(" done=",x$done[i]," mid=");print(mid);cat(" left=");print(left);cat("right=");print(right);cat("\n")}
+        if (debug){cat(as.character(x[["description"]][i]));cat(" done=",x[["done"]][i]," mid=");print(mid);cat(" left=");print(left);cat("right=");print(right);cat("\n")}
 
         rect(left, bottom, right, top, col = col.notdone[i], border = FALSE)
         rect(left, bottom, mid,   top, col = col.done[i],    border = FALSE)
@@ -240,7 +239,7 @@ plot.gantt <- function (x, xlim,
     abline(h = (topdown[1:(ndescriptions - 1)] + topdown[2:ndescriptions])/2,  col = grid.col, lty=grid.lty)
     par(opar)
     invisible(x)
-}
+})
 
 
 
@@ -252,68 +251,52 @@ plot.gantt <- function (x, xlim,
 #' 
 #' Prints a summary of a gantt dataset.
 #' 
-#' @aliases summary.gantt print.summary.gantt
 #' @param object an object of class \code{gantt}, e.g. as read by
 #' \code{\link{read.gantt}}.
-#' @param x an object of class \code{summary.gantt}, as created by
-#' \code{summary.gantt}.
+#' @param x A \code{gantt} object, i.e. one inheriting from \code{\link{gantt-class}}.
 #' @param \dots extra arguments (not used in this version).
 #' @return None.
 #' @author Dan Kelley
-#' @seealso The \code{gantt} object may be read with \code{\link{read.gantt}}.
+#' @family things related to \code{gantt} data
 #' @references
 #' \url{http://alistair.cockburn.us/crystal/articles/evabc/earnedvalueandburncharts.htm}.
-#' @keywords misc
 #' @examples
 #' 
 #' library(plan)
 #' data(gantt)
 #' summary(gantt)
 #' 
-summary.gantt <- function(object, ...)
-{
-    if (!inherits(object, "gantt")) stop("method is only for ganttobjects")
-    res <- object
-    class(res) <- "summary.gantt"
-    res
-}
-
-print.summary.gantt <- function(x, ...)
-{
-    if (!inherits(x, "summary.gantt")) stop("method is only for summary.gantt objects")
-    max.description.width <- max(nchar(as.character(x$description)))
-    num.descriptions <- length(x$description)
-    cat("Key, Description,", paste(rep(" ", max.description.width-12), collapse=""), "Start,      End,        Done, NeededBy\n")
-    for (t in 1:num.descriptions) {
-        spacer <- paste(rep(" ", 1 + max.description.width - nchar(as.character(x$description[t]))),
-                        collapse="")
-        cat(paste(format(x$key[t], width=3, justify="right"), ",", sep=""),
-            paste(as.character(x$description[t]), ",",
-                  spacer,
-                  format(x$start[t]), ", ",
-                  x$end[t],  ", ",
-                  format(x$done[t], width=4, justify="right"), sep = ""))
-        nb <- x$neededBy[t][[1]]
-        if (!is.null(nb) && !is.na(nb[1])) {
-            cat(", ")
-            for (nbi in 1:length(nb)) {
-                cat(x$description[as.numeric(nb[nbi])], " ")
-            }
-        }
-        cat("\n")
-    }
-}
+setMethod(f="summary",
+          signature="gantt",
+          definition=function(object, ...) {
+              max.description.width <- max(nchar(as.character(object[["description"]])))
+              num.descriptions <- length(object[["description"]])
+              cat("Key, Description,", paste(rep(" ", max.description.width-12), collapse=""), "Start,      End,        Done, NeededBy\n")
+              for (t in 1:num.descriptions) {
+                  spacer <- paste(rep(" ", 1 + max.description.width - nchar(as.character(object[["description"]][t]))),
+                                  collapse="")
+                  cat(paste(format(object[["key"]][t], width=3, justify="right"), ",", sep=""),
+                      paste(as.character(object[["description"]][t]), ",",
+                            spacer,
+                            format(object[["start"]][t]), ", ",
+                            object[["end"]][t],  ", ",
+                            format(object[["done"]][t], width=4, justify="right"), sep = ""))
+                  nb <- object[["neededBy"]][t][[1]]
+                  if (!is.null(nb) && !is.na(nb[1])) {
+                      cat(", ")
+                      for (nbi in 1:length(nb)) {
+                          cat(object[["description"]][as.numeric(nb[nbi])], " ")
+                      }
+                  }
+                  cat("\n")
+              }
+          })
 
 
 
 
 
-#' Read a gantt data file
-#' 
-#' Read a data file containing gantt information.
-#' 
-#' Creates a \code{gantt} object. See documentation for
-#' \code{\link{read.gantt}}, which uses \code{as.gantt}.
+#' Create a \code{gantt} object, i.e. one inheriting from \code{\link{gantt-class}}.
 #' 
 #' @param key integer key for task, normally 1 for the first task, 2 for the
 #' second, etc.
@@ -327,9 +310,7 @@ print.summary.gantt <- function(x, ...)
 #' @return An object of type \code{"gantt"}; for details, see
 #' \code{\link{read.gantt}}.
 #' @author Dan Kelley
-#' @seealso \code{\link{read.gantt}}, \code{\link{summary.gantt}} and
-#' \code{\link{plot.gantt}}
-#' @keywords misc
+#' @family things related to \code{gantt} data
 #' @examples
 #' 
 #' library(plan)
@@ -381,13 +362,13 @@ as.gantt <- function(key, description, start, end, done, neededBy)
         done <- rep(0, n)
     if (missing(neededBy))
         neededBy <- rep(NA, n)
-    rval <- list(key=key,
-                 description=as.character(description),
-                 start=as.POSIXct(start),
-                 end=as.POSIXct(end),
-                 done=done,
-                 neededBy=neededBy)
-    class(rval) <- "gantt"
+    rval <- new("gantt")
+    rval@data <- list(key=key,
+                      description=as.character(description),
+                      start=as.POSIXct(start),
+                      end=as.POSIXct(end),
+                      done=done,
+                      neededBy=neededBy)
     rval
 }
 
@@ -398,11 +379,8 @@ as.gantt <- function(key, description, start, end, done, neededBy)
 #' Read a gantt data file
 #' 
 #' Read a data file containing gantt information.
-#' 
-#' Reads a \code{gantt} dataset.
-#' 
 #' The data format is strict, and deviations from it may lead to error messages
-#' that are difficult to understand.
+#' that are difficult to understand; see \dQuote{Details}.
 #' 
 #' The first line is a header, and must contain the words \code{Key},
 #' \code{Description}, \code{Start}, \code{End}, \code{Done}, and
@@ -431,16 +409,21 @@ as.gantt <- function(key, description, start, end, done, neededBy)
 #' 
 #' Executing the code \preformatted{ library(plan) data(gantt)
 #' print(summary(gantt)) } will create the following sample file, which may be
-#' read with \code{\link{read.gantt}}: \preformatted{ Key, Description, Start,
-#' End, Done, NeededBy 1, Assemble equipment, 2008-01-01, 2008-03-28, 90 2,
-#' Test methods, 2008-02-28, 2008-03-28, 30 3, Field sampling, 2008-04-01,
-#' 2008-08-14, 0 4, Analyse field data, 2008-06-30, 2008-11-14, 0 5, Write
-#' methods chapter, 2008-08-14, 2008-11-14, 0 6, Write results chapter,
-#' 2008-10-14, 2009-01-15, 0 7, Write other chapters, 2008-12-10, 2009-02-28, 0
-#' 8, Committee reads thesis, 2009-02-28, 2009-03-14, 0 9, Revise thesis,
-#' 2009-03-15, 2009-03-30, 0 10, Thesis on display, 2009-04-01, 2009-04-15, 0
-#' 11, Defend thesis, 2009-04-16, 2009-04-17, 0 12, Finalize thesis,
-#' 2009-04-18, 2009-05-07, 0 }
+#' read with \code{\link{read.gantt}}: \preformatted{
+#' Key, Description,                 Start,        End, Done, NeededBy
+#'   1, Assemble equipment,     2008-01-01, 2008-03-28, 90
+#'   2, Test methods,           2008-02-28, 2008-03-28, 30
+#'   3, Field sampling,         2008-04-01, 2008-08-14, 0
+#'   4, Analyse field data,     2008-06-30, 2008-11-14, 0
+#'   5, Write methods chapter,  2008-08-14, 2008-11-14, 0
+#'   6, Write results chapter,  2008-10-14, 2009-01-15, 0
+#'   7, Write other chapters,   2008-12-10, 2009-02-28, 0
+#'   8, Committee reads thesis, 2009-02-28, 2009-03-14, 0
+#'   9, Revise thesis,          2009-03-15, 2009-03-30, 0
+#'  10, Thesis on display,      2009-04-01, 2009-04-15, 0
+#'  11, Defend thesis,          2009-04-16, 2009-04-17, 0
+#'  12, Finalize thesis,        2009-04-18, 2009-05-07, 0 
+#'}
 #' 
 #' @param file a connection or a character string giving the name of the file
 #' to load.
@@ -452,8 +435,7 @@ as.gantt <- function(key, description, start, end, done, neededBy)
 #' \code{NA} if none given), and \code{"needed.by"} (a number giving the
 #' indices of other tasks that rely on this task, or \code{NA} if none given).
 #' @author Dan Kelley
-#' @seealso \code{\link{summary.gantt}} and \code{\link{plot.gantt}}
-#' @keywords misc
+#' @family things related to \code{gantt} data
 #' @examples
 #' 
 #' \dontrun{
