@@ -1,3 +1,9 @@
+Version 0.4-3
+-
+
+Version 0.4-2
+- on CRAN, published 2013-09-30
+
 Version 0.3
 - plot.gantt() improvements to customization
 - rationalize file formats

@@ -1,3 +1,79 @@
+#' Draw a Gantt diagram
+#' 
+#' Plot a Gantt object.
+#' 
+#' Plots a gantt chart, possibly with events superimposed.
+#' 
+#' @param x an object of class \code{gantt}.
+#' @param xlim optional range of time axis; if not provided, the range of times
+#' in \code{x} will be used.
+#' @param time.format format for dates on time axis; defaults to 3-letter
+#' month.
+#' @param time.labels.by suggested label increment on time axis, e.g.
+#' \code{time.labels.by="2 months"} to get a two-month interval.  If not
+#' supplied, the axis will be generated automatically.
+#' @param time.lines.by suggested interval between vertical grid lines on the
+#' plot, e.g. \code{time.lines.by="1 week"} for weekly.  If not supplied, the
+#' grid will be generated automatically.
+#' @param event.time vector of event times, e.g. conferences, whose time cannot
+#' be altered.
+#' @param event.label vector of character strings holding event names.
+#' @param event.side side for event labels.
+#' @param col.connector colour of (optional) connectors between items.
+#' @param col.done colour of work that has been done already. This may be a
+#' vector of colours, one for each item in the gantt table.
+#' @param col.notdone colour of work that has not been done yet. This may be a
+#' vector of colours, one for each item in the gantt table.
+#' @param col.eventLine colour of event lines; may be a vector.
+#' @param col.event colour of event labels; may be a vector.
+#' @param cex.event expansion factor for event labels; may be a vector.
+#' @param lty.eventLine line type for event lines; may be a vector.
+#' @param lwd.eventLine line width for event lines; may be a vector.
+#' @param font.event font for event labels; may be a vector.
+#' @param bg background colour for plot.
+#' @param grid.col colour for grid.
+#' @param grid.lty line type for grid.
+#' @param main character string to be used as chart title.
+#' @param cex.main numeric, font-size factor for title.
+#' @param mgp setting for \code{\link{par}(mgp)}, within-axis spacing.
+#' @param maiAdd inches to add to the auto-computed margins at the bottom,
+#' left, top, and right margins. The values may be negative (to tighten
+#' margins) but the sum will be truncated to remain positive.
+#' @param debug boolean, set to \code{TRUE} to monitor the work.
+#' @param ... extra things handed down.
+#' @return The gantt object, returned invisibly.
+#' @note The defaults work well for projects that take a year or two. Consider
+#' adjusting \code{time.labels.by} and \code{time.lines.by} for projects that
+#' are much shorter or longer.
+#' @author Dan Kelley
+#' @seealso Use \code{\link{read.gantt}} to read gantt data, and
+#' \code{\link{summary.gantt}} to summarize them.
+#' @references Gantt diagrams are described on wikipedia
+#' \url{http://en.wikipedia.org/wiki/Gantt_Chart}.
+#' @keywords misc
+#' @examples
+#' 
+#' library(plan)
+#' data(gantt)
+#' summary(gantt)
+#' # 1. Simple plot
+#' plot(gantt)
+#' # 2. Plot with two events
+#' event.label <- c("Proposal", "AGU")
+#' event.time <- c("2008-01-28", "2008-12-10")
+#' plot(gantt, event.label=event.label,event.time=event.time)
+#' # 3. Control x axis (months, say)
+#' plot(gantt,labels=paste("M",1:6,sep=""))
+#' # 4. Control task colours
+#' plot(gantt,
+#'      col.done=c("black", "red", rep("black", 10)),
+#'      col.notdone=c("lightgray", "pink", rep("lightgray", 10)))
+#' # 5. Control event colours (garish, to illustrate)
+#' plot(gantt, event.time=event.time, event.label=event.label,
+#'      lwd.eventLine=1:2, lty.eventLine=1:2,
+#'      col.eventLine=c("pink", "lightblue"),
+#'      col.event=c("red", "blue"), font.event=1:2, cex.event=1:2)
+#' 
 plot.gantt <- function (x, xlim,
                         time.format=NULL, time.labels.by, time.lines.by,
                         event.time=NULL, event.label=NULL, event.side=3,
@@ -166,6 +242,34 @@ plot.gantt <- function (x, xlim,
     invisible(x)
 }
 
+
+
+
+
+#' Summarize a gantt object
+#' 
+#' Summarizes a gantt object.
+#' 
+#' Prints a summary of a gantt dataset.
+#' 
+#' @aliases summary.gantt print.summary.gantt
+#' @param object an object of class \code{gantt}, e.g. as read by
+#' \code{\link{read.gantt}}.
+#' @param x an object of class \code{summary.gantt}, as created by
+#' \code{summary.gantt}.
+#' @param \dots extra arguments (not used in this version).
+#' @return None.
+#' @author Dan Kelley
+#' @seealso The \code{gantt} object may be read with \code{\link{read.gantt}}.
+#' @references
+#' \url{http://alistair.cockburn.us/crystal/articles/evabc/earnedvalueandburncharts.htm}.
+#' @keywords misc
+#' @examples
+#' 
+#' library(plan)
+#' data(gantt)
+#' summary(gantt)
+#' 
 summary.gantt <- function(object, ...)
 {
     if (!inherits(object, "gantt")) stop("method is only for ganttobjects")
@@ -200,6 +304,68 @@ print.summary.gantt <- function(x, ...)
     }
 }
 
+
+
+
+
+#' Read a gantt data file
+#' 
+#' Read a data file containing gantt information.
+#' 
+#' Creates a \code{gantt} object. See documentation for
+#' \code{\link{read.gantt}}, which uses \code{as.gantt}.
+#' 
+#' @param key integer key for task, normally 1 for the first task, 2 for the
+#' second, etc.
+#' @param description character string describing the task (brief)
+#' @param start start date for task (POSIXt or character string that converts
+#' to POSIXt with \code{\link{as.POSIXct}}
+#' @param end end date for task (POSIXt or character string that converts to
+#' POSIXt with \code{\link{as.POSIXct}}
+#' @param done percentage completion for the task
+#' @param neededBy optional key for a dependent task
+#' @return An object of type \code{"gantt"}; for details, see
+#' \code{\link{read.gantt}}.
+#' @author Dan Kelley
+#' @seealso \code{\link{read.gantt}}, \code{\link{summary.gantt}} and
+#' \code{\link{plot.gantt}}
+#' @keywords misc
+#' @examples
+#' 
+#' library(plan)
+#' arrive <- as.POSIXct("2012-09-05")
+#' month <- 28 * 86400
+#' year <- 12 * month
+#' leave <- arrive + 4 * year
+#' startT1 <- arrive
+#' endT1 <- startT1 + 4 * month
+#' startT2 <- endT1 + 1
+#' endT2 <- startT2 + 4 * month
+#' startT3 <- arrive + 12 * month
+#' endT3 <- startT3 + 4 * month
+#' startQE <- arrive + 9 * month
+#' endQE <- arrive + 12 * month
+#' QEabsoluteEnd <- arrive + 15 * month
+#' startProposal <- arrive + 15 * month # for example
+#' endProposal <- arrive + 20 * month
+#' startThesisWork <- arrive + 2 * month # assumes no thesis work until 2 months in
+#' endThesisWork <- leave - 4 * month
+#' startThesisWriteup <- leave - 4 * month
+#' endThesisWriteup <- leave
+#' g <- as.gantt(key=1:7, c("Term 1 classes",
+#'               "Term 2 classes",
+#'               "Qualifying Examination",
+#'               "Term 3 classes",
+#'               "Proposal Defence",
+#'               "Thesis Work",
+#'               "Thesis Writing/Defence"),
+#'               c(startT1, startT2, startQE, startT3, startProposal,
+#'                 startThesisWork, startThesisWriteup),
+#'               c(endT1, endT2, endQE, endT3, endProposal,
+#'                 endThesisWork, endThesisWriteup),
+#'               done=rep(0, 7))
+#' plot(g, xlim=c(arrive, leave))
+#' 
 as.gantt <- function(key, description, start, end, done, neededBy)
 {
     if (missing(key))
@@ -225,6 +391,78 @@ as.gantt <- function(key, description, start, end, done, neededBy)
     rval
 }
 
+
+
+
+
+#' Read a gantt data file
+#' 
+#' Read a data file containing gantt information.
+#' 
+#' Reads a \code{gantt} dataset.
+#' 
+#' The data format is strict, and deviations from it may lead to error messages
+#' that are difficult to understand.
+#' 
+#' The first line is a header, and must contain the words \code{Key},
+#' \code{Description}, \code{Start}, \code{End}, \code{Done}, and
+#' \code{NeededBy}, written exactly in this way, with commas separating the
+#' words.  (Blanks are ignored in this line.)
+#' 
+#' Additional lines indicate the details of each of several sub-projects, in
+#' comma-separated items, as follows:
+#' 
+#' \itemize{ \item A key for the task.  These must be distinct, and are
+#' typically just the numbers 1, 2, 3, etc.
+#' 
+#' \item A description of the task.  (This may not contain commas!)
+#' 
+#' \item The start time for the task, in ISO 8601 format (\code{YYYY-MM-DD} or
+#' \code{YYYY-MM-DD hh:mm:ss}).
+#' 
+#' \item The end time for the task, in the same format as the starting time.
+#' 
+#' \item A number indicating the percentage of this task that has been
+#' completed to date.
+#' 
+#' \item A space-separated optional list of numbers that indicate the keys of
+#' other tasks that depend on this one.  This list is ignored in the present
+#' version of \code{read.gantt}.  }
+#' 
+#' Executing the code \preformatted{ library(plan) data(gantt)
+#' print(summary(gantt)) } will create the following sample file, which may be
+#' read with \code{\link{read.gantt}}: \preformatted{ Key, Description, Start,
+#' End, Done, NeededBy 1, Assemble equipment, 2008-01-01, 2008-03-28, 90 2,
+#' Test methods, 2008-02-28, 2008-03-28, 30 3, Field sampling, 2008-04-01,
+#' 2008-08-14, 0 4, Analyse field data, 2008-06-30, 2008-11-14, 0 5, Write
+#' methods chapter, 2008-08-14, 2008-11-14, 0 6, Write results chapter,
+#' 2008-10-14, 2009-01-15, 0 7, Write other chapters, 2008-12-10, 2009-02-28, 0
+#' 8, Committee reads thesis, 2009-02-28, 2009-03-14, 0 9, Revise thesis,
+#' 2009-03-15, 2009-03-30, 0 10, Thesis on display, 2009-04-01, 2009-04-15, 0
+#' 11, Defend thesis, 2009-04-16, 2009-04-17, 0 12, Finalize thesis,
+#' 2009-04-18, 2009-05-07, 0 }
+#' 
+#' @param file a connection or a character string giving the name of the file
+#' to load.
+#' @param debug boolean, set to \code{TRUE} to print debugging information.
+#' @return An object of type \code{"gantt"}, which is a data frame containing
+#' \code{"description"} (a character description of the task) \code{"start"}
+#' (the task's start time), \code{"end"} (the task's end time),
+#' \code{"progress"} (a number giving the percent progress on this item, or
+#' \code{NA} if none given), and \code{"needed.by"} (a number giving the
+#' indices of other tasks that rely on this task, or \code{NA} if none given).
+#' @author Dan Kelley
+#' @seealso \code{\link{summary.gantt}} and \code{\link{plot.gantt}}
+#' @keywords misc
+#' @examples
+#' 
+#' \dontrun{
+#' library(plan)
+#' gantt <- read.gantt("demo/gantt.dat")
+#' summary(gantt)
+#' plot(gantt)
+#' }
+#' 
 read.gantt <- function(file, debug=FALSE)
 {
     if (is.character(file)) {

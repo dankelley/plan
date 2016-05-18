@@ -1,12 +1,15 @@
 Package: plan
-Version: 0.3-1
-Date: 2015-09-28
+Version: 0.4-3
+Date: 2016-05-18
 Title: Tools for Project Planning
 Author: Dan Kelley <Dan.Kelley@Dal.Ca>
 Maintainer: Dan Kelley <Dan.Kelley@Dal.Ca>
-Depends: R (>= 0.99)
+Depends:
+    R (>= 0.99)
 Description: Supports the creation of burndown charts and gantt diagrams.
 License: GPL (>= 2)
 URL: http://github.com/dankelley/plan
 LazyLoad: yes
 Packaged: Dan Kelley
+RoxygenNote: 5.0.1
+VignetteBuilder: knitr
