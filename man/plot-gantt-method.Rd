@@ -68,12 +68,11 @@ vector of colours, one for each item in the gantt table.}
 \item{ylabels}{A \code{\link{list}} with elements \code{col} for colour,
 \code{cex} for character-expansion factor, \code{font} for font, and \code{justification}
 for the placement in the margin (\code{0} means left-justified, and \code{1}
-means right-justified. (NOTE: left-justification is not working in the present version.)
-It often makes sense for the elements in \code{ylabels} to be vectors of the same
-length as the topic list. However, if they are shorter, then they lengthened by
-copying the default values.  For example, \code{ylabels=list(col=c("red"))}
-yields a red label for the top-most item label, with the rest defaulting to black;
-see Example 6.}
+means right-justified. (NOTE: left-justification works poorly in RStudio, but
+properly in other systems.)
+It usually makes sense for the elements in \code{ylabels} to be vectors of the same
+length as the topic list. However, shorter vectors are permitted, and they lengthened by
+copying the default values at the end (see Example 6).}
 
 \item{main}{character string to be used as chart title.}
 
@@ -140,8 +139,8 @@ plot(gantt, event.time=event.time, event.label=event.label,
      lwd.eventLine=1:2, lty.eventLine=1:2,
      col.eventLine=c("pink", "lightblue"),
      col.event=c("red", "blue"), font.event=1:2, cex.event=1:2)
-# 6. Colour-coded tasks
-plot(gantt,ylabels=list(col=c("red","blue"),font=c(rep(1,11),2)))
+# 6. Top task is in bold font and red colour
+plot(gantt,ylabels=list(col="red",font=2))
 }
 \author{
 Dan Kelley
