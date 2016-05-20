@@ -52,7 +52,8 @@ Dan Kelley
 \url{http://alistair.cockburn.us/crystal/articles/evabc/earnedvalueandburncharts.htm}.
 }
 \seealso{
-Other things related to \code{burndown} data: \code{\link{read.burndown}},
+Other things related to \code{burndown} data: \code{\link{burndown-class}},
+  \code{\link{read.burndown}},
   \code{\link{summary,burndown-method}}
 }
 
