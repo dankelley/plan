@@ -1,4 +1,5 @@
 #' Class to store burndown objects
+#' @family things related to \code{burndown} data
 setClass("burndown", contains="plan")
 
 setMethod(f="initialize",

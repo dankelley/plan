@@ -1,5 +1,6 @@
 Version 0.4-3
--
+- extensions to plot,gantt-method
+- rewrite package with S4 objects (users now do e.g. ?"plot,gantt-method")
 
 Version 0.4-2
 - on CRAN, published 2013-09-30
