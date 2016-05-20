@@ -7,4 +7,10 @@
 \description{
 Class to store \code{gantt} objects
 }
+\seealso{
+Other things related to \code{gantt} data: \code{\link{as.gantt}},
+  \code{\link{plot,gantt-method}},
+  \code{\link{read.gantt}},
+  \code{\link{summary,gantt-method}}
+}
 

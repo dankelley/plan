@@ -70,7 +70,8 @@ plot(g, xlim=c(arrive, leave))
 Dan Kelley
 }
 \seealso{
-Other things related to \code{gantt} data: \code{\link{plot,gantt-method}},
+Other things related to \code{gantt} data: \code{\link{gantt-class}},
+  \code{\link{plot,gantt-method}},
   \code{\link{read.gantt}},
   \code{\link{summary,gantt-method}}
 }

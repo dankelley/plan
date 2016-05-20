@@ -103,7 +103,8 @@ plot(b)
 Dan Kelley
 }
 \seealso{
-Other things related to \code{burndown} data: \code{\link{plot,burndown-method}},
+Other things related to \code{burndown} data: \code{\link{burndown-class}},
+  \code{\link{plot,burndown-method}},
   \code{\link{summary,burndown-method}}
 }
 
