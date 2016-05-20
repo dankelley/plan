@@ -1,4 +1,5 @@
 #' Class to store \code{gantt} objects
+#' @family things related to \code{gantt} data
 setClass("gantt", contains="plan")
 
 setMethod(f="initialize",
