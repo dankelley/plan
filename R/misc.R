@@ -8,6 +8,27 @@ check.tokens <- function(tokens, expected)
     }
 }
 
+
+
+
+
+#' Trim leading/trailing whitespace from character strings
+#' 
+#' Trim leading and trailing whitespace from character strings.  Used by
+#' \code{\link{read.gantt}} and \code{\link{read.burndown}}.
+#' 
+#' 
+#' @param x a character string, or vector of character strings.
+#' @return As \code{x}, but with leading and trailing space removed
+#' @author Dan Kelley
+#' @keywords misc
+#' @examples
+#' 
+#' library(plan)
+#' x <- c("  hellow there", "ba bye   ", " buddy   ")
+#' print(x)
+#' print(trim.whitespace(x))
+#' 
 trim.whitespace <- function(x)
 {
     x <- gsub("^[ \t]*", "", x)

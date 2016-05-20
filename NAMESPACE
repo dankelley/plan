@@ -1,15 +1,11 @@
-export(
-       as.gantt,
-       read.burndown,
-       plot.burndown,
-       read.gantt,
-       plot.gantt,
-       summary.gantt,
-       trim.whitespace
-)
-S3method(plot, burndown)
-S3method(print, summary.burndown)
-S3method(summary, burndown)
-S3method(plot, gantt)
-S3method(summary, gantt)
-S3method(print, summary.gantt)
+exportMethods(plot)
+exportMethods(summary)
+    importFrom("grDevices", "gray", "hcl")
+    importFrom("graphics", "abline", "axis", "axis.POSIXct", "box",
+            "grconvertX", "legend", "lines", "mtext", "par", "plot", "points",
+            "polygon", "rect", "rug", "strheight", "strwidth", "text")
+    importFrom("methods", "new")
+    importFrom("stats", "lm")
+    export(as.gantt, read.burndown, read.gantt, trim.whitespace)
+exportClasses(plan, burndown, gantt)
+

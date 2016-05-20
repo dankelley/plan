@@ -1,2 +1,7 @@
 .travis.yml
 
+^.*\.Rproj$
+^\.Rproj\.user$
+create_data
+_layouts
+
