@@ -8,6 +8,7 @@ setClass("gantt", contains="plan")
 setMethod(f="initialize",
           signature="gantt",
           definition=function(.Object) {
+              .Object@data <- list(description=NULL, start=NULL, end=NULL, done=NULL, neededBy=NULL, key=NULL)
               return(.Object)
           })
 
@@ -335,26 +336,30 @@ setMethod(f="plot",
 setMethod(f="summary",
           signature="gantt",
           definition=function(object, ...) {
-              max.description.width <- max(nchar(as.character(object[["description"]])))
-              num.descriptions <- length(object[["description"]])
-              cat("Key, Description,", paste(rep(" ", max.description.width-12), collapse=""), "Start,      End,        Done, NeededBy\n")
-              for (t in 1:num.descriptions) {
-                  spacer <- paste(rep(" ", 1 + max.description.width - nchar(as.character(object[["description"]][t]))),
-                                  collapse="")
-                  cat(paste(format(object[["key"]][t], width=3, justify="right"), ",", sep=""),
-                      paste(as.character(object[["description"]][t]), ",",
-                            spacer,
-                            format(object[["start"]][t]), ", ",
-                            object[["end"]][t],  ", ",
-                            format(object[["done"]][t], width=4, justify="right"), sep = ""))
-                  nb <- object[["neededBy"]][t][[1]]
-                  if (!is.null(nb) && !is.na(nb[1])) {
-                      cat(", ")
-                      for (nbi in 1:length(nb)) {
-                          cat(object[["description"]][as.numeric(nb[nbi])], " ")
+              if (length(object@data[[1]])) {
+                  max.description.width <- max(nchar(as.character(object[["description"]])))
+                  num.descriptions <- length(object[["description"]])
+                  cat("Key, Description,", paste(rep(" ", max.description.width-12), collapse=""), "Start,      End,        Done, NeededBy\n")
+                  for (t in 1:num.descriptions) {
+                      spacer <- paste(rep(" ", 1 + max.description.width - nchar(as.character(object[["description"]][t]))),
+                                      collapse="")
+                      cat(paste(format(object[["key"]][t], width=3, justify="right"), ",", sep=""),
+                          paste(as.character(object[["description"]][t]), ",",
+                                spacer,
+                                format(object[["start"]][t]), ", ",
+                                object[["end"]][t],  ", ",
+                                format(object[["done"]][t], width=4, justify="right"), sep = ""))
+                      nb <- object[["neededBy"]][t][[1]]
+                      if (!is.null(nb) && !is.na(nb[1])) {
+                          cat(", ")
+                          for (nbi in 1:length(nb)) {
+                              cat(object[["description"]][as.numeric(nb[nbi])], " ")
+                          }
                       }
+                      cat("\n")
                   }
-                  cat("\n")
+              } else {
+                  cat("empty\n")
               }
           })
 
@@ -584,27 +589,30 @@ ganttAddTask <- function(g, description="", start=NA, end=NA, done=0, neededBy=N
     if (nchar(description) < 1) {
         warning("empty description")
     } else {
-        nkey <- max(g[["key"]])
+        nkey <- if (length(g[["key"]])) max(g[["key"]]) else 0
         if (missing(key))
             key <- 1 + nkey
         if (key < 1)
             stop("cannot have a key less than 1")
-        if (is.integer(key)) {
+        if (key==as.integer(key)) {
             g[["description"]][key] <- description
             g[["start"]][key] <- start
             g[["end"]][key] <- end
             g[["done"]][key] <- done
             g[["neededBy"]][key] <- neededBy
+            g[["key"]][key] <- key
         } else {
             before <- seq.int(1, floor(key))
             after <- seq.int(floor(key) + 1, nkey)
+            message("nkey: ", nkey, ", key: ", key, ", before: ", paste(before, collapse=" "), ", after: ", paste(after, collapse=" "))
             g[["description"]] <- c(g[["description"]][before], description, g[["description"]][after])
             g[["start"]] <- c(g[["start"]][before], start, g[["start"]][after])
             g[["end"]] <- c(g[["end"]][before], end, g[["end"]][after])
             g[["done"]] <- c(g[["done"]][before], done, g[["done"]][after])
             g[["neededBy"]] <- c(g[["neededBy"]][before], neededBy, g[["neededBy"]][after])
-            g[["key"]] <- seq.int(1, nkey + 1)
+            g[["key"]] <- c(g[["key"]][before], key, g[["key"]][after])
         }
     }
+    g[["key"]] <- seq_along(g[["key"]])
     g
 }

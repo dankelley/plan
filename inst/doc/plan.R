@@ -2,12 +2,34 @@
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 
 ## ------------------------------------------------------------------------
-library(plan)
+library("plan")
 data(burndown)
 plot(burndown)
 
 ## ------------------------------------------------------------------------
-library(plan)
+library("plan")
 data(gantt)
 plot(gantt)
+
+## ------------------------------------------------------------------------
+library("plan")
+g <- new("gantt")
+g <- ganttAddTask(g, "Courses") # no times, so a heading
+g <- ganttAddTask(g, "Physical Oceanography", "2016-09-03", "2016-12-05")
+g <- ganttAddTask(g, "Chemistry Oceanography", "2016-09-03", "2016-12-05")
+g <- ganttAddTask(g, "Fluid Dynamics", "2016-09-03", "2016-12-05")
+g <- ganttAddTask(g, "Biological Oceanography", "2017-01-03", "2017-04-05")
+g <- ganttAddTask(g, "Geological Oceanography", "2017-01-03", "2017-04-05")
+g <- ganttAddTask(g, "Geophysical Fluid Dynamics", "2017-01-03", "2017-04-05")
+g <- ganttAddTask(g, "Research") # no times, so a heading
+g <- ganttAddTask(g, "Literature review", "2016-09-03", "2017-04-05")
+g <- ganttAddTask(g, "Develop analysis skills", "2016-09-03", "2017-08-01")
+g <- ganttAddTask(g, "Thesis work", "2017-01-01", "2018-04-01")
+g <- ganttAddTask(g, "Defend thesis proposal", "2017-05-01", "2017-06-01")
+g <- ganttAddTask(g, "Write papers & thesis", "2017-05-01", "2018-04-01")
+g <- ganttAddTask(g, "Defend thesis", "2018-05-01", "2018-05-15")
+## Set 'font' to highlight headings
+font <- rep(1, length(g[["key"]]))
+font[c(1,8)] <- 2
+plot(g, ylabel=list(font=font))
 
