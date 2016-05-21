@@ -1,10 +1,14 @@
 #' Class to store \code{gantt} objects
+#'
+#' These objects may be created with \code{\link{as.gantt}} or 
+#' \code{\link{read.gantt}}.
 #' @family things related to \code{gantt} data
 setClass("gantt", contains="plan")
 
 setMethod(f="initialize",
           signature="gantt",
           definition=function(.Object) {
+              .Object@data <- list(description=NULL, start=NULL, end=NULL, done=NULL, neededBy=NULL, key=NULL)
               return(.Object)
           })
 
@@ -50,6 +54,10 @@ setMethod(f="initialize",
 #' It usually makes sense for the elements in \code{ylabels} to be vectors of the same
 #' length as the topic list. However, shorter vectors are permitted, and they lengthened by
 #' copying the default values at the end (see Example 6).
+#' @param arrows A vector of strings, one for each topic, indicating the nature of
+#' the arrows that may be drawn at the ends of task bars. The individual values
+#' may be \code{"left"}, \code{"right"}, \code{"both"} or \code{"neither"}.
+#' Set \code{arrows=NULL}, the default, to avoid such arrows.
 #' @param main character string to be used as chart title.
 #' @param cex.main numeric, font-size factor for title.
 #' @param mgp setting for \code{\link{par}(mgp)}, within-axis spacing.
@@ -66,46 +74,44 @@ setMethod(f="initialize",
 #' @family things related to \code{gantt} data
 #' @references Gantt diagrams are described on wikipedia
 #' \url{http://en.wikipedia.org/wiki/Gantt_Chart}.
-#' @section Sample data file:
-#' \preformatted{
-#' Key, Description,                 Start,        End, Done, NeededBy
-#'   1, Assemble equipment,     2008-01-01, 2008-03-28, 90
-#'   2, Test methods,           2008-02-28, 2008-03-28, 30
-#'   3, Field sampling,         2008-04-01, 2008-08-14, 0
-#'   4, Analyse field data,     2008-06-30, 2008-11-14, 0
-#'   5, Write methods chapter,  2008-08-14, 2008-11-14, 0
-#'   6, Write results chapter,  2008-10-14, 2009-01-15, 0
-#'   7, Write other chapters,   2008-12-10, 2009-02-28, 0
-#'   8, Committee reads thesis, 2009-02-28, 2009-03-14, 0
-#'   9, Revise thesis,          2009-03-15, 2009-03-30, 0
-#'  10, Thesis on display,      2009-04-01, 2009-04-15, 0
-#'  11, Defend thesis,          2009-04-16, 2009-04-17, 0
-#'  12, Finalize thesis,        2009-04-18, 2009-05-07, 0 
-#' }
-#' @examples
 #' 
+#' @examples
 #' library(plan)
 #' data(gantt)
 #' summary(gantt)
+#'
 #' # 1. Simple plot
 #' plot(gantt)
+#'
 #' # 2. Plot with two events
 #' event.label <- c("Proposal", "AGU")
 #' event.time <- c("2008-01-28", "2008-12-10")
 #' plot(gantt, event.label=event.label,event.time=event.time)
+#'
 #' # 3. Control x axis (months, say)
 #' plot(gantt,labels=paste("M",1:6,sep=""))
+#'
 #' # 4. Control task colours
 #' plot(gantt,
 #'      col.done=c("black", "red", rep("black", 10)),
 #'      col.notdone=c("lightgray", "pink", rep("lightgray", 10)))
+#'
 #' # 5. Control event colours (garish, to illustrate)
 #' plot(gantt, event.time=event.time, event.label=event.label,
 #'      lwd.eventLine=1:2, lty.eventLine=1:2,
 #'      col.eventLine=c("pink", "lightblue"),
 #'      col.event=c("red", "blue"), font.event=1:2, cex.event=1:2)
+#'
 #' # 6. Top task is in bold font and red colour
 #' plot(gantt,ylabels=list(col="red",font=2))
+#'
+#' # 7. Demonstrate zero-time item (which becomes a heading)
+#' gantt[["description"]][1] <- "Preliminaries"
+#' gantt[["end"]][1] <- gantt[["start"]][1]
+#' plot(gantt, ylabel=list(font=2, justification=0))
+#'
+#' # 8. Arrows at task ends
+#' plot(gantt, arrows=c("right","left","left","right"))
 setMethod(f="plot",
           signature=signature("gantt"),
           definition=function (x, xlim,
@@ -118,6 +124,7 @@ setMethod(f="plot",
                         lty.eventLine=par("lty"), lwd.eventLine=par("lwd"),
                         bg=par("bg"), grid.col="lightgray", grid.lty="dotted",
                         ylabels=list(col=1, cex=1, font=1, justification=1),
+                        arrows=NULL,
                         main="", cex.main=par("cex"),
                         mgp=c(2, 0.7, 0), maiAdd=rep(0, 4),
                         debug=FALSE, ...)
@@ -130,6 +137,10 @@ setMethod(f="plot",
     t0 <- as.POSIXct("1970-01-01 00:00:00")
     ## Lengthen anything that can be a vector
     ndescriptions <- length(x[["description"]])
+    if (length(arrows) == 0)
+        arrows <- rep("none", ndescriptions)
+    if (length(arrows) < ndescriptions)
+        arrows <- c(arrows, rep("none", ndescriptions-length(arrows)))
     ## Twiddle the labels, including defaulting things that a user
     ## need not define.
     if (!("col" %in% names(ylabels)))
@@ -170,7 +181,7 @@ setMethod(f="plot",
     maxwidth <- max(strwidth(x[["description"]], units = "inches")) * 1.1
 
     ## Get around some problems with autoscaling of POSIXt values
-    r <- if (missing(xlim)) range(x[["start"]], x[["end"]]) else xlim
+    r <- if (missing(xlim)) range(x[["start"]], x[["end"]], na.rm=TRUE) else xlim
     if (debug) {cat("range: ", as.character(r[1]), "to", as.character(r[2]), "\n")}
     s <- as.numeric(difftime(r[2], r[1], units="days"))
     r <- as.POSIXlt(r)
@@ -207,7 +218,7 @@ setMethod(f="plot",
     }
     bottom.margin <- 0.5
     topSpace <- charheight * (2 + 2*as.numeric((nchar(main) > 0)))
-    mai <- maiAdd + c(bottom.margin, maxwidth, topSpace, 0.1)
+    mai <- maiAdd + c(bottom.margin, maxwidth, topSpace, 0.25)
     mai <- ifelse(mai < 0, 0, mai)
     opar <- par(no.readonly = TRUE)
     par(mgp=mgp, mai=mai, omi=c(0.1, 0.1, 0.1, 0.1), bg=bg)
@@ -257,7 +268,7 @@ setMethod(f="plot",
             ## message("  Q: why is this black line not at the left of the graph?")
             text(left, topdown[i], x[["description"]][i], pos=4,
                  col=ylabels$col[i], cex=ylabels$cex[i], font=ylabels$font[i])
-            abline(v=left, lwd=10, col='red')
+            ## abline(v=left, lwd=10, col='red')
         }
     }
     par(xpd=FALSE)
@@ -288,22 +299,42 @@ setMethod(f="plot",
     }
     ## Description
     for (i in 1:ndescriptions) {
-        mid <- as.POSIXct(x[["start"]][i]) +
+        if (!is.na(x[["start"]][i])) {
+            mid <- as.POSIXct(x[["start"]][i]) +
             x[["done"]][i] * as.numeric(difftime(as.POSIXct(x[["end"]][i]),
-                                            as.POSIXct(x[["start"]][i]),
-                                            units="secs")) / 100
-        if (debug) {cat(as.character(x[["description"]][i]),"takes", as.numeric(difftime(as.POSIXct(x[["end"]][i]), as.POSIXct(x[["start"]][i]), units="secs")), "s\n")}
+                                                 as.POSIXct(x[["start"]][i]),
+                                                 units="secs")) / 100
+            if (debug) {cat(as.character(x[["description"]][i]),"takes", as.numeric(difftime(as.POSIXct(x[["end"]][i]), as.POSIXct(x[["start"]][i]), units="secs")), "s\n")}
 
-        bottom <- topdown[i] - half.height
-        top <- topdown[i] + half.height
-        left <- as.POSIXct(x[["start"]][i])
-        right <- as.POSIXct(x[["end"]][i])
+            bottom <- topdown[i] - half.height
+            top <- topdown[i] + half.height
+            left <- as.POSIXct(x[["start"]][i])
+            right <- as.POSIXct(x[["end"]][i])
 
-        if (debug){cat(as.character(x[["description"]][i]));cat(" done=",x[["done"]][i]," mid=");print(mid);cat(" left=");print(left);cat("right=");print(right);cat("\n")}
+            if (debug){cat(as.character(x[["description"]][i]));cat(" done=",x[["done"]][i]," mid=");print(mid);cat(" left=");print(left);cat("right=");print(right);cat("\n")}
 
-        rect(left, bottom, right, top, col = col.notdone[i], border = FALSE)
-        rect(left, bottom, mid,   top, col = col.done[i],    border = FALSE)
-        rect(left, bottom, right, top, col = "transparent",  border = TRUE)
+            if (right > left) {
+                arrow <- arrows[i]
+                rect(left, bottom, right, top, col = col.notdone[i], border = FALSE)
+                rect(left, bottom, mid,   top, col = col.done[i],    border = FALSE)
+                rect(left, bottom, right, top, col = "transparent",  border = TRUE)
+                usr <- par('usr')
+                D <- (top - bottom) * (usr[2]-usr[1]) / (usr[4]-usr[3])
+                D <- 0.02 * (usr[2] - usr[1])
+                if (arrow == "left" || arrow == "both") {
+                    colTriangle <- if (left == mid) col.notdone else col.done
+                    polygon(c(left, left-D, left), c(bottom, 0.5*(bottom+top), top),
+                            border=colTriangle, col=colTriangle)
+                    lines(c(left, left-D, left), c(bottom, 0.5*(bottom+top), top))
+                }
+                if (arrow == "right" || arrow == "both") {
+                    colTriangle <- if (right == mid) col.done else col.notdone
+                    polygon(c(right, right+D, right), c(bottom, 0.5*(bottom+top), top),
+                            border=colTriangle, col=colTriangle)
+                    lines(c(right, right+D, right), c(bottom, 0.5*(bottom+top), top))
+                }
+            }
+        }
     }
     abline(h = (topdown[1:(ndescriptions - 1)] + topdown[2:ndescriptions])/2,  col = grid.col, lty=grid.lty)
     ## par(opar)
@@ -333,26 +364,30 @@ setMethod(f="plot",
 setMethod(f="summary",
           signature="gantt",
           definition=function(object, ...) {
-              max.description.width <- max(nchar(as.character(object[["description"]])))
-              num.descriptions <- length(object[["description"]])
-              cat("Key, Description,", paste(rep(" ", max.description.width-12), collapse=""), "Start,      End,        Done, NeededBy\n")
-              for (t in 1:num.descriptions) {
-                  spacer <- paste(rep(" ", 1 + max.description.width - nchar(as.character(object[["description"]][t]))),
-                                  collapse="")
-                  cat(paste(format(object[["key"]][t], width=3, justify="right"), ",", sep=""),
-                      paste(as.character(object[["description"]][t]), ",",
-                            spacer,
-                            format(object[["start"]][t]), ", ",
-                            object[["end"]][t],  ", ",
-                            format(object[["done"]][t], width=4, justify="right"), sep = ""))
-                  nb <- object[["neededBy"]][t][[1]]
-                  if (!is.null(nb) && !is.na(nb[1])) {
-                      cat(", ")
-                      for (nbi in 1:length(nb)) {
-                          cat(object[["description"]][as.numeric(nb[nbi])], " ")
+              if (length(object@data[[1]])) {
+                  max.description.width <- max(nchar(as.character(object[["description"]])))
+                  num.descriptions <- length(object[["description"]])
+                  cat("Key, Description,", paste(rep(" ", max.description.width-12), collapse=""), "Start,      End,        Done, NeededBy\n")
+                  for (t in 1:num.descriptions) {
+                      spacer <- paste(rep(" ", 1 + max.description.width - nchar(as.character(object[["description"]][t]))),
+                                      collapse="")
+                      cat(paste(format(object[["key"]][t], width=3, justify="right"), ",", sep=""),
+                          paste(as.character(object[["description"]][t]), ",",
+                                spacer,
+                                format(object[["start"]][t]), ", ",
+                                object[["end"]][t],  ", ",
+                                format(object[["done"]][t], width=4, justify="right"), sep = ""))
+                      nb <- object[["neededBy"]][t][[1]]
+                      if (!is.null(nb) && !is.na(nb[1])) {
+                          cat(", ")
+                          for (nbi in 1:length(nb)) {
+                              cat(object[["description"]][as.numeric(nb[nbi])], " ")
+                          }
                       }
+                      cat("\n")
                   }
-                  cat("\n")
+              } else {
+                  cat("empty\n")
               }
           })
 
@@ -386,8 +421,6 @@ setMethod(f="summary",
 #' endT1 <- startT1 + 4 * month
 #' startT2 <- endT1 + 1
 #' endT2 <- startT2 + 4 * month
-#' startT3 <- arrive + 12 * month
-#' endT3 <- startT3 + 4 * month
 #' startQE <- arrive + 9 * month
 #' endQE <- arrive + 12 * month
 #' QEabsoluteEnd <- arrive + 15 * month
@@ -395,22 +428,23 @@ setMethod(f="summary",
 #' endProposal <- arrive + 20 * month
 #' startThesisWork <- arrive + 2 * month # assumes no thesis work until 2 months in
 #' endThesisWork <- leave - 4 * month
-#' startThesisWriteup <- leave - 4 * month
-#' endThesisWriteup <- leave
-#' g <- as.gantt(key=1:7, c("Term 1 classes",
+#' startWriting <- leave - 36 * month
+#' endWriting <- leave
+#' g <- as.gantt(key=1:8, c("Academic",
+#'               "Term 1 classes",
 #'               "Term 2 classes",
 #'               "Qualifying Examination",
-#'               "Term 3 classes",
+#'               "Research",
 #'               "Proposal Defence",
 #'               "Thesis Work",
-#'               "Thesis Writing/Defence"),
-#'               c(startT1, startT2, startQE, startT3, startProposal,
-#'                 startThesisWork, startThesisWriteup),
-#'               c(endT1, endT2, endQE, endT3, endProposal,
-#'                 endThesisWork, endThesisWriteup),
+#'               "Paper/Thesis Writing"),
+#'               c(startT1, startT1, startT2, startQE, startProposal, startProposal,
+#'                 startThesisWork, startWriting),
+#'               c(startT1, endT1, endT2, endQE, startProposal, endProposal,
+#'                 endThesisWork, endWriting),
 #'               done=rep(0, 7))
-#' plot(g, xlim=c(arrive, leave))
-#' 
+#' plot(g, xlim=c(arrive, leave),
+#'      ylabel=list(font=c(2,rep(1,3),2), justification=c(0,rep(1,3),0)))
 as.gantt <- function(key, description, start, end, done, neededBy)
 {
     if (missing(key))
@@ -462,7 +496,10 @@ as.gantt <- function(key, description, start, end, done, neededBy)
 #' \item The start time for the task, in ISO 8601 format (\code{YYYY-MM-DD} or
 #' \code{YYYY-MM-DD hh:mm:ss}).
 #' 
-#' \item The end time for the task, in the same format as the starting time.
+#' \item The end time for the task, in the same format as the starting time. If
+#' an end time equals the corresponding start time, no rectangle will be drawn
+#' for the activity, and this gives a way to make headings (see example 7
+#' for \code{\link{plot,gantt-method}}).
 #' 
 #' \item A number indicating the percentage of this task that has been
 #' completed to date.
@@ -470,10 +507,9 @@ as.gantt <- function(key, description, start, end, done, neededBy)
 #' \item A space-separated optional list of numbers that indicate the keys of
 #' other tasks that depend on this one.  This list is ignored in the present
 #' version of \code{read.gantt}.  }
-#' 
-#' Executing the code \preformatted{ library(plan) data(gantt)
-#' print(summary(gantt)) } will create the following sample file, which may be
-#' read with \code{\link{read.gantt}}: \preformatted{
+#'
+#' @section Sample data file:
+#' \preformatted{
 #' Key, Description,                 Start,        End, Done, NeededBy
 #'   1, Assemble equipment,     2008-01-01, 2008-03-28, 90
 #'   2, Test methods,           2008-02-28, 2008-03-28, 30
@@ -487,8 +523,8 @@ as.gantt <- function(key, description, start, end, done, neededBy)
 #'  10, Thesis on display,      2009-04-01, 2009-04-15, 0
 #'  11, Defend thesis,          2009-04-16, 2009-04-17, 0
 #'  12, Finalize thesis,        2009-04-18, 2009-05-07, 0 
-#'}
-#' 
+#' }
+#'
 #' @param file a connection or a character string giving the name of the file
 #' to load.
 #' @param debug boolean, set to \code{TRUE} to print debugging information.
@@ -546,4 +582,80 @@ read.gantt <- function(file, debug=FALSE)
              end=as.POSIXct(end),
              done=done,
              neededBy=neededBy)
+}
+
+#' Add a task to a gantt object
+#'
+#' This can be a simpler method than using \code{\link{as.gantt}}, because
+#' tasks can be added one at a time.
+#'
+#' @param g A \code{gantt} object, i.e. one inheriting from \code{\link{gantt-class}}.
+#' @param description A character string describing the task.
+#' @param start A character string indicating the task start time, in a format understood by \code{\link{as.POSIXct}}. 
+#' Set to \code{""} (the default) to indicate that \code{description} is a heading, with no start and end time. 
+#' @param end A character string indicating the end time, in a format understood by \code{\link{as.POSIXct}}.
+#' @param done A numerical value indicating the fraction done.
+#' @param neededBy An integer indicating a task that depends on the completion of this task. If this is
+#' \code{NA}, then the task is not needed by any other task.
+#' @param key An optional value indicating the desired key value. If not given, this will default to
+#' one beyond the highest key in \code{g}. Otherwise, if \code{key} is an integer matching
+#' a task that is already in \code{g}, then that task is replaced; otherwise, the new task
+#' is placed between the tasks with integral keys on either side of the task. For example, setting
+#' \code{key=4.5} places this between existing keys 4 and 5 (and then renumbers all keys
+#' to be integers); see \dQuote{Examples}.
+#'
+#' @examples
+#' library("plan")
+#' g <- new("gantt")
+#' g <- ganttAddTask(g, "Courses") # no times, so a heading
+#' g <- ganttAddTask(g, "Physical Oceanography", "2016-09-03", "2016-12-05")
+#' g <- ganttAddTask(g, "Chemistry Oceanography", "2016-09-03", "2016-12-05")
+#' g <- ganttAddTask(g, "Fluid Dynamics", "2016-09-03", "2016-12-05")
+#' g <- ganttAddTask(g, "Biological Oceanography", "2017-01-03", "2017-04-05")
+#' g <- ganttAddTask(g, "Geological Oceanography", "2017-01-03", "2017-04-05")
+#' g <- ganttAddTask(g, "Time-series Analysis", "2017-01-03", "2017-04-05")
+#' g <- ganttAddTask(g, "Research") # no times, so a heading
+#' g <- ganttAddTask(g, "Literature review", "2016-09-03", "2017-04-05")
+#' g <- ganttAddTask(g, "Develop analysis skills", "2016-09-03", "2017-08-01")
+#' g <- ganttAddTask(g, "Thesis work", "2017-01-01", "2018-04-01")
+#' g <- ganttAddTask(g, "Defend thesis proposal", "2017-05-01", "2017-06-01")
+#' g <- ganttAddTask(g, "Write papers & thesis", "2017-05-01", "2018-04-01")
+#' g <- ganttAddTask(g, "Defend thesis", "2018-05-01", "2018-05-15")
+#' # Set 'font' for bold-faced headings
+#' font <- ifelse(is.na(g[["start"]]), 2, 1)
+#' plot(g, ylabel=list(font=font))
+#'
+#' @family things related to \code{gantt} data
+ganttAddTask <- function(g, description="", start=NA, end=NA, done=0, neededBy=NA, key)
+{
+    if (!inherits(g, "gantt")) stop("method only applies to gantt objects")
+    if (nchar(description) < 1) {
+        warning("empty description")
+    } else {
+        nkey <- if (length(g[["key"]])) max(g[["key"]]) else 0
+        if (missing(key))
+            key <- 1 + nkey
+        if (key < 1)
+            stop("cannot have a key less than 1")
+        if (key==as.integer(key)) {
+            g[["description"]][key] <- description
+            g[["start"]][key] <- start
+            g[["end"]][key] <- end
+            g[["done"]][key] <- done
+            g[["neededBy"]][key] <- neededBy
+            g[["key"]][key] <- key
+        } else {
+            before <- seq.int(1, floor(key))
+            after <- seq.int(floor(key) + 1, nkey)
+            message("nkey: ", nkey, ", key: ", key, ", before: ", paste(before, collapse=" "), ", after: ", paste(after, collapse=" "))
+            g[["description"]] <- c(g[["description"]][before], description, g[["description"]][after])
+            g[["start"]] <- c(g[["start"]][before], start, g[["start"]][after])
+            g[["end"]] <- c(g[["end"]][before], end, g[["end"]][after])
+            g[["done"]] <- c(g[["done"]][before], done, g[["done"]][after])
+            g[["neededBy"]] <- c(g[["neededBy"]][before], neededBy, g[["neededBy"]][after])
+            g[["key"]] <- c(g[["key"]][before], key, g[["key"]][after])
+        }
+    }
+    g[["key"]] <- seq_along(g[["key"]])
+    g
 }

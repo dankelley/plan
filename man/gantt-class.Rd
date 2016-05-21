@@ -5,10 +5,12 @@
 \alias{gantt-class}
 \title{Class to store \code{gantt} objects}
 \description{
-Class to store \code{gantt} objects
+These objects may be created with \code{\link{as.gantt}} or 
+\code{\link{read.gantt}}.
 }
 \seealso{
 Other things related to \code{gantt} data: \code{\link{as.gantt}},
+  \code{\link{ganttAddTask}},
   \code{\link{plot,gantt-method}},
   \code{\link{read.gantt}},
   \code{\link{summary,gantt-method}}

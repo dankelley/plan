@@ -17,6 +17,6 @@
 \item{...}{Optional additional information (ignored).}
 }
 \description{
-Extract Something From a plan Object
+Extract something from a plan object, avoiding using the "slot" notation.
 }
 

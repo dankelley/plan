@@ -12,8 +12,9 @@
   cex.event = par("cex"), font.event = par("font"),
   lty.eventLine = par("lty"), lwd.eventLine = par("lwd"), bg = par("bg"),
   grid.col = "lightgray", grid.lty = "dotted", ylabels = list(col = 1, cex
-  = 1, font = 1, justification = 1), main = "", cex.main = par("cex"),
-  mgp = c(2, 0.7, 0), maiAdd = rep(0, 4), debug = FALSE, ...)
+  = 1, font = 1, justification = 1), arrows = NULL, main = "",
+  cex.main = par("cex"), mgp = c(2, 0.7, 0), maiAdd = rep(0, 4),
+  debug = FALSE, ...)
 }
 \arguments{
 \item{x}{A \code{gantt} object, i.e. one inheriting from \code{\link{gantt-class}}.}
@@ -74,6 +75,11 @@ It usually makes sense for the elements in \code{ylabels} to be vectors of the s
 length as the topic list. However, shorter vectors are permitted, and they lengthened by
 copying the default values at the end (see Example 6).}
 
+\item{arrows}{A vector of strings, one for each topic, indicating the nature of
+the arrows that may be drawn at the ends of task bars. The individual values
+may be \code{"left"}, \code{"right"}, \code{"both"} or \code{"neither"}.
+Set \code{arrows=NULL}, the default, to avoid such arrows.}
+
 \item{main}{character string to be used as chart title.}
 
 \item{cex.main}{numeric, font-size factor for title.}
@@ -99,48 +105,43 @@ The defaults work well for projects that take a year or two. Consider
 adjusting \code{time.labels.by} and \code{time.lines.by} for projects that
 are much shorter or longer.
 }
-\section{Sample data file}{
-
-\preformatted{
-Key, Description,                 Start,        End, Done, NeededBy
-  1, Assemble equipment,     2008-01-01, 2008-03-28, 90
-  2, Test methods,           2008-02-28, 2008-03-28, 30
-  3, Field sampling,         2008-04-01, 2008-08-14, 0
-  4, Analyse field data,     2008-06-30, 2008-11-14, 0
-  5, Write methods chapter,  2008-08-14, 2008-11-14, 0
-  6, Write results chapter,  2008-10-14, 2009-01-15, 0
-  7, Write other chapters,   2008-12-10, 2009-02-28, 0
-  8, Committee reads thesis, 2009-02-28, 2009-03-14, 0
-  9, Revise thesis,          2009-03-15, 2009-03-30, 0
- 10, Thesis on display,      2009-04-01, 2009-04-15, 0
- 11, Defend thesis,          2009-04-16, 2009-04-17, 0
- 12, Finalize thesis,        2009-04-18, 2009-05-07, 0 
-}
-}
 \examples{
-
 library(plan)
 data(gantt)
 summary(gantt)
+
 # 1. Simple plot
 plot(gantt)
+
 # 2. Plot with two events
 event.label <- c("Proposal", "AGU")
 event.time <- c("2008-01-28", "2008-12-10")
 plot(gantt, event.label=event.label,event.time=event.time)
+
 # 3. Control x axis (months, say)
 plot(gantt,labels=paste("M",1:6,sep=""))
+
 # 4. Control task colours
 plot(gantt,
      col.done=c("black", "red", rep("black", 10)),
      col.notdone=c("lightgray", "pink", rep("lightgray", 10)))
+
 # 5. Control event colours (garish, to illustrate)
 plot(gantt, event.time=event.time, event.label=event.label,
      lwd.eventLine=1:2, lty.eventLine=1:2,
      col.eventLine=c("pink", "lightblue"),
      col.event=c("red", "blue"), font.event=1:2, cex.event=1:2)
+
 # 6. Top task is in bold font and red colour
 plot(gantt,ylabels=list(col="red",font=2))
+
+# 7. Demonstrate zero-time item (which becomes a heading)
+gantt[["description"]][1] <- "Preliminaries"
+gantt[["end"]][1] <- gantt[["start"]][1]
+plot(gantt, ylabel=list(font=2, justification=0))
+
+# 8. Arrows at task ends
+plot(gantt, arrows=c("right","left","left","right"))
 }
 \author{
 Dan Kelley
@@ -151,7 +152,8 @@ Gantt diagrams are described on wikipedia
 }
 \seealso{
 Other things related to \code{gantt} data: \code{\link{as.gantt}},
-  \code{\link{gantt-class}}, \code{\link{read.gantt}},
+  \code{\link{gantt-class}}, \code{\link{ganttAddTask}},
+  \code{\link{read.gantt}},
   \code{\link{summary,gantt-method}}
 }
 
