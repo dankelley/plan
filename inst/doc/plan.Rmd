@@ -62,7 +62,7 @@ library("plan")
 data(burndown)
 plot(burndown)
 ```
-To work with your own files, use \code{\link{read.burndown}}.
+To work with your own files, use `read.burndown()`.
 
 # Gantt charts
 
@@ -72,10 +72,9 @@ hypothetical research plan for an MSc project; you can see how it is graphed
 with `demo(gantt)` or `example(plot.gantt)`.
 
 The following plots the built-in Gantt diagram. If this seems promising, the
-reader should continue reading, to learn how to make objects of 
-\code{\link{gantt-class}}. If not, the best is to try some other software,
-because only minimal customization is permitted by the
-\code{\link{plot,gantt-method}}.
+reader should continue reading, to learn how to make objects of `gantt-class`.
+If not, the best is to try some other software, because only minimal
+customization is permitted by the `plot,gantt-method`.
 
 ```{r}
 library("plan")
@@ -83,13 +82,12 @@ data(gantt)
 plot(gantt)
 ```
 
-There are three ways to create objects of \code{\link{gantt-class}}: (a) write
-information in a text file and use \code{\link{read.gantt}}, (b) use
-\code{\link{as.gantt}} to assemble the object in one (somewhat complicated) step, or
-(c) use \code{new} to create an object and then \code{\link{ganttAddTask}} to
-add tasks one by one. The third approach is probably the easiest for beginners,
-so it is illustrated below, with a sketch of courses typically taken in
-postgraduate oceanography programs.
+There are three ways to create objects of `gantt-class`: (a) write information
+in a text file and use `read.gantt()`, (b) use `as.gantt()` to assemble the
+object in one (somewhat complicated) step, or (c) use `new()` to create an
+object and then `ganttAddTask()` to add tasks one by one. The third approach
+may be the easiest for beginners, so it is illustrated below, with a sketch of
+a typical oceanography MSc program.
 
 
 ```{r}
