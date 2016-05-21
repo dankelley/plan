@@ -168,7 +168,7 @@ setMethod(f="plot",
     maxwidth <- max(strwidth(x[["description"]], units = "inches")) * 1.1
 
     ## Get around some problems with autoscaling of POSIXt values
-    r <- if (missing(xlim)) range(x[["start"]], x[["end"]]) else xlim
+    r <- if (missing(xlim)) range(x[["start"]], x[["end"]], na.rm=TRUE) else xlim
     if (debug) {cat("range: ", as.character(r[1]), "to", as.character(r[2]), "\n")}
     s <- as.numeric(difftime(r[2], r[1], units="days"))
     r <- as.POSIXlt(r)
@@ -286,23 +286,25 @@ setMethod(f="plot",
     }
     ## Description
     for (i in 1:ndescriptions) {
-        mid <- as.POSIXct(x[["start"]][i]) +
+        if (!is.na(x[["start"]][i])) {
+            mid <- as.POSIXct(x[["start"]][i]) +
             x[["done"]][i] * as.numeric(difftime(as.POSIXct(x[["end"]][i]),
-                                            as.POSIXct(x[["start"]][i]),
-                                            units="secs")) / 100
-        if (debug) {cat(as.character(x[["description"]][i]),"takes", as.numeric(difftime(as.POSIXct(x[["end"]][i]), as.POSIXct(x[["start"]][i]), units="secs")), "s\n")}
+                                                 as.POSIXct(x[["start"]][i]),
+                                                 units="secs")) / 100
+            if (debug) {cat(as.character(x[["description"]][i]),"takes", as.numeric(difftime(as.POSIXct(x[["end"]][i]), as.POSIXct(x[["start"]][i]), units="secs")), "s\n")}
 
-        bottom <- topdown[i] - half.height
-        top <- topdown[i] + half.height
-        left <- as.POSIXct(x[["start"]][i])
-        right <- as.POSIXct(x[["end"]][i])
+            bottom <- topdown[i] - half.height
+            top <- topdown[i] + half.height
+            left <- as.POSIXct(x[["start"]][i])
+            right <- as.POSIXct(x[["end"]][i])
 
-        if (debug){cat(as.character(x[["description"]][i]));cat(" done=",x[["done"]][i]," mid=");print(mid);cat(" left=");print(left);cat("right=");print(right);cat("\n")}
+            if (debug){cat(as.character(x[["description"]][i]));cat(" done=",x[["done"]][i]," mid=");print(mid);cat(" left=");print(left);cat("right=");print(right);cat("\n")}
 
-        if (right > left) {
-            rect(left, bottom, right, top, col = col.notdone[i], border = FALSE)
-            rect(left, bottom, mid,   top, col = col.done[i],    border = FALSE)
-            rect(left, bottom, right, top, col = "transparent",  border = TRUE)
+            if (right > left) {
+                rect(left, bottom, right, top, col = col.notdone[i], border = FALSE)
+                rect(left, bottom, mid,   top, col = col.done[i],    border = FALSE)
+                rect(left, bottom, right, top, col = "transparent",  border = TRUE)
+            }
         }
     }
     abline(h = (topdown[1:(ndescriptions - 1)] + topdown[2:ndescriptions])/2,  col = grid.col, lty=grid.lty)
@@ -547,4 +549,62 @@ read.gantt <- function(file, debug=FALSE)
              end=as.POSIXct(end),
              done=done,
              neededBy=neededBy)
+}
+
+#' Add a task to a gantt object
+#'
+#' This can be a simpler method than using \code{\link{as.gantt}}, because
+#' tasks can be added one at a time.
+#'
+#' @param g A \code{gantt} object, i.e. one inheriting from \code{\link{gantt-class}}.
+#' @param description A character string describing the task.
+#' @param start A character string indicating the task start time, in a format understood by \code{\link{as.POSIXct}}. 
+#' Set to \code{""} (the default) to indicate that \code{description} is a heading, with no start and end time. 
+#' @param end A character string indicating the end time, in a format understood by \code{\link{as.POSIXct}}.
+#' @param done A numerical value indicating the fraction done.
+#' @param neededBy An integer indicating a task that depends on the completion of this task. If this is
+#' \code{NA}, then the task is not needed by any other task.
+#' @param key An optional value indicating the desired key value. If not given, this will default to
+#' one beyond the highest key in \code{g}. Otherwise, if \code{key} is an integer matching
+#' a task that is already in \code{g}, then that task is replaced; otherwise, the new task
+#' is placed between the tasks with integral keys on either side of the task. For example, setting
+#' \code{key=4.5} places this between existing keys 4 and 5 (and then renumbers all keys
+#' to be integers); see \dQuote{Examples}.
+#'
+#' @examples
+#' library(plan)
+#' data(gantt)
+#' # Add a sort of section divider to a gantt diagram.
+#' g <- ganttAddTask(gantt, "Writing", key=4.5)
+#' plot(g, ylabels=list(font=c(1,1,1,1,2)))
+#' @family things related to \code{gantt} data
+ganttAddTask <- function(g, description="", start=NA, end=NA, done=0, neededBy=NA, key)
+{
+    if (!inherits(g, "gantt")) stop("method only applies to gantt objects")
+    if (nchar(description) < 1) {
+        warning("empty description")
+    } else {
+        nkey <- max(g[["key"]])
+        if (missing(key))
+            key <- 1 + nkey
+        if (key < 1)
+            stop("cannot have a key less than 1")
+        if (is.integer(key)) {
+            g[["description"]][key] <- description
+            g[["start"]][key] <- start
+            g[["end"]][key] <- end
+            g[["done"]][key] <- done
+            g[["neededBy"]][key] <- neededBy
+        } else {
+            before <- seq.int(1, floor(key))
+            after <- seq.int(floor(key) + 1, nkey)
+            g[["description"]] <- c(g[["description"]][before], description, g[["description"]][after])
+            g[["start"]] <- c(g[["start"]][before], start, g[["start"]][after])
+            g[["end"]] <- c(g[["end"]][before], end, g[["end"]][after])
+            g[["done"]] <- c(g[["done"]][before], done, g[["done"]][after])
+            g[["neededBy"]] <- c(g[["neededBy"]][before], neededBy, g[["neededBy"]][after])
+            g[["key"]] <- seq.int(1, nkey + 1)
+        }
+    }
+    g
 }
