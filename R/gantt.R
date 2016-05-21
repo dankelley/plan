@@ -1,4 +1,7 @@
 #' Class to store \code{gantt} objects
+#'
+#' These objects may be created with \code{\link{as.gantt}} or 
+#' \code{\link{read.gantt}}.
 #' @family things related to \code{gantt} data
 setClass("gantt", contains="plan")
 
@@ -66,46 +69,41 @@ setMethod(f="initialize",
 #' @family things related to \code{gantt} data
 #' @references Gantt diagrams are described on wikipedia
 #' \url{http://en.wikipedia.org/wiki/Gantt_Chart}.
-#' @section Sample data file:
-#' \preformatted{
-#' Key, Description,                 Start,        End, Done, NeededBy
-#'   1, Assemble equipment,     2008-01-01, 2008-03-28, 90
-#'   2, Test methods,           2008-02-28, 2008-03-28, 30
-#'   3, Field sampling,         2008-04-01, 2008-08-14, 0
-#'   4, Analyse field data,     2008-06-30, 2008-11-14, 0
-#'   5, Write methods chapter,  2008-08-14, 2008-11-14, 0
-#'   6, Write results chapter,  2008-10-14, 2009-01-15, 0
-#'   7, Write other chapters,   2008-12-10, 2009-02-28, 0
-#'   8, Committee reads thesis, 2009-02-28, 2009-03-14, 0
-#'   9, Revise thesis,          2009-03-15, 2009-03-30, 0
-#'  10, Thesis on display,      2009-04-01, 2009-04-15, 0
-#'  11, Defend thesis,          2009-04-16, 2009-04-17, 0
-#'  12, Finalize thesis,        2009-04-18, 2009-05-07, 0 
-#' }
-#' @examples
 #' 
+#' @examples
 #' library(plan)
 #' data(gantt)
 #' summary(gantt)
+#'
 #' # 1. Simple plot
 #' plot(gantt)
+#'
 #' # 2. Plot with two events
 #' event.label <- c("Proposal", "AGU")
 #' event.time <- c("2008-01-28", "2008-12-10")
 #' plot(gantt, event.label=event.label,event.time=event.time)
+#'
 #' # 3. Control x axis (months, say)
 #' plot(gantt,labels=paste("M",1:6,sep=""))
+#'
 #' # 4. Control task colours
 #' plot(gantt,
 #'      col.done=c("black", "red", rep("black", 10)),
 #'      col.notdone=c("lightgray", "pink", rep("lightgray", 10)))
+#'
 #' # 5. Control event colours (garish, to illustrate)
 #' plot(gantt, event.time=event.time, event.label=event.label,
 #'      lwd.eventLine=1:2, lty.eventLine=1:2,
 #'      col.eventLine=c("pink", "lightblue"),
 #'      col.event=c("red", "blue"), font.event=1:2, cex.event=1:2)
+#'
 #' # 6. Top task is in bold font and red colour
 #' plot(gantt,ylabels=list(col="red",font=2))
+#'
+#' # 7. Demonstrate zero-time item (which becomes a heading)
+#' gantt[["description"]][1] <- "Preliminaries"
+#' gantt[["end"]][1] <- gantt[["start"]][1]
+#' plot(gantt, ylabel=list(font=2, justification=0))
 setMethod(f="plot",
           signature=signature("gantt"),
           definition=function (x, xlim,
@@ -207,7 +205,7 @@ setMethod(f="plot",
     }
     bottom.margin <- 0.5
     topSpace <- charheight * (2 + 2*as.numeric((nchar(main) > 0)))
-    mai <- maiAdd + c(bottom.margin, maxwidth, topSpace, 0.1)
+    mai <- maiAdd + c(bottom.margin, maxwidth, topSpace, 0.25)
     mai <- ifelse(mai < 0, 0, mai)
     opar <- par(no.readonly = TRUE)
     par(mgp=mgp, mai=mai, omi=c(0.1, 0.1, 0.1, 0.1), bg=bg)
@@ -257,7 +255,7 @@ setMethod(f="plot",
             ## message("  Q: why is this black line not at the left of the graph?")
             text(left, topdown[i], x[["description"]][i], pos=4,
                  col=ylabels$col[i], cex=ylabels$cex[i], font=ylabels$font[i])
-            abline(v=left, lwd=10, col='red')
+            ## abline(v=left, lwd=10, col='red')
         }
     }
     par(xpd=FALSE)
@@ -301,9 +299,11 @@ setMethod(f="plot",
 
         if (debug){cat(as.character(x[["description"]][i]));cat(" done=",x[["done"]][i]," mid=");print(mid);cat(" left=");print(left);cat("right=");print(right);cat("\n")}
 
-        rect(left, bottom, right, top, col = col.notdone[i], border = FALSE)
-        rect(left, bottom, mid,   top, col = col.done[i],    border = FALSE)
-        rect(left, bottom, right, top, col = "transparent",  border = TRUE)
+        if (right > left) {
+            rect(left, bottom, right, top, col = col.notdone[i], border = FALSE)
+            rect(left, bottom, mid,   top, col = col.done[i],    border = FALSE)
+            rect(left, bottom, right, top, col = "transparent",  border = TRUE)
+        }
     }
     abline(h = (topdown[1:(ndescriptions - 1)] + topdown[2:ndescriptions])/2,  col = grid.col, lty=grid.lty)
     ## par(opar)
@@ -386,8 +386,6 @@ setMethod(f="summary",
 #' endT1 <- startT1 + 4 * month
 #' startT2 <- endT1 + 1
 #' endT2 <- startT2 + 4 * month
-#' startT3 <- arrive + 12 * month
-#' endT3 <- startT3 + 4 * month
 #' startQE <- arrive + 9 * month
 #' endQE <- arrive + 12 * month
 #' QEabsoluteEnd <- arrive + 15 * month
@@ -395,22 +393,23 @@ setMethod(f="summary",
 #' endProposal <- arrive + 20 * month
 #' startThesisWork <- arrive + 2 * month # assumes no thesis work until 2 months in
 #' endThesisWork <- leave - 4 * month
-#' startThesisWriteup <- leave - 4 * month
-#' endThesisWriteup <- leave
-#' g <- as.gantt(key=1:7, c("Term 1 classes",
+#' startWriting <- leave - 36 * month
+#' endWriting <- leave
+#' g <- as.gantt(key=1:8, c("Academic",
+#'               "Term 1 classes",
 #'               "Term 2 classes",
 #'               "Qualifying Examination",
-#'               "Term 3 classes",
+#'               "Research",
 #'               "Proposal Defence",
 #'               "Thesis Work",
-#'               "Thesis Writing/Defence"),
-#'               c(startT1, startT2, startQE, startT3, startProposal,
-#'                 startThesisWork, startThesisWriteup),
-#'               c(endT1, endT2, endQE, endT3, endProposal,
-#'                 endThesisWork, endThesisWriteup),
+#'               "Paper/Thesis Writing"),
+#'               c(startT1, startT1, startT2, startQE, startProposal, startProposal,
+#'                 startThesisWork, startWriting),
+#'               c(startT1, endT1, endT2, endQE, startProposal, endProposal,
+#'                 endThesisWork, endWriting),
 #'               done=rep(0, 7))
-#' plot(g, xlim=c(arrive, leave))
-#' 
+#' plot(g, xlim=c(arrive, leave),
+#'      ylabel=list(font=c(2,rep(1,3),2), justification=c(0,rep(1,3),0)))
 as.gantt <- function(key, description, start, end, done, neededBy)
 {
     if (missing(key))
@@ -462,7 +461,10 @@ as.gantt <- function(key, description, start, end, done, neededBy)
 #' \item The start time for the task, in ISO 8601 format (\code{YYYY-MM-DD} or
 #' \code{YYYY-MM-DD hh:mm:ss}).
 #' 
-#' \item The end time for the task, in the same format as the starting time.
+#' \item The end time for the task, in the same format as the starting time. If
+#' an end time equals the corresponding start time, no rectangle will be drawn
+#' for the activity, and this gives a way to make headings (see example 7
+#' for \code{\link{plot,gantt-method}}).
 #' 
 #' \item A number indicating the percentage of this task that has been
 #' completed to date.
@@ -470,10 +472,9 @@ as.gantt <- function(key, description, start, end, done, neededBy)
 #' \item A space-separated optional list of numbers that indicate the keys of
 #' other tasks that depend on this one.  This list is ignored in the present
 #' version of \code{read.gantt}.  }
-#' 
-#' Executing the code \preformatted{ library(plan) data(gantt)
-#' print(summary(gantt)) } will create the following sample file, which may be
-#' read with \code{\link{read.gantt}}: \preformatted{
+#'
+#' @section Sample data file:
+#' \preformatted{
 #' Key, Description,                 Start,        End, Done, NeededBy
 #'   1, Assemble equipment,     2008-01-01, 2008-03-28, 90
 #'   2, Test methods,           2008-02-28, 2008-03-28, 30
@@ -487,8 +488,8 @@ as.gantt <- function(key, description, start, end, done, neededBy)
 #'  10, Thesis on display,      2009-04-01, 2009-04-15, 0
 #'  11, Defend thesis,          2009-04-16, 2009-04-17, 0
 #'  12, Finalize thesis,        2009-04-18, 2009-05-07, 0 
-#'}
-#' 
+#' }
+#'
 #' @param file a connection or a character string giving the name of the file
 #' to load.
 #' @param debug boolean, set to \code{TRUE} to print debugging information.

@@ -42,7 +42,10 @@ typically just the numbers 1, 2, 3, etc.
 \item The start time for the task, in ISO 8601 format (\code{YYYY-MM-DD} or
 \code{YYYY-MM-DD hh:mm:ss}).
 
-\item The end time for the task, in the same format as the starting time.
+\item The end time for the task, in the same format as the starting time. If
+an end time equals the corresponding start time, no rectangle will be drawn
+for the activity, and this gives a way to make headings (see example 7
+for \code{\link{plot,gantt-method}}).
 
 \item A number indicating the percentage of this task that has been
 completed to date.
@@ -50,10 +53,10 @@ completed to date.
 \item A space-separated optional list of numbers that indicate the keys of
 other tasks that depend on this one.  This list is ignored in the present
 version of \code{read.gantt}.  }
+}
+\section{Sample data file}{
 
-Executing the code \preformatted{ library(plan) data(gantt)
-print(summary(gantt)) } will create the following sample file, which may be
-read with \code{\link{read.gantt}}: \preformatted{
+\preformatted{
 Key, Description,                 Start,        End, Done, NeededBy
   1, Assemble equipment,     2008-01-01, 2008-03-28, 90
   2, Test methods,           2008-02-28, 2008-03-28, 30
