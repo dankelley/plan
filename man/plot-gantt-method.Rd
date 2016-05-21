@@ -12,8 +12,9 @@
   cex.event = par("cex"), font.event = par("font"),
   lty.eventLine = par("lty"), lwd.eventLine = par("lwd"), bg = par("bg"),
   grid.col = "lightgray", grid.lty = "dotted", ylabels = list(col = 1, cex
-  = 1, font = 1, justification = 1), main = "", cex.main = par("cex"),
-  mgp = c(2, 0.7, 0), maiAdd = rep(0, 4), debug = FALSE, ...)
+  = 1, font = 1, justification = 1), arrows = NULL, main = "",
+  cex.main = par("cex"), mgp = c(2, 0.7, 0), maiAdd = rep(0, 4),
+  debug = FALSE, ...)
 }
 \arguments{
 \item{x}{A \code{gantt} object, i.e. one inheriting from \code{\link{gantt-class}}.}
@@ -74,6 +75,11 @@ It usually makes sense for the elements in \code{ylabels} to be vectors of the s
 length as the topic list. However, shorter vectors are permitted, and they lengthened by
 copying the default values at the end (see Example 6).}
 
+\item{arrows}{A vector of strings, one for each topic, indicating the nature of
+the arrows that may be drawn at the ends of task bars. The individual values
+may be \code{"left"}, \code{"right"}, \code{"both"} or \code{"neither"}.
+Set \code{arrows=NULL}, the default, to avoid such arrows.}
+
 \item{main}{character string to be used as chart title.}
 
 \item{cex.main}{numeric, font-size factor for title.}
@@ -133,6 +139,9 @@ plot(gantt,ylabels=list(col="red",font=2))
 gantt[["description"]][1] <- "Preliminaries"
 gantt[["end"]][1] <- gantt[["start"]][1]
 plot(gantt, ylabel=list(font=2, justification=0))
+
+# 8. Arrows at task ends
+plot(gantt, arrows=c("right","left","left","right"))
 }
 \author{
 Dan Kelley

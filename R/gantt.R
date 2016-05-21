@@ -54,6 +54,10 @@ setMethod(f="initialize",
 #' It usually makes sense for the elements in \code{ylabels} to be vectors of the same
 #' length as the topic list. However, shorter vectors are permitted, and they lengthened by
 #' copying the default values at the end (see Example 6).
+#' @param arrows A vector of strings, one for each topic, indicating the nature of
+#' the arrows that may be drawn at the ends of task bars. The individual values
+#' may be \code{"left"}, \code{"right"}, \code{"both"} or \code{"neither"}.
+#' Set \code{arrows=NULL}, the default, to avoid such arrows.
 #' @param main character string to be used as chart title.
 #' @param cex.main numeric, font-size factor for title.
 #' @param mgp setting for \code{\link{par}(mgp)}, within-axis spacing.
@@ -105,6 +109,9 @@ setMethod(f="initialize",
 #' gantt[["description"]][1] <- "Preliminaries"
 #' gantt[["end"]][1] <- gantt[["start"]][1]
 #' plot(gantt, ylabel=list(font=2, justification=0))
+#'
+#' # 8. Arrows at task ends
+#' plot(gantt, arrows=c("right","left","left","right"))
 setMethod(f="plot",
           signature=signature("gantt"),
           definition=function (x, xlim,
@@ -117,6 +124,7 @@ setMethod(f="plot",
                         lty.eventLine=par("lty"), lwd.eventLine=par("lwd"),
                         bg=par("bg"), grid.col="lightgray", grid.lty="dotted",
                         ylabels=list(col=1, cex=1, font=1, justification=1),
+                        arrows=NULL,
                         main="", cex.main=par("cex"),
                         mgp=c(2, 0.7, 0), maiAdd=rep(0, 4),
                         debug=FALSE, ...)
@@ -129,6 +137,10 @@ setMethod(f="plot",
     t0 <- as.POSIXct("1970-01-01 00:00:00")
     ## Lengthen anything that can be a vector
     ndescriptions <- length(x[["description"]])
+    if (length(arrows) == 0)
+        arrows <- rep("none", ndescriptions)
+    if (length(arrows) < ndescriptions)
+        arrows <- c(arrows, rep("none", ndescriptions-length(arrows)))
     ## Twiddle the labels, including defaulting things that a user
     ## need not define.
     if (!("col" %in% names(ylabels)))
@@ -302,9 +314,25 @@ setMethod(f="plot",
             if (debug){cat(as.character(x[["description"]][i]));cat(" done=",x[["done"]][i]," mid=");print(mid);cat(" left=");print(left);cat("right=");print(right);cat("\n")}
 
             if (right > left) {
+                arrow <- arrows[i]
                 rect(left, bottom, right, top, col = col.notdone[i], border = FALSE)
                 rect(left, bottom, mid,   top, col = col.done[i],    border = FALSE)
                 rect(left, bottom, right, top, col = "transparent",  border = TRUE)
+                usr <- par('usr')
+                D <- (top - bottom) * (usr[2]-usr[1]) / (usr[4]-usr[3])
+                D <- 0.02 * (usr[2] - usr[1])
+                if (arrow == "left" || arrow == "both") {
+                    colTriangle <- if (left == mid) col.notdone else col.done
+                    polygon(c(left, left-D, left), c(bottom, 0.5*(bottom+top), top),
+                            border=colTriangle, col=colTriangle)
+                    lines(c(left, left-D, left), c(bottom, 0.5*(bottom+top), top))
+                }
+                if (arrow == "right" || arrow == "both") {
+                    colTriangle <- if (right == mid) col.done else col.notdone
+                    polygon(c(right, right+D, right), c(bottom, 0.5*(bottom+top), top),
+                            border=colTriangle, col=colTriangle)
+                    lines(c(right, right+D, right), c(bottom, 0.5*(bottom+top), top))
+                }
             }
         }
     }
