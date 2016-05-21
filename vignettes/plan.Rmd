@@ -108,8 +108,7 @@ g <- ganttAddTask(g, "Defend thesis proposal", "2017-05-01", "2017-06-01")
 g <- ganttAddTask(g, "Write papers & thesis", "2017-05-01", "2018-04-01")
 g <- ganttAddTask(g, "Defend thesis", "2018-05-01", "2018-05-15")
 ## Set 'font' to highlight headings
-font <- rep(1, length(g[["key"]]))
-font[c(1,8)] <- 2
+font <- ifelse(is.na(g[["start"]]), 2, 1)
 plot(g, ylabel=list(font=font))
 ```
 
