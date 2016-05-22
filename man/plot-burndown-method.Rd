@@ -3,6 +3,7 @@
 \docType{methods}
 \name{plot,burndown-method}
 \alias{plot,burndown-method}
+\alias{plot.burndown}
 \title{Draw a burndown chart}
 \usage{
 \S4method{plot}{burndown}(x, col = NULL, draw.plan = TRUE,

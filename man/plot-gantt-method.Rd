@@ -3,6 +3,7 @@
 \docType{methods}
 \name{plot,gantt-method}
 \alias{plot,gantt-method}
+\alias{plot.gantt}
 \title{Draw a Gantt diagram}
 \usage{
 \S4method{plot}{gantt}(x, xlim, time.format = NULL, time.labels.by,
@@ -94,16 +95,18 @@ margins) but the sum will be truncated to remain positive.}
 
 \item{...}{extra things handed down.}
 }
-\value{
-The gantt object, returned invisibly.
-}
 \description{
-Plot a gantt chart, possibly with events superimposed.
+Plot a gantt chart that shows the time allocated to a set of tasks, optionally
+also with an indication of discrete events that occur as instants in time.
 }
-\note{
-The defaults work well for projects that take a year or two. Consider
-adjusting \code{time.labels.by} and \code{time.lines.by} for projects that
-are much shorter or longer.
+\details{
+Time is indicated along the x axis, and tasks are stacked along the y
+axis, akin to progress bars. Colour-coding can be used to indicate the degree of
+completion of each task. These codes can be set individually for individual
+tasks. Progress bars can have arrows (on either end), suggesting tasks
+with flexible start/end dates or overdue tasks.  Vertical lines may
+be drawn for discreet events. See \dQuote{Examples} for a few of the
+possibilities.
 }
 \examples{
 library(plan)
