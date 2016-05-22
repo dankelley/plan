@@ -10,7 +10,7 @@ Depends:
     methods
 Suggests:
     knitr
-Description: Supports the creation of burndown charts and gantt diagrams.
+Description: Supports the creation of `burndown` charts and `gantt` diagrams.
 License: GPL (>= 2)
 URL: http://github.com/dankelley/plan
 LazyLoad: yes
