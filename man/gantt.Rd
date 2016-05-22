@@ -4,7 +4,6 @@
 \name{gantt}
 \alias{gantt}
 \title{Sample gantt dataset}
-\format{See \code{\link{read.gantt}}.}
 \description{
 This is sample gantt dataset provided for testing.
 }
@@ -13,5 +12,11 @@ Dan Kelley
 }
 \seealso{
 Other data sets provided with \code{plan}.: \code{\link{burndown}}
+
+Other things related to \code{gantt} data: \code{\link{as.gantt}},
+  \code{\link{gantt-class}}, \code{\link{ganttAddTask}},
+  \code{\link{plot,gantt-method}},
+  \code{\link{read.gantt}},
+  \code{\link{summary,gantt-method}}
 }
 
