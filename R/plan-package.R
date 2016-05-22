@@ -4,9 +4,8 @@
 #' 
 #' @name burndown
 #' @docType data
-#' @format See \code{\link{read.burndown}}.
 #' @author Dan Kelley
-#' @family things related to \code{burndown} data.
+#' @family things related to \code{burndown} data
 #' @family data sets provided with \code{plan}.
 NULL
 
@@ -17,9 +16,8 @@ NULL
 #' 
 #' @name gantt
 #' @docType data
-#' @format See \code{\link{read.gantt}}.
 #' @author Dan Kelley
-#' @family things related to \code{gantt} data.
+#' @family things related to \code{gantt} data
 #' @family data sets provided with \code{plan}.
 NULL
 

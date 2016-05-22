@@ -4,7 +4,6 @@
 \name{burndown}
 \alias{burndown}
 \title{Sample burndown dataset}
-\format{See \code{\link{read.burndown}}.}
 \description{
 This is sample burndown dataset provided for testing.
 }
@@ -13,5 +12,10 @@ Dan Kelley
 }
 \seealso{
 Other data sets provided with \code{plan}.: \code{\link{gantt}}
+
+Other things related to \code{burndown} data: \code{\link{burndown-class}},
+  \code{\link{plot,burndown-method}},
+  \code{\link{read.burndown}},
+  \code{\link{summary,burndown-method}}
 }
 

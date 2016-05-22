@@ -88,7 +88,7 @@ Dan Kelley
 \seealso{
 Other things related to \code{gantt} data: \code{\link{as.gantt}},
   \code{\link{gantt-class}}, \code{\link{ganttAddTask}},
-  \code{\link{plot,gantt-method}},
+  \code{\link{gantt}}, \code{\link{plot,gantt-method}},
   \code{\link{summary,gantt-method}}
 }
 

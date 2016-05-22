@@ -26,6 +26,7 @@ Dan Kelley
 }
 \seealso{
 Other things related to \code{burndown} data: \code{\link{burndown-class}},
+  \code{\link{burndown}},
   \code{\link{plot,burndown-method}},
   \code{\link{read.burndown}}
 }

@@ -8,7 +8,8 @@
 Class to store burndown objects
 }
 \seealso{
-Other things related to \code{burndown} data: \code{\link{plot,burndown-method}},
+Other things related to \code{burndown} data: \code{\link{burndown}},
+  \code{\link{plot,burndown-method}},
   \code{\link{read.burndown}},
   \code{\link{summary,burndown-method}}
 }
