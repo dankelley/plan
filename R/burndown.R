@@ -39,6 +39,7 @@ setMethod(f="initialize",
 #' data(burndown)
 #' summary(burndown)
 #' plot(burndown)
+#' @aliases plot.burndown
 setMethod(f="plot",
           signature=signature("burndown"),
           definition=function(x, col=NULL, draw.plan=TRUE,
@@ -104,18 +105,18 @@ setMethod(f="plot",
                   polygon(xx,yy,col=col[i])
               }
               ## Indicate prediction (possibly with a regression line)
-              total.effort <- c();
+              totalEffort <- c();
               for (i in 1:dim(e.matrix)[1])
-                  total.effort <- c(total.effort,sum(e.matrix[i,]))
-              effort.anomaly <- total.effort - total.effort[1]
-              t.anomaly <- t - t[1]
-              m <- lm (effort.anomaly ~ t.anomaly - 1)
+                  totalEffort <- c(totalEffort,sum(e.matrix[i,]))
+              effortAnomaly <- totalEffort - totalEffort[1]
+              tAnomaly <- t - t[1]
+              m <- lm(effortAnomaly ~ tAnomaly - 1)
               slope <- m$coefficients[1][[1]]
-              intercept <- total.effort[1] - slope * as.numeric(t[1])
-              t.done <- floor(-intercept / slope)
+              intercept <- totalEffort[1] - slope * as.numeric(t[1])
+              ##t.done <- floor(-intercept / slope)
               if (draw.regression)
                   abline(a=intercept, b=slope, col="red",lwd=2,lty=2)
-              class(t.done) <- "POSIXct"
+              ##class(t.done) <- "POSIXct"
               ##cat(paste("NOTE: predicted time of completion is", format(t.done)))
               ## Indicate plan
               if (draw.plan) {
@@ -294,15 +295,14 @@ read.burndown <- function(file, debug=FALSE)
     progress.done    <- progress.done[o]
     progress.time    <- progress.time[o]
     rval <- new("burndown")
-    rval@data <- l <- list(start=start,
-                           deadline=deadline,
-                           tasks=list(key=task.key,
-                                      description=task.description,
-                                      effort=task.effort),
-                           progress = list(key=progress.key,
-                                           progress=progress.done,
-                                           time=progress.time)
-                 )
+    rval@data <- list(start=start,
+                      deadline=deadline,
+                      tasks=list(key=task.key,
+                                 description=task.description,
+                                 effort=task.effort),
+                      progress = list(key=progress.key,
+                                      progress=progress.done,
+                                      time=progress.time))
     rval
 }
 

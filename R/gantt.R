@@ -15,7 +15,16 @@ setMethod(f="initialize",
 
 #' Draw a Gantt diagram
 #' 
-#' Plot a gantt chart, possibly with events superimposed.
+#' Plot a gantt chart that shows the time allocated to a set of tasks, optionally
+#' also with an indication of discrete events that occur as instants in time.
+#'
+#' Time is indicated along the x axis, and tasks are stacked along the y
+#' axis, akin to progress bars. Colour-coding can be used to indicate the degree of
+#' completion of each task. These codes can be set individually for individual
+#' tasks. Progress bars can have arrows (on either end), suggesting tasks
+#' with flexible start/end dates or overdue tasks.  Vertical lines may
+#' be drawn for discreet events. See \dQuote{Examples} for a few of the
+#' possibilities.
 #' 
 #' @param x A \code{gantt} object, i.e. one inheriting from \code{\link{gantt-class}}.
 #' @param xlim optional range of time axis; if not provided, the range of times
@@ -66,10 +75,6 @@ setMethod(f="initialize",
 #' margins) but the sum will be truncated to remain positive.
 #' @param debug boolean, set to \code{TRUE} to monitor the work.
 #' @param ... extra things handed down.
-#' @return The gantt object, returned invisibly.
-#' @note The defaults work well for projects that take a year or two. Consider
-#' adjusting \code{time.labels.by} and \code{time.lines.by} for projects that
-#' are much shorter or longer.
 #' @author Dan Kelley
 #' @family things related to \code{gantt} data
 #' @references Gantt diagrams are described on wikipedia
@@ -112,6 +117,7 @@ setMethod(f="initialize",
 #'
 #' # 8. Arrows at task ends
 #' plot(gantt, arrows=c("right","left","left","right"))
+#' @aliases plot.gantt
 setMethod(f="plot",
           signature=signature("gantt"),
           definition=function (x, xlim,
@@ -234,7 +240,7 @@ setMethod(f="plot",
         mtext(main, side=3, line=line, cex=cex.main)
     }
     if (missing(time.labels.by)) {
-        xaxp <- par("xaxp")
+        ##xaxp <- par("xaxp")
         lines.at.0 <- axis.POSIXct(1,
                                    at=pretty(r, 10), #seq(xaxp[1], xaxp[2], length.out=xaxp[3]) + t0,
                                    format=time.format, cex.axis=par("cex.axis"), ...)
@@ -253,7 +259,7 @@ setMethod(f="plot",
     topdown <- seq(ndescriptions, 1)
     font <- rep(1, ndescriptions)
     font[2] <- 2
-    dat <- axis(2, at=topdown, labels=rep("", ndescriptions), las=2, tick=FALSE, cex.axis=par("cex.axis"))
+    axis(2, at=topdown, labels=rep("", ndescriptions), las=2, tick=FALSE, cex.axis=par("cex.axis"))
     par(xpd=NA)
     for (i in 1:ndescriptions) {
         if (ylabels$justification[i] == 1) {
