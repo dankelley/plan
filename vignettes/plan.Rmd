@@ -76,7 +76,7 @@ reader should continue reading, to learn how to make objects of `gantt-class`.
 If not, the best is to try some other software, because only minimal
 customization is permitted by the `plot,gantt-method`.
 
-```{r}
+```{r fig.height=4, fig.width=6, dev.args=list(pointsize=10)}
 library("plan")
 data(gantt)
 plot(gantt)
@@ -87,28 +87,35 @@ in a text file and use `read.gantt()`, (b) use `as.gantt()` to assemble the
 object in one (somewhat complicated) step, or (c) use `new()` to create an
 object and then `ganttAddTask()` to add tasks one by one. The third approach
 may be the easiest for beginners, so it is illustrated below, with a sketch of
-a typical oceanography MSc program.
+a typical oceanography MSc program. Note that a legend is added, along with an
+indication of the time at which the graph was prepared.
 
 
-```{r}
+```{r fig.height=4, fig.width=6, dev.args=list(pointsize=10)}
 library("plan")
 g <- new("gantt")
 g <- ganttAddTask(g, "Courses") # no times, so a heading
-g <- ganttAddTask(g, "Physical Oceanography", "2016-09-03", "2016-12-05")
-g <- ganttAddTask(g, "Chemistry Oceanography", "2016-09-03", "2016-12-05")
-g <- ganttAddTask(g, "Fluid Dynamics", "2016-09-03", "2016-12-05")
+g <- ganttAddTask(g, "Physical Oceanography", "2016-09-03", "2016-12-05", done=100)
+g <- ganttAddTask(g, "Chemistry Oceanography", "2016-09-03", "2016-12-05", done=100)
+g <- ganttAddTask(g, "Fluid Dynamics", "2016-09-03", "2016-12-05", done=100)
 g <- ganttAddTask(g, "Biological Oceanography", "2017-01-03", "2017-04-05")
 g <- ganttAddTask(g, "Geological Oceanography", "2017-01-03", "2017-04-05")
 g <- ganttAddTask(g, "Time-series Analysis", "2017-01-03", "2017-04-05")
 g <- ganttAddTask(g, "Research") # no times, so a heading
-g <- ganttAddTask(g, "Literature review", "2016-09-03", "2017-04-05")
-g <- ganttAddTask(g, "Develop analysis skills", "2016-09-03", "2017-08-01")
-g <- ganttAddTask(g, "Thesis work", "2017-01-01", "2018-04-01")
+g <- ganttAddTask(g, "Literature review", "2016-09-03", "2017-02-01", done=20)
+g <- ganttAddTask(g, "Develop analysis skills", "2016-09-03", "2017-08-01", done=30)
+g <- ganttAddTask(g, "Thesis work", "2016-10-01", "2018-04-01")
 g <- ganttAddTask(g, "Defend thesis proposal", "2017-05-01", "2017-06-01")
-g <- ganttAddTask(g, "Write papers & thesis", "2017-05-01", "2018-04-01")
+g <- ganttAddTask(g, "Write papers & thesis", "2017-03-01", "2018-04-01")
 g <- ganttAddTask(g, "Defend thesis", "2018-05-01", "2018-05-15")
-# Set 'font' for bold-faced headings
 font <- ifelse(is.na(g[["start"]]), 2, 1)
-plot(g, ylabel=list(font=font))
+plot(g, ylabel=list(font=font),
+     event.time="2017-01-01", event.label="Report Date")
+par(lend="square") # default is round
+#legend("topright", lwd=10, col=c(gray(0.3), gray(0.9)),
+#       legend=c("Not Done", "Done"), title="MSc plan", bg="white")
+legend("topright", pch=22, pt.cex=2, pt.bg=gray(c(0.3, 0.9)),
+       border="black", 
+       legend=c("Completed", "Not Yet Done"), title="MSc plan", bg="white")
 ```
 
