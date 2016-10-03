@@ -330,13 +330,13 @@ setMethod(f="plot",
                 if (arrow == "left" || arrow == "both") {
                     colTriangle <- if (left == mid) col.notdone else col.done
                     polygon(c(left, left-D, left), c(bottom, 0.5*(bottom+top), top),
-                            border=colTriangle, col=colTriangle)
+                            border=colTriangle[i], col=colTriangle[i])
                     lines(c(left, left-D, left), c(bottom, 0.5*(bottom+top), top))
                 }
                 if (arrow == "right" || arrow == "both") {
                     colTriangle <- if (right == mid) col.done else col.notdone
                     polygon(c(right, right+D, right), c(bottom, 0.5*(bottom+top), top),
-                            border=colTriangle, col=colTriangle)
+                            border=colTriangle[i], col=colTriangle[i])
                     lines(c(right, right+D, right), c(bottom, 0.5*(bottom+top), top))
                 }
             }
