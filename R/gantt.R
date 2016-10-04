@@ -68,6 +68,9 @@ setMethod(f="initialize",
 #' may be \code{"left"}, \code{"right"}, \code{"both"} or \code{"neither"}.
 #' Set \code{arrows=NULL}, the default, to avoid such arrows.
 #' @param main character string to be used as chart title.
+#' @param line.main line where title occurs. If \code{NA}, then the
+#' title is placed in a default location; otherwise, it is \code{line.main}
+#' lines above the top of the plot.
 #' @param cex.main numeric, font-size factor for title.
 #' @param mgp setting for \code{\link{par}(mgp)}, within-axis spacing.
 #' @param maiAdd inches to add to the auto-computed margins at the bottom,
@@ -131,7 +134,7 @@ setMethod(f="plot",
                         bg=par("bg"), grid.col="lightgray", grid.lty="dotted",
                         ylabels=list(col=1, cex=1, font=1, justification=1),
                         arrows=NULL,
-                        main="", cex.main=par("cex"),
+                        main="", line.main=NA, cex.main=par("cex"),
                         mgp=c(2, 0.7, 0), maiAdd=rep(0, 4),
                         debug=FALSE, ...)
 {
@@ -223,7 +226,9 @@ setMethod(f="plot",
         }
     }
     bottom.margin <- 0.5
-    topSpace <- charheight * (2 + 2*as.numeric((nchar(main) > 0)))
+    if (is.na(line.main))
+        line.main <- if (nevent==0) 0.5 else 0.5 + cex.event[1]
+    topSpace <- charheight * (2 + line.main)
     mai <- maiAdd + c(bottom.margin, maxwidth, topSpace, 0.25)
     mai <- ifelse(mai < 0, 0, mai)
     opar <- par(no.readonly = TRUE)
@@ -236,8 +241,7 @@ setMethod(f="plot",
     xlim <- as.POSIXct(par("usr")[1:2] + t0)
     box()
     if (nchar(main)) {
-        line <- if (nevent > 0) 2 else 1
-        mtext(main, side=3, line=line, cex=cex.main)
+        mtext(main, side=3, line=line.main, cex=cex.main)
     }
     if (missing(time.labels.by)) {
         ##xaxp <- par("xaxp")
@@ -330,13 +334,13 @@ setMethod(f="plot",
                 if (arrow == "left" || arrow == "both") {
                     colTriangle <- if (left == mid) col.notdone else col.done
                     polygon(c(left, left-D, left), c(bottom, 0.5*(bottom+top), top),
-                            border=colTriangle, col=colTriangle)
+                            border=colTriangle[i], col=colTriangle[i])
                     lines(c(left, left-D, left), c(bottom, 0.5*(bottom+top), top))
                 }
                 if (arrow == "right" || arrow == "both") {
                     colTriangle <- if (right == mid) col.done else col.notdone
                     polygon(c(right, right+D, right), c(bottom, 0.5*(bottom+top), top),
-                            border=colTriangle, col=colTriangle)
+                            border=colTriangle[i], col=colTriangle[i])
                     lines(c(right, right+D, right), c(bottom, 0.5*(bottom+top), top))
                 }
             }
