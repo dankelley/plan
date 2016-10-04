@@ -14,8 +14,8 @@
   lty.eventLine = par("lty"), lwd.eventLine = par("lwd"), bg = par("bg"),
   grid.col = "lightgray", grid.lty = "dotted", ylabels = list(col = 1, cex
   = 1, font = 1, justification = 1), arrows = NULL, main = "",
-  cex.main = par("cex"), mgp = c(2, 0.7, 0), maiAdd = rep(0, 4),
-  debug = FALSE, ...)
+  line.main = NA, cex.main = par("cex"), mgp = c(2, 0.7, 0),
+  maiAdd = rep(0, 4), debug = FALSE, ...)
 }
 \arguments{
 \item{x}{A \code{gantt} object, i.e. one inheriting from \code{\link{gantt-class}}.}
@@ -82,6 +82,10 @@ may be \code{"left"}, \code{"right"}, \code{"both"} or \code{"neither"}.
 Set \code{arrows=NULL}, the default, to avoid such arrows.}
 
 \item{main}{character string to be used as chart title.}
+
+\item{line.main}{line where title occurs. If \code{NA}, then the
+title is placed in a default location; otherwise, it is \code{line.main}
+lines above the top of the plot.}
 
 \item{cex.main}{numeric, font-size factor for title.}
 
