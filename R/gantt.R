@@ -76,7 +76,9 @@ setMethod(f="initialize",
 #' @param maiAdd inches to add to the auto-computed margins at the bottom,
 #' left, top, and right margins. The values may be negative (to tighten
 #' margins) but the sum will be truncated to remain positive.
-#' @param debug boolean, set to \code{TRUE} to monitor the work.
+#' @param axes logical, \code{TRUE} to draw the x axis. (Setting to
+#' \code{FALSE} permits detailed axis tweaking.)
+#' @param debug logical value, \code{TRUE} to monitor the work.
 #' @param ... extra things handed down.
 #' @author Dan Kelley
 #' @family things related to \code{gantt} data
@@ -136,6 +138,7 @@ setMethod(f="plot",
                         arrows=NULL,
                         main="", line.main=NA, cex.main=par("cex"),
                         mgp=c(2, 0.7, 0), maiAdd=rep(0, 4),
+                        axes=TRUE, 
                         debug=FALSE, ...)
 {
     if (!inherits(x, "gantt")) stop("method is only for gantt objects")
@@ -243,22 +246,26 @@ setMethod(f="plot",
     if (nchar(main)) {
         mtext(main, side=3, line=line.main, cex=cex.main)
     }
-    if (missing(time.labels.by)) {
-        ##xaxp <- par("xaxp")
-        lines.at.0 <- axis.POSIXct(1,
-                                   at=pretty(r, 10), #seq(xaxp[1], xaxp[2], length.out=xaxp[3]) + t0,
-                                   format=time.format, cex.axis=par("cex.axis"), ...)
-    } else {
-        lines.at.0 <- axis.POSIXct(1,
-                                   at=as.POSIXct(seq.POSIXt(as.POSIXct(xlim[1]), as.POSIXct(xlim[2]), by=time.labels.by)),
-                                   format=time.format, cex.axis=par("cex.axis"), ...)
+    if (axes) {
+        if (missing(time.labels.by)) {
+            ##xaxp <- par("xaxp")
+            lines.at.0 <- axis.POSIXct(1,
+                                       at=pretty(r, 10), #seq(xaxp[1], xaxp[2], length.out=xaxp[3]) + t0,
+                                       format=time.format, cex.axis=par("cex.axis"), ...)
+        } else {
+            lines.at.0 <- axis.POSIXct(1,
+                                       at=as.POSIXct(seq.POSIXt(as.POSIXct(xlim[1]), as.POSIXct(xlim[2]), by=time.labels.by)),
+                                       format=time.format, cex.axis=par("cex.axis"), ...)
+        }
     }
-    if (!is.null(subTics))
-        rug(subTics, quiet=TRUE)
-    if (missing(time.lines.by)) {
-        abline(v=lines.at.0, col = grid.col, lty=grid.lty)
-    } else {
-        abline(v = seq.POSIXt(as.POSIXct(xlim[1]), as.POSIXct(xlim[2]), by=time.lines.by), col = grid.col, lty=grid.lty)
+    if (axes) {
+        if (!is.null(subTics))
+            rug(subTics, quiet=TRUE)
+        if (missing(time.lines.by)) {
+            abline(v=lines.at.0, col = grid.col, lty=grid.lty)
+        } else {
+            abline(v = seq.POSIXt(as.POSIXct(xlim[1]), as.POSIXct(xlim[2]), by=time.lines.by), col = grid.col, lty=grid.lty)
+        }
     }
     topdown <- seq(ndescriptions, 1)
     font <- rep(1, ndescriptions)

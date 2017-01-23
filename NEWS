@@ -1,4 +1,5 @@
 Version 0.4-3
+- plot(gantt) gets 'axes' argument
 - gantAddTask() added
 - extensions to plot,gantt-method
 - rewrite package with S4 objects (users now do e.g. ?"plot,gantt-method")
