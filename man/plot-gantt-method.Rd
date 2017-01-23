@@ -15,7 +15,7 @@
   grid.col = "lightgray", grid.lty = "dotted", ylabels = list(col = 1, cex
   = 1, font = 1, justification = 1), arrows = NULL, main = "",
   line.main = NA, cex.main = par("cex"), mgp = c(2, 0.7, 0),
-  maiAdd = rep(0, 4), debug = FALSE, ...)
+  maiAdd = rep(0, 4), axes = TRUE, debug = FALSE, ...)
 }
 \arguments{
 \item{x}{A \code{gantt} object, i.e. one inheriting from \code{\link{gantt-class}}.}
@@ -95,7 +95,10 @@ lines above the top of the plot.}
 left, top, and right margins. The values may be negative (to tighten
 margins) but the sum will be truncated to remain positive.}
 
-\item{debug}{boolean, set to \code{TRUE} to monitor the work.}
+\item{axes}{logical, \code{TRUE} to draw the x axis. (Setting to
+\code{FALSE} permits detailed axis tweaking.)}
+
+\item{debug}{logical value, \code{TRUE} to monitor the work.}
 
 \item{...}{extra things handed down.}
 }
