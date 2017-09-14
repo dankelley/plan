@@ -7,16 +7,15 @@
 \description{
 This is sample gantt dataset provided for testing.
 }
-\author{
-Dan Kelley
-}
 \seealso{
-Other data sets provided with \code{plan}.: \code{\link{burndown}}
-
 Other things related to \code{gantt} data: \code{\link{as.gantt}},
   \code{\link{gantt-class}}, \code{\link{ganttAddTask}},
   \code{\link{plot,gantt-method}},
   \code{\link{read.gantt}},
   \code{\link{summary,gantt-method}}
-}
 
+Other data sets provided with \code{plan}.: \code{\link{burndown}}
+}
+\author{
+Dan Kelley
+}

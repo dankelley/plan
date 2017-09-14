@@ -46,9 +46,6 @@ data(burndown)
 summary(burndown)
 plot(burndown)
 }
-\author{
-Dan Kelley
-}
 \references{
 \url{http://alistair.cockburn.us/crystal/articles/evabc/earnedvalueandburncharts.htm}.
 }
@@ -57,4 +54,6 @@ Other things related to \code{burndown} data: \code{\link{burndown-class}},
   \code{\link{burndown}}, \code{\link{read.burndown}},
   \code{\link{summary,burndown-method}}
 }
-
+\author{
+Dan Kelley
+}

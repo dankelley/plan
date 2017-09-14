@@ -72,6 +72,7 @@ Key, Description,                 Start,        End, Done, NeededBy
  12, Finalize thesis,        2009-04-18, 2009-05-07, 0 
 }
 }
+
 \examples{
 
 \dontrun{
@@ -82,13 +83,12 @@ plot(gantt)
 }
 
 }
-\author{
-Dan Kelley
-}
 \seealso{
 Other things related to \code{gantt} data: \code{\link{as.gantt}},
   \code{\link{gantt-class}}, \code{\link{ganttAddTask}},
   \code{\link{gantt}}, \code{\link{plot,gantt-method}},
   \code{\link{summary,gantt-method}}
 }
-
+\author{
+Dan Kelley
+}

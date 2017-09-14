@@ -13,4 +13,3 @@ gantt diagrams, etc.; see \code{\link{burndown-class}} and
 \author{
 Dan Kelley
 }
-

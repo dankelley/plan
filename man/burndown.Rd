@@ -7,15 +7,14 @@
 \description{
 This is sample burndown dataset provided for testing.
 }
-\author{
-Dan Kelley
-}
 \seealso{
-Other data sets provided with \code{plan}.: \code{\link{gantt}}
-
 Other things related to \code{burndown} data: \code{\link{burndown-class}},
   \code{\link{plot,burndown-method}},
   \code{\link{read.burndown}},
   \code{\link{summary,burndown-method}}
-}
 
+Other data sets provided with \code{plan}.: \code{\link{gantt}}
+}
+\author{
+Dan Kelley
+}

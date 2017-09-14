@@ -23,9 +23,6 @@ library(plan)
 data(gantt)
 summary(gantt)
 }
-\author{
-Dan Kelley
-}
 \references{
 \url{http://alistair.cockburn.us/crystal/articles/evabc/earnedvalueandburncharts.htm}.
 }
@@ -35,4 +32,6 @@ Other things related to \code{gantt} data: \code{\link{as.gantt}},
   \code{\link{gantt}}, \code{\link{plot,gantt-method}},
   \code{\link{read.gantt}}
 }
-
+\author{
+Dan Kelley
+}
