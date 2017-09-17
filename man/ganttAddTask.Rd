@@ -62,4 +62,3 @@ Other things related to \code{gantt} data: \code{\link{as.gantt}},
   \code{\link{read.gantt}},
   \code{\link{summary,gantt-method}}
 }
-

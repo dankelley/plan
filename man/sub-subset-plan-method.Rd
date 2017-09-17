@@ -21,4 +21,3 @@
 \description{
 Replace something within a plan object, avoiding using the "slot" notation.
 }
-

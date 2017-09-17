@@ -28,4 +28,3 @@ print(trim.whitespace(x))
 Dan Kelley
 }
 \keyword{misc}
-

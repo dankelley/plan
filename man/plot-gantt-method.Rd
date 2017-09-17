@@ -153,9 +153,6 @@ plot(gantt, ylabel=list(font=2, justification=0))
 # 8. Arrows at task ends
 plot(gantt, arrows=c("right","left","left","right"))
 }
-\author{
-Dan Kelley
-}
 \references{
 Gantt diagrams are described on wikipedia
 \url{http://en.wikipedia.org/wiki/Gantt_Chart}.
@@ -166,4 +163,6 @@ Other things related to \code{gantt} data: \code{\link{as.gantt}},
   \code{\link{gantt}}, \code{\link{read.gantt}},
   \code{\link{summary,gantt-method}}
 }
-
+\author{
+Dan Kelley
+}

@@ -13,4 +13,3 @@ Other things related to \code{burndown} data: \code{\link{burndown}},
   \code{\link{read.burndown}},
   \code{\link{summary,burndown-method}}
 }
-

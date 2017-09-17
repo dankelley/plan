@@ -19,4 +19,3 @@
 \description{
 Extract something from a plan object, avoiding using the "slot" notation.
 }
-

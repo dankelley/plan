@@ -65,9 +65,6 @@ g <- as.gantt(key=1:8, c("Academic",
 plot(g, xlim=c(arrive, leave),
      ylabel=list(font=c(2,rep(1,3),2), justification=c(0,rep(1,3),0)))
 }
-\author{
-Dan Kelley
-}
 \seealso{
 Other things related to \code{gantt} data: \code{\link{gantt-class}},
   \code{\link{ganttAddTask}}, \code{\link{gantt}},
@@ -75,4 +72,6 @@ Other things related to \code{gantt} data: \code{\link{gantt-class}},
   \code{\link{read.gantt}},
   \code{\link{summary,gantt-method}}
 }
-
+\author{
+Dan Kelley
+}

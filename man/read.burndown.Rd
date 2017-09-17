@@ -91,6 +91,7 @@ Key, Done, Time
   6,  100, 2006-04-09 16:00:00 
 }
 }
+
 \examples{
 \dontrun{
 library(plan)
@@ -99,13 +100,12 @@ summary(b)
 plot(b)
 }
 }
-\author{
-Dan Kelley
-}
 \seealso{
 Other things related to \code{burndown} data: \code{\link{burndown-class}},
   \code{\link{burndown}},
   \code{\link{plot,burndown-method}},
   \code{\link{summary,burndown-method}}
 }
-
+\author{
+Dan Kelley
+}
