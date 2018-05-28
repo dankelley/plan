@@ -12,7 +12,7 @@ ganttAddTask(g, description = "", start = NA, end = NA, done = 0,
 
 \item{description}{A character string describing the task.}
 
-\item{start}{A character string indicating the task start time, in a format understood by \code{\link{as.POSIXct}}. 
+\item{start}{A character string indicating the task start time, in a format understood by \code{\link{as.POSIXct}}.
 Set to \code{""} (the default) to indicate that \code{description} is a heading, with no start and end time.}
 
 \item{end}{A character string indicating the end time, in a format understood by \code{\link{as.POSIXct}}.}

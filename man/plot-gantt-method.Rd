@@ -14,8 +14,8 @@
   lty.eventLine = par("lty"), lwd.eventLine = par("lwd"), bg = par("bg"),
   grid.col = "lightgray", grid.lty = "dotted", ylabels = list(col = 1, cex
   = 1, font = 1, justification = 1), arrows = NULL, main = "",
-  line.main = NA, cex.main = par("cex"), mgp = c(2, 0.7, 0),
-  maiAdd = rep(0, 4), axes = TRUE, debug = FALSE, ...)
+  line.main = NA, cex.main = par("cex"), axes = TRUE, debug = FALSE,
+  ...)
 }
 \arguments{
 \item{x}{A \code{gantt} object, i.e. one inheriting from \code{\link{gantt-class}}.}
@@ -88,12 +88,6 @@ title is placed in a default location; otherwise, it is \code{line.main}
 lines above the top of the plot.}
 
 \item{cex.main}{numeric, font-size factor for title.}
-
-\item{mgp}{setting for \code{\link{par}(mgp)}, within-axis spacing.}
-
-\item{maiAdd}{inches to add to the auto-computed margins at the bottom,
-left, top, and right margins. The values may be negative (to tighten
-margins) but the sum will be truncated to remain positive.}
 
 \item{axes}{logical, \code{TRUE} to draw the x axis. (Setting to
 \code{FALSE} permits detailed axis tweaking.)}

@@ -1,6 +1,6 @@
 #' Class to store \code{gantt} objects
 #'
-#' These objects may be created with \code{\link{as.gantt}} or 
+#' These objects may be created with \code{\link{as.gantt}} or
 #' \code{\link{read.gantt}}.
 #' @family things related to \code{gantt} data
 setClass("gantt", contains="plan")
@@ -14,7 +14,7 @@ setMethod(f="initialize",
 
 
 #' Draw a Gantt diagram
-#' 
+#'
 #' Plot a gantt chart that shows the time allocated to a set of tasks, optionally
 #' also with an indication of discrete events that occur as instants in time.
 #'
@@ -25,7 +25,7 @@ setMethod(f="initialize",
 #' with flexible start/end dates or overdue tasks.  Vertical lines may
 #' be drawn for discreet events. See \dQuote{Examples} for a few of the
 #' possibilities.
-#' 
+#'
 #' @param x A \code{gantt} object, i.e. one inheriting from \code{\link{gantt-class}}.
 #' @param xlim optional range of time axis; if not provided, the range of times
 #' in \code{x} will be used.
@@ -72,10 +72,10 @@ setMethod(f="initialize",
 #' title is placed in a default location; otherwise, it is \code{line.main}
 #' lines above the top of the plot.
 #' @param cex.main numeric, font-size factor for title.
-#' @param mgp setting for \code{\link{par}(mgp)}, within-axis spacing.
-#' @param maiAdd inches to add to the auto-computed margins at the bottom,
-#' left, top, and right margins. The values may be negative (to tighten
-#' margins) but the sum will be truncated to remain positive.
+## @param mgp setting for \code{\link{par}(mgp)}, within-axis spacing.
+## @param maiAdd inches to add to the auto-computed margins at the bottom,
+## left, top, and right margins. The values may be negative (to tighten
+## margins) but the sum will be truncated to remain positive.
 #' @param axes logical, \code{TRUE} to draw the x axis. (Setting to
 #' \code{FALSE} permits detailed axis tweaking.)
 #' @param debug logical value, \code{TRUE} to monitor the work.
@@ -84,7 +84,7 @@ setMethod(f="initialize",
 #' @family things related to \code{gantt} data
 #' @references Gantt diagrams are described on wikipedia
 #' \url{http://en.wikipedia.org/wiki/Gantt_Chart}.
-#' 
+#'
 #' @examples
 #' library(plan)
 #' data(gantt)
@@ -130,21 +130,21 @@ setMethod(f="plot",
                         event.time=NULL, event.label=NULL, event.side=3,
                         col.connector="black",
                         col.done=gray(0.3), col.notdone=gray(0.9),
-                        col.eventLine=gray(0.1), col.event=par("fg"), 
+                        col.eventLine=gray(0.1), col.event=par("fg"),
                         cex.event=par("cex"), font.event=par("font"),
                         lty.eventLine=par("lty"), lwd.eventLine=par("lwd"),
                         bg=par("bg"), grid.col="lightgray", grid.lty="dotted",
                         ylabels=list(col=1, cex=1, font=1, justification=1),
                         arrows=NULL,
                         main="", line.main=NA, cex.main=par("cex"),
-                        mgp=c(2, 0.7, 0), maiAdd=rep(0, 4),
-                        axes=TRUE, 
+                        #mgp=c(2, 0.7, 0), maiAdd=rep(0, 4),
+                        axes=TRUE,
                         debug=FALSE, ...)
 {
     if (!inherits(x, "gantt")) stop("method is only for gantt objects")
-    opar <- par(no.readonly = TRUE)
+    ##opar <- par(no.readonly = TRUE)
 
-    mgp <- c(3, 1, 0)
+    ##mgp <- c(3, 1, 0)
     half.height <- 0.33
     t0 <- as.POSIXct("1970-01-01 00:00:00")
     ## Lengthen anything that can be a vector
@@ -228,14 +228,14 @@ setMethod(f="plot",
             }
         }
     }
-    bottom.margin <- 0.5
-    if (is.na(line.main))
-        line.main <- if (nevent==0) 0.5 else 0.5 + cex.event[1]
-    topSpace <- charheight * (2 + line.main)
-    mai <- maiAdd + c(bottom.margin, maxwidth, topSpace, 0.25)
-    mai <- ifelse(mai < 0, 0, mai)
-    opar <- par(no.readonly = TRUE)
-    par(mgp=mgp, mai=mai, omi=c(0.1, 0.1, 0.1, 0.1), bg=bg)
+    ##bottom.margin <- 0.5
+    ##if (is.na(line.main))
+    ##    line.main <- if (nevent==0) 0.5 else 0.5 + cex.event[1]
+    ##topSpace <- charheight * (2 + line.main)
+    ##mai <- maiAdd + c(bottom.margin, maxwidth, topSpace, 0.25)
+    ##mai <- ifelse(mai < 0, 0, mai)
+    ##opar <- par(no.readonly = TRUE)
+    ## par(mgp=mgp, mai=mai, omi=c(0.1, 0.1, 0.1, 0.1), bg=bg)
     plot(c(r[1], r[2]), c(1,2*ndescriptions),
          ylim=c(0.5, ndescriptions + 0.5),
          xaxs="i", yaxs="i",
@@ -310,7 +310,7 @@ setMethod(f="plot",
         for (e in 1:ne) {
             t <- as.POSIXct(event.time[e])
             abline(v=t, col=col.event[e], lwd=lwd.eventLine[e], lty=lty.eventLine[e])
-            mtext(event.label[e], side=event.side, at=t, 
+            mtext(event.label[e], side=event.side, at=t,
                   col=col.event[e], font=font.event[e], cex=cex.event[e])
         }
     }
@@ -363,11 +363,11 @@ setMethod(f="plot",
 
 
 #' Summarize a gantt object
-#' 
+#'
 #' Summarizes a gantt object.
-#' 
+#'
 #' Prints a summary of a gantt dataset.
-#' 
+#'
 #' @param object A \code{gantt} object, i.e. one inheriting from \code{\link{gantt-class}}.
 #' @param ... ignored.
 #' @author Dan Kelley
@@ -413,7 +413,7 @@ setMethod(f="summary",
 
 
 #' Create a \code{gantt} object, i.e. one inheriting from \code{\link{gantt-class}}.
-#' 
+#'
 #' @param key integer key for task, normally 1 for the first task, 2 for the
 #' second, etc.
 #' @param description character string describing the task (brief)
@@ -428,7 +428,7 @@ setMethod(f="summary",
 #' @author Dan Kelley
 #' @family things related to \code{gantt} data
 #' @examples
-#' 
+#'
 #' library(plan)
 #' arrive <- as.POSIXct("2012-09-05")
 #' month <- 28 * 86400
@@ -492,35 +492,35 @@ as.gantt <- function(key, description, start, end, done, neededBy)
 
 
 #' Read a gantt data file
-#' 
+#'
 #' Read a data file containing gantt information.
 #' The data format is strict, and deviations from it may lead to error messages
 #' that are difficult to understand; see \dQuote{Details}.
-#' 
+#'
 #' The first line is a header, and must contain the words \code{Key},
 #' \code{Description}, \code{Start}, \code{End}, \code{Done}, and
 #' \code{NeededBy}, written exactly in this way, with commas separating the
 #' words.  (Blanks are ignored in this line.)
-#' 
+#'
 #' Additional lines indicate the details of each of several sub-projects, in
 #' comma-separated items, as follows:
-#' 
+#'
 #' \itemize{ \item A key for the task.  These must be distinct, and are
 #' typically just the numbers 1, 2, 3, etc.
-#' 
+#'
 #' \item A description of the task.  (This may not contain commas!)
-#' 
+#'
 #' \item The start time for the task, in ISO 8601 format (\code{YYYY-MM-DD} or
 #' \code{YYYY-MM-DD hh:mm:ss}).
-#' 
+#'
 #' \item The end time for the task, in the same format as the starting time. If
 #' an end time equals the corresponding start time, no rectangle will be drawn
 #' for the activity, and this gives a way to make headings (see example 7
 #' for \code{\link{plot,gantt-method}}).
-#' 
+#'
 #' \item A number indicating the percentage of this task that has been
 #' completed to date.
-#' 
+#'
 #' \item A space-separated optional list of numbers that indicate the keys of
 #' other tasks that depend on this one.  This list is ignored in the present
 #' version of \code{read.gantt}.  }
@@ -539,7 +539,7 @@ as.gantt <- function(key, description, start, end, done, neededBy)
 #'   9, Revise thesis,          2009-03-15, 2009-03-30, 0
 #'  10, Thesis on display,      2009-04-01, 2009-04-15, 0
 #'  11, Defend thesis,          2009-04-16, 2009-04-17, 0
-#'  12, Finalize thesis,        2009-04-18, 2009-05-07, 0 
+#'  12, Finalize thesis,        2009-04-18, 2009-05-07, 0
 #' }
 #'
 #' @param file a connection or a character string giving the name of the file
@@ -554,14 +554,14 @@ as.gantt <- function(key, description, start, end, done, neededBy)
 #' @author Dan Kelley
 #' @family things related to \code{gantt} data
 #' @examples
-#' 
+#'
 #' \dontrun{
 #' library(plan)
 #' gantt <- read.gantt("demo/gantt.dat")
 #' summary(gantt)
 #' plot(gantt)
 #' }
-#' 
+#'
 read.gantt <- function(file, debug=FALSE)
 {
     if (is.character(file)) {
@@ -608,8 +608,8 @@ read.gantt <- function(file, debug=FALSE)
 #'
 #' @param g A \code{gantt} object, i.e. one inheriting from \code{\link{gantt-class}}.
 #' @param description A character string describing the task.
-#' @param start A character string indicating the task start time, in a format understood by \code{\link{as.POSIXct}}. 
-#' Set to \code{""} (the default) to indicate that \code{description} is a heading, with no start and end time. 
+#' @param start A character string indicating the task start time, in a format understood by \code{\link{as.POSIXct}}.
+#' Set to \code{""} (the default) to indicate that \code{description} is a heading, with no start and end time.
 #' @param end A character string indicating the end time, in a format understood by \code{\link{as.POSIXct}}.
 #' @param done A numerical value indicating the fraction done.
 #' @param neededBy An integer indicating a task that depends on the completion of this task. If this is

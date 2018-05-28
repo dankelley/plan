@@ -69,7 +69,7 @@ Key, Description,                 Start,        End, Done, NeededBy
   9, Revise thesis,          2009-03-15, 2009-03-30, 0
  10, Thesis on display,      2009-04-01, 2009-04-15, 0
  11, Defend thesis,          2009-04-16, 2009-04-17, 0
- 12, Finalize thesis,        2009-04-18, 2009-05-07, 0 
+ 12, Finalize thesis,        2009-04-18, 2009-05-07, 0
 }
 }
 
