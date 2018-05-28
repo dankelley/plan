@@ -1,7 +1,7 @@
 Package: plan
-Version: 0.4-3
-Date: 2017-01-23
+Type: Package
 Title: Tools for Project Planning
+Version: 0.4-3
 Author: Dan Kelley <Dan.Kelley@Dal.Ca>
 Maintainer: Dan Kelley <Dan.Kelley@Dal.Ca>
 Depends:
@@ -10,7 +10,7 @@ Depends:
     methods
 Suggests:
     knitr
-Description: Supports the creation of `burndown` charts and `gantt` diagrams.
+Description: Supports the creation of 'burndown' charts and 'gantt' diagrams.
 License: GPL (>= 2)
 URL: http://github.com/dankelley/plan
 LazyLoad: yes
