@@ -52,7 +52,7 @@ setMethod(f="plot",
               on.exit(opar)
               mgp <- c(2, 3/4, 0)
               par(mgp=mgp)
-              par(mar=c(mgp[1]+1, mgp[1]+1,1,1))
+              par(mar=c(mgp[1], mgp[1]+1,1,1))
               num.items = length(x[["tasks"]]$key)
               num.progress = length(x[["progress"]]$key)
               if (is.null(col)) {
@@ -94,7 +94,7 @@ setMethod(f="plot",
               }
               time.range <- range(c(t[1], time.max))
               plot(time.range, range(c(0,sum(x[["tasks"]]$effort))),type='n',
-                   ylab=y.name,
+                   xlab="", ylab=y.name,
                    xaxs="i")
               xx <- c(t, rev(t))
               bottom <- rep(0,1+num.progress)
