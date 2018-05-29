@@ -1,5 +1,5 @@
 Version 0.4-3
-- remove mar and mgp setting in plot functions
+- explicitly list imported functions in NAMESPACE
 - plot(gantt) gets 'axes' argument
 - gantAddTask() added
 - extensions to plot,gantt-method

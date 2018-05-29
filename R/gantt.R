@@ -72,10 +72,11 @@ setMethod(f="initialize",
 #' title is placed in a default location; otherwise, it is \code{line.main}
 #' lines above the top of the plot.
 #' @param cex.main numeric, font-size factor for title.
-## @param mgp setting for \code{\link{par}(mgp)}, within-axis spacing.
-## @param maiAdd inches to add to the auto-computed margins at the bottom,
-## left, top, and right margins. The values may be negative (to tighten
-## margins) but the sum will be truncated to remain positive.
+#' @param mgp setting for \code{\link{par}(mgp)}, within-axis spacing. The
+#' default value tightens axis spacing.
+#' @param maiAdd inches to add to the auto-computed margins at the bottom,
+#' left, top, and right margins. The values may be negative (to tighten
+#' margins) but the sum will be truncated to remain positive.
 #' @param axes logical, \code{TRUE} to draw the x axis. (Setting to
 #' \code{FALSE} permits detailed axis tweaking.)
 #' @param debug logical value, \code{TRUE} to monitor the work.
@@ -137,14 +138,12 @@ setMethod(f="plot",
                         ylabels=list(col=1, cex=1, font=1, justification=1),
                         arrows=NULL,
                         main="", line.main=NA, cex.main=par("cex"),
-                        #mgp=c(2, 0.7, 0), maiAdd=rep(0, 4),
+                        mgp=c(2, 0.7, 0), maiAdd=rep(0, 4),
                         axes=TRUE,
                         debug=FALSE, ...)
 {
     if (!inherits(x, "gantt")) stop("method is only for gantt objects")
-    ##opar <- par(no.readonly = TRUE)
-
-    ##mgp <- c(3, 1, 0)
+    opar <- par(no.readonly = TRUE)
     half.height <- 0.33
     t0 <- as.POSIXct("1970-01-01 00:00:00")
     ## Lengthen anything that can be a vector
@@ -228,14 +227,14 @@ setMethod(f="plot",
             }
         }
     }
-    ##bottom.margin <- 0.5
-    ##if (is.na(line.main))
-    ##    line.main <- if (nevent==0) 0.5 else 0.5 + cex.event[1]
-    ##topSpace <- charheight * (2 + line.main)
-    ##mai <- maiAdd + c(bottom.margin, maxwidth, topSpace, 0.25)
-    ##mai <- ifelse(mai < 0, 0, mai)
-    ##opar <- par(no.readonly = TRUE)
-    ## par(mgp=mgp, mai=mai, omi=c(0.1, 0.1, 0.1, 0.1), bg=bg)
+    bottom.margin <- 0.5
+    if (is.na(line.main))
+        line.main <- if (nevent==0) 0.5 else 0.5 + cex.event[1]
+    topSpace <- charheight * (2 + line.main)
+    mai <- maiAdd + c(bottom.margin, maxwidth, topSpace, 0.25)
+    mai <- ifelse(mai < 0, 0, mai)
+    opar <- par(no.readonly = TRUE)
+    par(mgp=mgp, mai=mai, omi=c(0.1, 0.1, 0.1, 0.1), bg=bg)
     plot(c(r[1], r[2]), c(1,2*ndescriptions),
          ylim=c(0.5, ndescriptions + 0.5),
          xaxs="i", yaxs="i",
@@ -354,7 +353,7 @@ setMethod(f="plot",
         }
     }
     abline(h = (topdown[1:(ndescriptions - 1)] + topdown[2:ndescriptions])/2,  col = grid.col, lty=grid.lty)
-    ## par(opar)
+    par(opar)
     invisible(x)
 })
 

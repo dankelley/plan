@@ -304,9 +304,6 @@ read.burndown <- function(file, debug=FALSE)
 }
 
 
-
-
-
 #' Summarize a burndown object
 #'
 #' Print a summary of a burndown dataset.
