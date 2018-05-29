@@ -11,7 +11,7 @@
   y.name = "Remaining Effort", debug = FALSE, ...)
 }
 \arguments{
-\item{x}{A \code{burndown} object, i.e. one inheriting from 
+\item{x}{A \code{burndown} object, i.e. one inheriting from
 \code{\link{burndown-class}}.}
 
 \item{col}{list of colours for items, starting with the first key in the

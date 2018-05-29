@@ -89,7 +89,8 @@ lines above the top of the plot.}
 
 \item{cex.main}{numeric, font-size factor for title.}
 
-\item{mgp}{setting for \code{\link{par}(mgp)}, within-axis spacing.}
+\item{mgp}{setting for \code{\link{par}(mgp)}, within-axis spacing. The
+default value tightens axis spacing.}
 
 \item{maiAdd}{inches to add to the auto-computed margins at the bottom,
 left, top, and right margins. The values may be negative (to tighten

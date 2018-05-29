@@ -72,7 +72,8 @@ setMethod(f="initialize",
 #' title is placed in a default location; otherwise, it is \code{line.main}
 #' lines above the top of the plot.
 #' @param cex.main numeric, font-size factor for title.
-#' @param mgp setting for \code{\link{par}(mgp)}, within-axis spacing.
+#' @param mgp setting for \code{\link{par}(mgp)}, within-axis spacing. The
+#' default value tightens axis spacing.
 #' @param maiAdd inches to add to the auto-computed margins at the bottom,
 #' left, top, and right margins. The values may be negative (to tighten
 #' margins) but the sum will be truncated to remain positive.
@@ -143,8 +144,6 @@ setMethod(f="plot",
 {
     if (!inherits(x, "gantt")) stop("method is only for gantt objects")
     opar <- par(no.readonly = TRUE)
-
-    mgp <- c(3, 1, 0)
     half.height <- 0.33
     t0 <- as.POSIXct("1970-01-01 00:00:00")
     ## Lengthen anything that can be a vector
@@ -354,7 +353,7 @@ setMethod(f="plot",
         }
     }
     abline(h = (topdown[1:(ndescriptions - 1)] + topdown[2:ndescriptions])/2,  col = grid.col, lty=grid.lty)
-    ## par(opar)
+    par(opar)
     invisible(x)
 })
 
