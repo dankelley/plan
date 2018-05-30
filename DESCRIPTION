@@ -13,9 +13,7 @@ Suggests:
 Description: Supports the creation of 'burndown' charts and 'gantt' diagrams.
 License: GPL (>= 2)
 URL: http://github.com/dankelley/plan
-LazyLoad: yes
-LazyData: no
+LazyData: false
 Packaged: Dan Kelley
-Encoding: UTF-8
 RoxygenNote: 6.0.1
 VignetteBuilder: knitr

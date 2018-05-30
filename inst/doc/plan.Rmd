@@ -13,7 +13,7 @@ output:
     dev.args: list(pointsize=11)
 
 vignette: >
-  %\VignetteIndexEntry{oce}
+  %\VignetteIndexEntry{plan}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -60,7 +60,6 @@ The following plots the burndown chart
 ```{r}
 library("plan")
 data(burndown)
-par(mgp=c(2, 0.7, 0)) # tighten axis spacing
 plot(burndown)
 ```
 
