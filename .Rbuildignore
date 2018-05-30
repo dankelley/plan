@@ -4,4 +4,6 @@
 ^\.Rproj\.user$
 create_data
 _layouts
+revdep
+^cran-comments.md$
 

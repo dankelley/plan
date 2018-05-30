@@ -4,7 +4,6 @@ knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 ## ------------------------------------------------------------------------
 library("plan")
 data(burndown)
-par(mgp=c(2, 0.7, 0)) # tighten axis spacing
 plot(burndown)
 
 ## ----fig.height=4, fig.width=6, dev.args=list(pointsize=10)--------------
