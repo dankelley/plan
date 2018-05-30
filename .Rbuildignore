@@ -6,4 +6,4 @@ create_data
 _layouts
 revdep
 ^cran-comments.md$
-
+^cran-comments\.md$
