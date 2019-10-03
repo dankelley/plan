@@ -19,3 +19,5 @@ Other data sets provided with \code{plan}.: \code{\link{burndown}}
 \author{
 Dan Kelley
 }
+\concept{data sets provided with \code{plan}.}
+\concept{things related to \code{gantt} data}

@@ -25,8 +25,9 @@ summary(burndown)
 Other things related to \code{burndown} data: \code{\link{burndown-class}},
   \code{\link{burndown}},
   \code{\link{plot,burndown-method}},
-  \code{\link{read.burndown}}
+  \code{\link{read.burndown}}, \code{\link{toBurndown}}
 }
 \author{
 Dan Kelley
 }
+\concept{things related to \code{burndown} data}

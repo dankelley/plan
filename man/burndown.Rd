@@ -11,10 +11,13 @@ This is sample burndown dataset provided for testing.
 Other things related to \code{burndown} data: \code{\link{burndown-class}},
   \code{\link{plot,burndown-method}},
   \code{\link{read.burndown}},
-  \code{\link{summary,burndown-method}}
+  \code{\link{summary,burndown-method}},
+  \code{\link{toBurndown}}
 
 Other data sets provided with \code{plan}.: \code{\link{gantt}}
 }
 \author{
 Dan Kelley
 }
+\concept{data sets provided with \code{plan}.}
+\concept{things related to \code{burndown} data}

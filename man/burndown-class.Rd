@@ -11,5 +11,7 @@ Class to store burndown objects
 Other things related to \code{burndown} data: \code{\link{burndown}},
   \code{\link{plot,burndown-method}},
   \code{\link{read.burndown}},
-  \code{\link{summary,burndown-method}}
+  \code{\link{summary,burndown-method}},
+  \code{\link{toBurndown}}
 }
+\concept{things related to \code{burndown} data}

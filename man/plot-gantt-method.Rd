@@ -7,15 +7,16 @@
 \title{Draw a Gantt diagram}
 \usage{
 \S4method{plot}{gantt}(x, xlim, time.format = NULL, time.labels.by,
-  time.lines.by, event.time = NULL, event.label = NULL, event.side = 3,
-  col.connector = "black", col.done = gray(0.3), col.notdone = gray(0.9),
-  col.eventLine = gray(0.1), col.event = par("fg"),
-  cex.event = par("cex"), font.event = par("font"),
-  lty.eventLine = par("lty"), lwd.eventLine = par("lwd"), bg = par("bg"),
-  grid.col = "lightgray", grid.lty = "dotted", ylabels = list(col = 1, cex
-  = 1, font = 1, justification = 1), arrows = NULL, main = "",
-  line.main = NA, cex.main = par("cex"), mgp = c(2, 0.7, 0),
-  maiAdd = rep(0, 4), axes = TRUE, debug = FALSE, ...)
+  time.lines.by, event.time = NULL, event.label = NULL,
+  event.side = 3, col.connector = "black", col.done = gray(0.3),
+  col.notdone = gray(0.9), col.eventLine = gray(0.1),
+  col.event = par("fg"), cex.event = par("cex"),
+  font.event = par("font"), lty.eventLine = par("lty"),
+  lwd.eventLine = par("lwd"), bg = par("bg"), grid.col = "lightgray",
+  grid.lty = "dotted", ylabels = list(col = 1, cex = 1, font = 1,
+  justification = 1), arrows = NULL, main = "", line.main = NA,
+  cex.main = par("cex"), mgp = c(2, 0.7, 0), maiAdd = rep(0, 4),
+  axes = TRUE, debug = FALSE, ...)
 }
 \arguments{
 \item{x}{A \code{gantt} object, i.e. one inheriting from \code{\link{gantt-class}}.}
@@ -167,3 +168,4 @@ Other things related to \code{gantt} data: \code{\link{as.gantt}},
 \author{
 Dan Kelley
 }
+\concept{things related to \code{gantt} data}

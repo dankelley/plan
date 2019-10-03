@@ -15,5 +15,5 @@ License: GPL (>= 2)
 URL: http://github.com/dankelley/plan
 LazyData: false
 Packaged: Dan Kelley
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1
 VignetteBuilder: knitr

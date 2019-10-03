@@ -13,3 +13,4 @@ Base Class for plan Objects
 \item{\code{data}}{A list containing variable contents.}
 }}
 
+\concept{classes provided by \code{plan}}
