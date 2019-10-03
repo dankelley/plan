@@ -50,10 +50,10 @@ plot(burndown)
 \url{http://alistair.cockburn.us/crystal/articles/evabc/earnedvalueandburncharts.htm}.
 }
 \seealso{
-Other things related to \code{burndown} data: \code{\link{burndown-class}},
-  \code{\link{burndown}}, \code{\link{read.burndown}},
-  \code{\link{summary,burndown-method}},
-  \code{\link{toBurndown}}
+Other things related to \code{burndown} data: \code{\link{as.burndown}},
+  \code{\link{burndown-class}}, \code{\link{burndown}},
+  \code{\link{read.burndown}},
+  \code{\link{summary,burndown-method}}
 }
 \author{
 Dan Kelley
