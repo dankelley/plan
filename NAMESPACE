@@ -6,6 +6,6 @@ exportMethods(summary)
             "polygon", "rect", "rug", "strheight", "strwidth", "text")
     importFrom("methods", "new")
     importFrom("stats", "lm")
-    export(as.gantt, ganttAddTask, read.burndown, read.gantt, trim.whitespace)
+    export(as.gantt, ganttAddTask, read.burndown, read.gantt, toBurndown, trim.whitespace)
 exportClasses(plan, burndown, gantt)
 

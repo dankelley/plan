@@ -75,3 +75,4 @@ Other things related to \code{gantt} data: \code{\link{gantt-class}},
 \author{
 Dan Kelley
 }
+\concept{things related to \code{gantt} data}
