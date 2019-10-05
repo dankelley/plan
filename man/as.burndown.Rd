@@ -4,8 +4,7 @@
 \alias{as.burndown}
 \title{Create a \code{burndown} object}
 \usage{
-as.burndown(start, deadline, tasks, progress,
-  progress_in_percent = FALSE)
+as.burndown(start, deadline, tasks, progress, progressInPercent = FALSE)
 }
 \arguments{
 \item{start}{Start date}
@@ -16,7 +15,7 @@ as.burndown(start, deadline, tasks, progress,
 
 \item{progress}{Data frame containing the progress values with task ID, timestamp and work done (either in percentage or absolute)}
 
-\item{progress_in_percent}{boolean; if set to \code{FALSE}, progress values are treated like absolute values and
+\item{progressInPercent}{boolean; if set to \code{FALSE}, progress values are treated like absolute values and
 converted to percentages}
 }
 \value{
@@ -49,7 +48,7 @@ progress <- data.frame(key = c(1, 2, 1, 2, 4, 5, 4, 1, 3, 3, 3, 2, 2, 1, 5, 5, 5
                                           1144585800, 1144586100, 1144586400, 1144591200), 
                                           class = "POSIXct")
                        )
-b <- as.burndown(start, deadline, tasks, progress, progress_in_percent = TRUE)
+b <- as.burndown(start, deadline, tasks, progress, progressInPercent = TRUE)
 summary(b)
 plot(b)
 }
