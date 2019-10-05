@@ -8,7 +8,8 @@
 This is sample burndown dataset provided for testing.
 }
 \seealso{
-Other things related to \code{burndown} data: \code{\link{burndown-class}},
+Other things related to \code{burndown} data: \code{\link{as.burndown}},
+  \code{\link{burndown-class}},
   \code{\link{plot,burndown-method}},
   \code{\link{read.burndown}},
   \code{\link{summary,burndown-method}}
@@ -18,3 +19,5 @@ Other data sets provided with \code{plan}.: \code{\link{gantt}}
 \author{
 Dan Kelley
 }
+\concept{data sets provided with \code{plan}.}
+\concept{things related to \code{burndown} data}

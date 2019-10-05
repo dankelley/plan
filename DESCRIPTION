@@ -2,12 +2,10 @@ Package: plan
 Type: Package
 Title: Tools for Project Planning
 Version: 0.4-3
-Author: Dan Kelley <Dan.Kelley@Dal.Ca>
+Author: Dan Kelley <Dan.Kelley@Dal.Ca> [aut,cre],
+  Frank Schmitt <frankschmitt@gmx.de> [aut]
 Maintainer: Dan Kelley <Dan.Kelley@Dal.Ca>
-Depends:
-    R (>= 0.99),
-    utils,
-    methods
+Depends: R (>= 2.15), utils, methods, testthat
 Suggests:
     knitr
 Description: Supports the creation of 'burndown' charts and 'gantt' diagrams.
@@ -15,5 +13,5 @@ License: GPL (>= 2)
 URL: http://github.com/dankelley/plan
 LazyData: false
 Packaged: Dan Kelley
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1
 VignetteBuilder: knitr

@@ -22,11 +22,12 @@ data(burndown)
 summary(burndown)
 }
 \seealso{
-Other things related to \code{burndown} data: \code{\link{burndown-class}},
-  \code{\link{burndown}},
+Other things related to \code{burndown} data: \code{\link{as.burndown}},
+  \code{\link{burndown-class}}, \code{\link{burndown}},
   \code{\link{plot,burndown-method}},
   \code{\link{read.burndown}}
 }
 \author{
 Dan Kelley
 }
+\concept{things related to \code{burndown} data}

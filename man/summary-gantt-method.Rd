@@ -35,3 +35,4 @@ Other things related to \code{gantt} data: \code{\link{as.gantt}},
 \author{
 Dan Kelley
 }
+\concept{things related to \code{gantt} data}
