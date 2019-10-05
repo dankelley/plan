@@ -352,7 +352,7 @@ setMethod(f="summary",
 #' @param deadline Deadline (end date)
 #' @param tasks Data frame containing the task IDs (may be alphanumeric), their description and effort
 #' @param progress Data frame containing the progress values with task ID, timestamp and work done (either in percentage or absolute)
-#' @param progress_in_percent boolean; if set to \code{FALSE}, progress values are treated like absolute values and
+#' @param progressInPercent boolean; if set to \code{FALSE}, progress values are treated like absolute values and
 #' converted to percentages
 #' @return A burndown object.
 #' @author Frank Schmitt
@@ -378,7 +378,7 @@ setMethod(f="summary",
 #'                                           1144585800, 1144586100, 1144586400, 1144591200), 
 #'                                           class = "POSIXct")
 #'                        )
-#' b <- as.burndown(start, deadline, tasks, progress, progress_in_percent = TRUE)
+#' b <- as.burndown(start, deadline, tasks, progress, progressInPercent = TRUE)
 #' summary(b)
 #' plot(b)
 #' }
@@ -386,10 +386,10 @@ as.burndown = function(start,
                        deadline,
                        tasks,
                        progress,
-                       progress_in_percent = FALSE) {
+                       progressInPercent = FALSE) {
     progress_percentage = progress
     # if progress was given in absolute values: calculate percentage
-    if (!progress_in_percent) {
+    if (!progressInPercent) {
         progress_percentage$progress = mapply(
             function(itskey, itsprogress) {
                 itsprogress / subset(tasks, get("key") == itskey)$effort * 100
