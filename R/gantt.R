@@ -168,7 +168,7 @@ setMethod(f="plot",
             ylabels[[i]] <- c(ylabels[[i]], rep(1, ndescriptions-len))
         }
     }
-    if (any(ylabels$justification != 0 && ylabels$justification != 1))
+    if (any(!(ylabels$justification %in% c(0, 1))))
         stop("ylabels$justification entries must be 0 or 1")
     if (length(col.done) < ndescriptions)
         col.done <- rep(col.done, length.out=ndescriptions)
@@ -278,8 +278,8 @@ setMethod(f="plot",
                  col=ylabels$col[i], cex=ylabels$cex[i], font=ylabels$font[i])
         } else {
             left <- grconvertX(0, 'device', 'user')
-            warning("In plot() method for gantt objects :\n  justification=0 places labels poorly in RStudio, better in other systems",
-                    call.=FALSE)
+            ## warning("In plot() method for gantt objects :\n  justification=0 places labels poorly in RStudio, better in other systems",
+            ##         call.=FALSE)
             ## message("  left= ", left, " (the thick black line is there)")
             ## message("  Q: why is this black line not at the left of the graph?")
             text(left, topdown[i], x[["description"]][i], pos=4,
