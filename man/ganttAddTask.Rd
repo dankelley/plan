@@ -4,8 +4,15 @@
 \alias{ganttAddTask}
 \title{Add a task to a gantt object}
 \usage{
-ganttAddTask(g, description = "", start = NA, end = NA, done = 0,
-  neededBy = NA, key)
+ganttAddTask(
+  g,
+  description = "",
+  start = NA,
+  end = NA,
+  done = 0,
+  neededBy = NA,
+  key
+)
 }
 \arguments{
 \item{g}{A \code{gantt} object, i.e. one inheriting from \code{\link{gantt-class}}.}
@@ -56,10 +63,12 @@ plot(g, ylabel=list(font=font))
 
 }
 \seealso{
-Other things related to \code{gantt} data: \code{\link{as.gantt}},
-  \code{\link{gantt-class}}, \code{\link{gantt}},
-  \code{\link{plot,gantt-method}},
-  \code{\link{read.gantt}},
-  \code{\link{summary,gantt-method}}
+Other things related to gantt data: 
+\code{\link{as.gantt}()},
+\code{\link{gantt-class}},
+\code{\link{gantt}},
+\code{\link{plot,gantt-method}},
+\code{\link{read.gantt}()},
+\code{\link{summary,gantt-method}}
 }
-\concept{things related to \code{gantt} data}
+\concept{things related to gantt data}

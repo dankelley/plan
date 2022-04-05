@@ -8,16 +8,19 @@
 This is sample gantt dataset provided for testing.
 }
 \seealso{
-Other things related to \code{gantt} data: \code{\link{as.gantt}},
-  \code{\link{gantt-class}}, \code{\link{ganttAddTask}},
-  \code{\link{plot,gantt-method}},
-  \code{\link{read.gantt}},
-  \code{\link{summary,gantt-method}}
+Other things related to gantt data: 
+\code{\link{as.gantt}()},
+\code{\link{gantt-class}},
+\code{\link{ganttAddTask}()},
+\code{\link{plot,gantt-method}},
+\code{\link{read.gantt}()},
+\code{\link{summary,gantt-method}}
 
-Other data sets provided with \code{plan}.: \code{\link{burndown}}
+Other data sets provided with plan: 
+\code{\link{burndown}}
 }
 \author{
 Dan Kelley
 }
-\concept{data sets provided with \code{plan}.}
-\concept{things related to \code{gantt} data}
+\concept{data sets provided with plan}
+\concept{things related to gantt data}

@@ -3,7 +3,6 @@
 \docType{package}
 \name{plan}
 \alias{plan}
-\alias{plan-package}
 \title{Plan, a package for project planning}
 \description{
 This package provides tools for project planning, e.g. burndown charts,

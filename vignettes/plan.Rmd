@@ -67,7 +67,7 @@ To work with your own files, use `read.burndown()`.
 
 # Gantt charts
 
-Gantt diagrams^[http://en.wikipedia.org/wiki/Gantt_Chart] indicate a timetable
+Gantt diagrams^[https://en.wikipedia.org/wiki/Gantt_Chart] indicate a timetable
 for completion of the components of a project. The sample dataset `gantt` is a
 hypothetical research plan for an MSc project; you can see how it is graphed
 with `demo(gantt)` or `example(plot.gantt)`.
