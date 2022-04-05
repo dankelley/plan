@@ -20,3 +20,9 @@ test_that("plot.burndown() handles POSIX t.stop correctly (issue 23)", {
           expect_silent(plot(b, t.stop=t.stop))
 })
 
+test_that("as.burndown() creates same object as read.burndown", {
+  b2 = as.burndown(b@data$start, b@data$deadline,
+                   b@data$tasks, b@data$progress)
+  expect_equivalent(b, b2)
+})
+

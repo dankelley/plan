@@ -373,7 +373,8 @@ setMethod(f="summary",
 #'                     description = c("code read.burndown()", "code summary.burndown()", 
 #'                                     "code plot.burndown()", "create R package", 
 #'                                     "write documentation", "set up website"),
-#'                     effort = c(4, 1, 5, 2, 2, 1))
+#'                     effort = c(4, 1, 5, 2, 2, 1),
+#'                     stringsAsFactors = FALSE)
 #' progress <- data.frame(key = c(1, 2, 1, 2, 4, 5, 4, 1, 3, 3, 3, 2, 2, 1, 5, 5, 5, 1, 3, 6),
 #'                        progress = c(5, 5, 10, 50, 5, 5, 100, 50, 5, 30, 80, 60, 
 #'                                     100, 70, 30, 90, 100, 100, 100, 100),
@@ -382,7 +383,8 @@ setMethod(f="summary",
 #'                                           1144568460, 1144570680, 1144573200, 1144576800, 
 #'                                           1144577400, 1144578600, 1144583400, 1144585200,
 #'                                           1144585800, 1144586100, 1144586400, 1144591200), 
-#'                                           class = "POSIXct")
+#'                                           class = "POSIXct"),
+#'                        stringsAsFactors = FALSE
 #'                        )
 #' b <- as.burndown(start, deadline, tasks, progress, progressInPercent = TRUE)
 #' summary(b)
@@ -398,7 +400,7 @@ as.burndown <- function(start,
     if (!progressInPercent) {
         progress_percentage$progress <- mapply(
             function(itskey, itsprogress) {
-                itsprogress / subset(tasks, get("key") == itskey)$effort * 100
+                itsprogress / subset(tasks, get("key", tasks) == itskey)$effort * 100
             },
             progress$key,
             progress$progress
