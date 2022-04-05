@@ -1,7 +1,6 @@
-#' Class to store \code{gantt} objects
+#' Class to store gantt objects
 #'
-#' These objects may be created with \code{\link{as.gantt}} or
-#' \code{\link{read.gantt}}.
+#' These objects may be created with [as.gantt()] or [read.gantt()].
 #' @family things related to gantt data
 #' @importFrom methods new
 setClass("gantt", contains="plan")
@@ -27,16 +26,16 @@ setMethod(f="initialize",
 #' be drawn for discreet events. See \dQuote{Examples} for a few of the
 #' possibilities.
 #'
-#' @param x A \code{gantt} object, i.e. one inheriting from \code{\link{gantt-class}}.
+#' @param x A [gantt-class] object.
 #' @param xlim optional range of time axis; if not provided, the range of times
-#' in \code{x} will be used.
+#' in `x` will be used.
 #' @param time.format format for dates on time axis; defaults to 3-letter
 #' month.
 #' @param time.labels.by suggested label increment on time axis, e.g.
-#' \code{time.labels.by="2 months"} to get a two-month interval.  If not
+#' `time.labels.by="2 months"` to get a two-month interval.  If not
 #' supplied, the axis will be generated automatically.
 #' @param time.lines.by suggested interval between vertical grid lines on the
-#' plot, e.g. \code{time.lines.by="1 week"} for weekly.  If not supplied, the
+#' plot, e.g. `time.lines.by="1 week"` for weekly.  If not supplied, the
 #' grid will be generated automatically.
 #' @param event.time vector of event times, e.g. conferences, whose time cannot
 #' be altered.
@@ -56,36 +55,36 @@ setMethod(f="initialize",
 #' @param bg background colour for plot.
 #' @param grid.col colour for grid.
 #' @param grid.lty line type for grid.
-#' @param ylabels A \code{\link{list}} with elements \code{col} for colour,
-#' \code{cex} for character-expansion factor, \code{font} for font, and \code{justification}
-#' for the placement in the margin (\code{0} means left-justified, and \code{1}
+#' @param ylabels A [list] with elements `col` for colour,
+#' `cex` for character-expansion factor, `font` for font, and `justification`
+#' for the placement in the margin (`0` means left-justified, and `1`
 #' means right-justified. (NOTE: left-justification works poorly in RStudio, but
 #' properly in other systems.)
-#' It usually makes sense for the elements in \code{ylabels} to be vectors of the same
+#' It usually makes sense for the elements in `ylabels` to be vectors of the same
 #' length as the topic list. However, shorter vectors are permitted, and they lengthened by
 #' copying the default values at the end (see Example 6).
 #' @param arrows A vector of strings, one for each topic, indicating the nature of
 #' the arrows that may be drawn at the ends of task bars. The individual values
-#' may be \code{"left"}, \code{"right"}, \code{"both"} or \code{"neither"}.
-#' Set \code{arrows=NULL}, the default, to avoid such arrows.
+#' may be `"left"`, `"right"`, `"both"` or `"neither"`.
+#' Set `arrows=NULL`, the default, to avoid such arrows.
 #' @param main character string to be used as chart title.
-#' @param line.main line where title occurs. If \code{NA}, then the
-#' title is placed in a default location; otherwise, it is \code{line.main}
+#' @param line.main line where title occurs. If `NA`, then the
+#' title is placed in a default location; otherwise, it is `line.main`
 #' lines above the top of the plot.
 #' @param cex.main numeric, font-size factor for title.
-#' @param mgp setting for \code{\link{par}(mgp)}, within-axis spacing. The
+#' @param mgp setting for [par]`(mgp)`, within-axis spacing. The
 #' default value tightens axis spacing.
 #' @param maiAdd inches to add to the auto-computed margins at the bottom,
 #' left, top, and right margins. The values may be negative (to tighten
 #' margins) but the sum will be truncated to remain positive.
-#' @param axes logical, \code{TRUE} to draw the x axis. (Setting to
-#' \code{FALSE} permits detailed axis tweaking.)
-#' @param debug logical value, \code{TRUE} to monitor the work.
+#' @param axes logical, `TRUE` to draw the x axis. (Setting to
+#' `FALSE` permits detailed axis tweaking.)
+#' @param debug logical value, `TRUE` to monitor the work.
 #' @param ... extra things handed down.
 #' @author Dan Kelley
 #' @family things related to gantt data
 #' @references Gantt diagrams are described on wikipedia
-#' \code{https://en.wikipedia.org/wiki/Gantt_Chart}.
+#' `https://en.wikipedia.org/wiki/Gantt_Chart`.
 #'
 #' @examples
 #' library(plan)
@@ -368,12 +367,12 @@ setMethod(f="plot",
 #'
 #' Prints a summary of a gantt dataset.
 #'
-#' @param object A \code{gantt} object, i.e. one inheriting from \code{\link{gantt-class}}.
+#' @param object A [gantt-class] object.
 #' @param ... ignored.
 #' @author Dan Kelley
 #' @family things related to gantt data
 #' @references
-#' \code{http://alistair.cockburn.us/crystal/articles/evabc/earnedvalueandburncharts.htm}.
+#' `http://alistair.cockburn.us/crystal/articles/evabc/earnedvalueandburncharts.htm`.
 #' @examples
 #' library(plan)
 #' data(gantt)
@@ -410,19 +409,20 @@ setMethod(f="summary",
     })
 
 
-#' Create a \code{gantt} object, i.e. one inheriting from \code{\link{gantt-class}}.
+#' Create a gantt object.
+#'
+#' This creates a [gantt-class] object.
 #'
 #' @param key integer key for task, normally 1 for the first task, 2 for the
 #' second, etc.
 #' @param description character string describing the task (brief)
 #' @param start start date for task (POSIXt or character string that converts
-#' to POSIXt with \code{\link{as.POSIXct}}
+#' to POSIXt with [as.POSIXct()]
 #' @param end end date for task (POSIXt or character string that converts to
-#' POSIXt with \code{\link{as.POSIXct}}
+#' POSIXt with [as.POSIXct()].
 #' @param done percentage completion for the task
 #' @param neededBy optional key for a dependent task
-#' @return An object of type \code{"gantt"}; for details, see
-#' \code{\link{read.gantt}}.
+#' @return A [gantt-class] object; for details, see [read.gantt()].
 #' @author Dan Kelley
 #' @family things related to gantt data
 #' @examples
@@ -496,36 +496,36 @@ as.gantt <- function(key, description, start, end, done, neededBy)
 #' The data format is strict, and deviations from it may lead to error messages
 #' that are difficult to understand; see \dQuote{Details}.
 #'
-#' The first line is a header, and must contain the words \code{Key},
-#' \code{Description}, \code{Start}, \code{End}, \code{Done}, and
-#' \code{NeededBy}, written exactly in this way, with commas separating the
+#' The first line is a header, and must contain the words `Key`,
+#' `Description`, `Start`, `End`, `Done`, and
+#' `NeededBy`, written exactly in this way, with commas separating the
 #' words.  (Blanks are ignored in this line.)
 #'
 #' Additional lines indicate the details of each of several sub-projects, in
 #' comma-separated items, as follows:
 #'
-#' \itemize{ \item A key for the task.  These must be distinct, and are
+#' * A key for the task.  These must be distinct, and are
 #' typically just the numbers 1, 2, 3, etc.
 #'
-#' \item A description of the task.  (This may not contain commas!)
+#' * A description of the task.  (This may not contain commas!)
 #'
-#' \item The start time for the task, in ISO 8601 format (\code{YYYY-MM-DD} or
-#' \code{YYYY-MM-DD hh:mm:ss}).
+#' * The start time for the task, in ISO 8601 format (`YYYY-MM-DD` or
+#' `YYYY-MM-DD hh:mm:ss`).
 #'
-#' \item The end time for the task, in the same format as the starting time. If
+#' * The end time for the task, in the same format as the starting time. If
 #' an end time equals the corresponding start time, no rectangle will be drawn
 #' for the activity, and this gives a way to make headings (see example 7
-#' for \code{\link{plot,gantt-method}}).
+#' for [plot,gantt-method()]).
 #'
-#' \item A number indicating the percentage of this task that has been
+#' * A number indicating the percentage of this task that has been
 #' completed to date.
 #'
-#' \item A space-separated optional list of numbers that indicate the keys of
+#' * A space-separated optional list of numbers that indicate the keys of
 #' other tasks that depend on this one.  This list is ignored in the present
-#' version of \code{read.gantt}.  }
+#' version of [read.gantt()].
 #'
 #' @section Sample data file:
-#' \preformatted{
+#'```
 #' Key, Description,                 Start,        End, Done, NeededBy
 #'   1, Assemble equipment,     2008-01-01, 2008-03-28, 90
 #'   2, Test methods,           2008-02-28, 2008-03-28, 30
@@ -539,27 +539,25 @@ as.gantt <- function(key, description, start, end, done, neededBy)
 #'  10, Thesis on display,      2009-04-01, 2009-04-15, 0
 #'  11, Defend thesis,          2009-04-16, 2009-04-17, 0
 #'  12, Finalize thesis,        2009-04-18, 2009-05-07, 0
-#' }
+#'```
 #'
 #' @param file a connection or a character string giving the name of the file
 #' to load.
-#' @param debug boolean, set to \code{TRUE} to print debugging information.
-#' @return An object of type \code{"gantt"}, which is a data frame containing
-#' \code{"description"} (a character description of the task) \code{"start"}
-#' (the task's start time), \code{"end"} (the task's end time),
-#' \code{"progress"} (a number giving the percent progress on this item, or
-#' \code{NA} if none given), and \code{"needed.by"} (a number giving the
-#' indices of other tasks that rely on this task, or \code{NA} if none given).
+#' @param debug boolean, set to `TRUE` to print debugging information.
+#' @return A [gantt-class] object, which is a data frame containing
+#' `description` (a character description of the task), `"start"`
+#' (the task's start time), `"end"` (the task's end time),
+#' `"progress"` (a number giving the percent progress on this item, or
+#' `NA` if none given), and `needed.by` (a number giving the
+#' indices of other tasks that rely on this task, or `NA` if none given).
 #' @author Dan Kelley
 #' @family things related to gantt data
 #' @examples
-#'
-#' \dontrun{
 #' library(plan)
-#' gantt <- read.gantt("demo/gantt.dat")
-#' summary(gantt)
-#' plot(gantt)
-#' }
+#' filename <- system.file("extdata", "gantt.dat", package="plan")
+#' g <- read.gantt(filename)
+#' summary(g)
+#' plot(g)
 #'
 #' @export
 read.gantt <- function(file, debug=FALSE)
@@ -603,22 +601,22 @@ read.gantt <- function(file, debug=FALSE)
 
 #' Add a task to a gantt object
 #'
-#' This can be a simpler method than using \code{\link{as.gantt}}, because
+#' This can be a simpler method than using [as.gantt()], because
 #' tasks can be added one at a time.
 #'
-#' @param g A \code{gantt} object, i.e. one inheriting from \code{\link{gantt-class}}.
+#' @param g A [gantt-class] object.
 #' @param description A character string describing the task.
-#' @param start A character string indicating the task start time, in a format understood by \code{\link{as.POSIXct}}.
-#' Set to \code{""} (the default) to indicate that \code{description} is a heading, with no start and end time.
-#' @param end A character string indicating the end time, in a format understood by \code{\link{as.POSIXct}}.
+#' @param start A character string indicating the task start time, in a format understood by [as.POSIXct()].
+#' Set to `""` (the default) to indicate that `description` is a heading, with no start and end time.
+#' @param end A character string indicating the end time, in a format understood by [as.POSIXct()].
 #' @param done A numerical value indicating the fraction done.
 #' @param neededBy An integer indicating a task that depends on the completion of this task. If this is
-#' \code{NA}, then the task is not needed by any other task.
+#' `NA`, then the task is not needed by any other task.
 #' @param key An optional value indicating the desired key value. If not given, this will default to
-#' one beyond the highest key in \code{g}. Otherwise, if \code{key} is an integer matching
-#' a task that is already in \code{g}, then that task is replaced; otherwise, the new task
+#' one beyond the highest key in `g`. Otherwise, if `key` is an integer matching
+#' a task that is already in `g`, then that task is replaced; otherwise, the new task
 #' is placed between the tasks with integral keys on either side of the task. For example, setting
-#' \code{key=4.5} places this between existing keys 4 and 5 (and then renumbers all keys
+#' `key=4.5` places this between existing keys 4 and 5 (and then renumbers all keys
 #' to be integers); see \dQuote{Examples}.
 #'
 #' @examples

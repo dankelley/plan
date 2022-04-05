@@ -7,7 +7,7 @@
 \S4method{[[}{plan}(x, i, j, ...) <- value
 }
 \arguments{
-\item{x}{A \code{plan} object, i.e. inheriting from \code{\link{plan-class}}.}
+\item{x}{A \linkS4class{plan} object.}
 
 \item{i}{The item to replace.}
 

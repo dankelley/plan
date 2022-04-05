@@ -15,14 +15,14 @@ ganttAddTask(
 )
 }
 \arguments{
-\item{g}{A \code{gantt} object, i.e. one inheriting from \code{\link{gantt-class}}.}
+\item{g}{A \linkS4class{gantt} object.}
 
 \item{description}{A character string describing the task.}
 
-\item{start}{A character string indicating the task start time, in a format understood by \code{\link{as.POSIXct}}.
+\item{start}{A character string indicating the task start time, in a format understood by \code{\link[=as.POSIXct]{as.POSIXct()}}.
 Set to \code{""} (the default) to indicate that \code{description} is a heading, with no start and end time.}
 
-\item{end}{A character string indicating the end time, in a format understood by \code{\link{as.POSIXct}}.}
+\item{end}{A character string indicating the end time, in a format understood by \code{\link[=as.POSIXct]{as.POSIXct()}}.}
 
 \item{done}{A numerical value indicating the fraction done.}
 
@@ -37,7 +37,7 @@ is placed between the tasks with integral keys on either side of the task. For e
 to be integers); see \dQuote{Examples}.}
 }
 \description{
-This can be a simpler method than using \code{\link{as.gantt}}, because
+This can be a simpler method than using \code{\link[=as.gantt]{as.gantt()}}, because
 tasks can be added one at a time.
 }
 \examples{

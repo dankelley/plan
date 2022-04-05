@@ -18,12 +18,11 @@
 )
 }
 \arguments{
-\item{x}{A \code{burndown} object, i.e. one inheriting from
-\code{\link{burndown-class}}.}
+\item{x}{A \linkS4class{burndown} object.}
 
 \item{col}{list of colours for items, starting with the first key in the
 file (which will be at the bottom of the chart).  If not specified, the
-\code{\link{hcl}} scheme will be used, to generate colours that are
+\code{\link[=hcl]{hcl()}} scheme will be used, to generate colours that are
 distinct, that show up reasonably well on a monitor.}
 
 \item{draw.plan}{boolean, set to \code{TRUE} to draw the plan, as a

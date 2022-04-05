@@ -39,7 +39,7 @@
 )
 }
 \arguments{
-\item{x}{A \code{gantt} object, i.e. one inheriting from \code{\link{gantt-class}}.}
+\item{x}{A \linkS4class{gantt} object.}
 
 \item{xlim}{optional range of time axis; if not provided, the range of times
 in \code{x} will be used.}
@@ -88,7 +88,7 @@ vector of colours, one for each item in the gantt table.}
 
 \item{grid.lty}{line type for grid.}
 
-\item{ylabels}{A \code{\link{list}} with elements \code{col} for colour,
+\item{ylabels}{A \link{list} with elements \code{col} for colour,
 \code{cex} for character-expansion factor, \code{font} for font, and \code{justification}
 for the placement in the margin (\code{0} means left-justified, and \code{1}
 means right-justified. (NOTE: left-justification works poorly in RStudio, but
@@ -110,7 +110,7 @@ lines above the top of the plot.}
 
 \item{cex.main}{numeric, font-size factor for title.}
 
-\item{mgp}{setting for \code{\link{par}(mgp)}, within-axis spacing. The
+\item{mgp}{setting for \link{par}\code{(mgp)}, within-axis spacing. The
 default value tightens axis spacing.}
 
 \item{maiAdd}{inches to add to the auto-computed margins at the bottom,
@@ -177,7 +177,7 @@ plot(gantt, arrows=c("right","left","left","right"))
 }
 \references{
 Gantt diagrams are described on wikipedia
-\code{https://en.wikipedia.org/wiki/Gantt_Chart}.
+\verb{https://en.wikipedia.org/wiki/Gantt_Chart}.
 }
 \seealso{
 Other things related to gantt data: 

@@ -1,3 +1,4 @@
+^check_package.R$
 .travis.yml
 ^.*\.Rproj$
 ^\.Rproj\.user$

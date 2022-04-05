@@ -2,7 +2,7 @@
 % Please edit documentation in R/gantt.R
 \name{as.gantt}
 \alias{as.gantt}
-\title{Create a \code{gantt} object, i.e. one inheriting from \code{\link{gantt-class}}.}
+\title{Create a gantt object.}
 \usage{
 as.gantt(key, description, start, end, done, neededBy)
 }
@@ -13,21 +13,20 @@ second, etc.}
 \item{description}{character string describing the task (brief)}
 
 \item{start}{start date for task (POSIXt or character string that converts
-to POSIXt with \code{\link{as.POSIXct}}}
+to POSIXt with \code{\link[=as.POSIXct]{as.POSIXct()}}}
 
 \item{end}{end date for task (POSIXt or character string that converts to
-POSIXt with \code{\link{as.POSIXct}}}
+POSIXt with \code{\link[=as.POSIXct]{as.POSIXct()}}.}
 
 \item{done}{percentage completion for the task}
 
 \item{neededBy}{optional key for a dependent task}
 }
 \value{
-An object of type \code{"gantt"}; for details, see
-\code{\link{read.gantt}}.
+A \linkS4class{gantt} object; for details, see \code{\link[=read.gantt]{read.gantt()}}.
 }
 \description{
-Create a \code{gantt} object, i.e. one inheriting from \code{\link{gantt-class}}.
+This creates a \linkS4class{gantt} object.
 }
 \examples{
 

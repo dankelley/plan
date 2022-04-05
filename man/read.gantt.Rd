@@ -13,11 +13,11 @@ to load.}
 \item{debug}{boolean, set to \code{TRUE} to print debugging information.}
 }
 \value{
-An object of type \code{"gantt"}, which is a data frame containing
-\code{"description"} (a character description of the task) \code{"start"}
+A \linkS4class{gantt} object, which is a data frame containing
+\code{description} (a character description of the task), \code{"start"}
 (the task's start time), \code{"end"} (the task's end time),
 \code{"progress"} (a number giving the percent progress on this item, or
-\code{NA} if none given), and \code{"needed.by"} (a number giving the
+\code{NA} if none given), and \code{needed.by} (a number giving the
 indices of other tasks that rely on this task, or \code{NA} if none given).
 }
 \description{
@@ -33,31 +33,25 @@ words.  (Blanks are ignored in this line.)
 
 Additional lines indicate the details of each of several sub-projects, in
 comma-separated items, as follows:
-
-\itemize{ \item A key for the task.  These must be distinct, and are
+\itemize{
+\item A key for the task.  These must be distinct, and are
 typically just the numbers 1, 2, 3, etc.
-
 \item A description of the task.  (This may not contain commas!)
-
 \item The start time for the task, in ISO 8601 format (\code{YYYY-MM-DD} or
-\code{YYYY-MM-DD hh:mm:ss}).
-
+\verb{YYYY-MM-DD hh:mm:ss}).
 \item The end time for the task, in the same format as the starting time. If
 an end time equals the corresponding start time, no rectangle will be drawn
 for the activity, and this gives a way to make headings (see example 7
-for \code{\link{plot,gantt-method}}).
-
+for \code{\link[=plot,gantt-method]{plot,gantt-method()}}).
 \item A number indicating the percentage of this task that has been
 completed to date.
-
 \item A space-separated optional list of numbers that indicate the keys of
 other tasks that depend on this one.  This list is ignored in the present
-version of \code{read.gantt}.  }
+version of \code{\link[=read.gantt]{read.gantt()}}.
+}
 }
 \section{Sample data file}{
-
-\preformatted{
-Key, Description,                 Start,        End, Done, NeededBy
+\preformatted{Key, Description,                 Start,        End, Done, NeededBy
   1, Assemble equipment,     2008-01-01, 2008-03-28, 90
   2, Test methods,           2008-02-28, 2008-03-28, 30
   3, Field sampling,         2008-04-01, 2008-08-14, 0
@@ -74,13 +68,11 @@ Key, Description,                 Start,        End, Done, NeededBy
 }
 
 \examples{
-
-\dontrun{
 library(plan)
-gantt <- read.gantt("demo/gantt.dat")
-summary(gantt)
-plot(gantt)
-}
+filename <- system.file("extdata", "gantt.dat", package="plan")
+g <- read.gantt(filename)
+summary(g)
+plot(g)
 
 }
 \seealso{

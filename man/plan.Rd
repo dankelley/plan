@@ -6,8 +6,8 @@
 \title{Plan, a package for project planning}
 \description{
 This package provides tools for project planning, e.g. burndown charts,
-gantt diagrams, etc.; see \code{\link{burndown-class}} and
-\code{\link{gantt-class}} for entries to the documentation.
+gantt diagrams, etc.; see \linkS4class{burndown} and
+\linkS4class{gantt} for entries to the documentation.
 }
 \author{
 Dan Kelley
