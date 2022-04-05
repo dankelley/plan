@@ -1,3 +1,10 @@
+Version 0.4-4
+- replace trim.whitespace() calls with trimws()
+- use roxygen2 for namespace
+- address an error in doing if() on something of length > 1
+- address a URL error
+- address a class() comparison error
+
 Version 0.4-3
 - explicitly list imported functions in NAMESPACE
 - plot(gantt) gets 'axes' argument

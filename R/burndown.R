@@ -1,12 +1,13 @@
 #' Class to store burndown objects
-#' @family things related to \code{burndown} data
+#' @family things related to burndown data
 setClass("burndown", contains="plan")
 
 setMethod(f="initialize",
-          signature="burndown",
-          definition=function(.Object) {
-              return(.Object)
-          })
+    signature="burndown",
+    definition=function(.Object)
+    {
+        return(.Object)
+    })
 
 
 #' Draw a burndown chart
@@ -31,7 +32,7 @@ setMethod(f="initialize",
 #' @param debug boolean, set to \code{TRUE} to monitor the work.
 #' @param ... extra things handed down to plotting functions.
 #' @author Dan Kelley
-#' @family things related to \code{burndown} data
+#' @family things related to burndown data
 #' @references
 #' \url{http://alistair.cockburn.us/crystal/articles/evabc/earnedvalueandburncharts.htm}.
 #' @examples
@@ -40,14 +41,16 @@ setMethod(f="initialize",
 #' summary(burndown)
 #' plot(burndown)
 #' @aliases plot.burndown
+#' @export
+#' @importFrom stats lm
 setMethod(f="plot",
           signature=signature("burndown"),
           definition=function(x, col=NULL, draw.plan=TRUE,
-                          draw.regression=TRUE,
-                          draw.lastupdate=FALSE,
-                          t.stop="",
-                          y.name="Remaining Effort",
-                          debug=FALSE, ...) {
+              draw.regression=TRUE,
+              draw.lastupdate=FALSE,
+              t.stop="",
+              y.name="Remaining Effort", debug=FALSE, ...)
+          {
               opar <- par(no.readonly = TRUE)
               on.exit(opar)
               num.items <- length(x[["tasks"]]$key)
@@ -88,10 +91,10 @@ setMethod(f="plot",
                   cat("BEFORE t.stop='", format(t.stop), "' (class ", paste(class(t.stop), collapse=","), ")\n", sep="")
               time.max <- if (inherits(t.stop, "POSIXt")) {
                   t.stop
-              } else if (is.character(t.stop) && t.stop != "") {
-                  as.POSIXct(t.stop)
+              } else if (is.character(t.stop) && t.stop[1] != "") {
+                  as.POSIXct(t.stop[1])
               } else {
-                  x[["deadline"]]
+                  x[["deadline"]][1]
               }
               if (debug)
                     cat("AFTER time.max='", format(time.max), "'\n", sep="")
@@ -136,13 +139,10 @@ setMethod(f="plot",
               cex <- if (length(x[["tasks"]]$description) < 5) 1 else 4/5
               legend("topright",legend=rev(x[["tasks"]]$description),fill=rev(col),cex=cex,y.intersp=1.5*cex)
               mtext(paste(paste(format(time.range), collapse=" to "),
-                          attr(x[["ts"]]$time[1], "tzone")),
-                    side=3, cex=cex, adj=0)
+                      attr(x[["ts"]]$time[1], "tzone")),
+                  side=3, cex=cex, adj=0)
               invisible(x)
           })
-
-
-
 
 
 #' Scan burndown data file
@@ -225,7 +225,7 @@ setMethod(f="plot",
 #' @param debug boolean, set to \code{TRUE} to print debugging information.
 #' @return A burndown object.
 #' @author Dan Kelley
-#' @family things related to \code{burndown} data
+#' @family things related to burndown data
 #' @examples
 #' \dontrun{
 #' library(plan)
@@ -233,6 +233,7 @@ setMethod(f="plot",
 #' summary(b)
 #' plot(b)
 #' }
+#' @export
 read.burndown <- function(file, debug=FALSE)
 {
     if (is.character(file)) {
@@ -246,25 +247,25 @@ read.burndown <- function(file, debug=FALSE)
     }
     quiet <- !debug
     ## Start, ISdate
-    tokens <- trim.whitespace(scan(file, what='char', sep=",", nlines=1,quiet=quiet,blank.lines.skip=TRUE))
+    tokens <- trimws(scan(file, what='char', sep=",", nlines=1,quiet=quiet,blank.lines.skip=TRUE))
     name <- tokens[1]
     if (name != "Start") stop("First line of file must be 'Start' followed by an ISO date but got '",
         paste(tokens, collapse=","))
     start <- as.POSIXct(tokens[2])
     ## Deadline, ISOdate
-    tokens <- trim.whitespace(scan(file,what='char',sep=",",nlines=1,quiet=quiet,blank.lines.skip=TRUE))
+    tokens <- trimws(scan(file,what='char',sep=",",nlines=1,quiet=quiet,blank.lines.skip=TRUE))
     name <- tokens[1]
     deadline <- as.POSIXct(tokens[2])
     if (name != "Deadline") stop("Second line of file must be 'Deadline' followed by an ISO date, but got '",
         paste(tokens, collapse=","), "'")
     ## Header
-    tokens <- trim.whitespace(scan(file,what='char',sep=',',nlines=1,quiet=quiet,blank.lines.skip=TRUE))
+    tokens <- trimws(scan(file,what='char',sep=',',nlines=1,quiet=quiet,blank.lines.skip=TRUE))
     check.tokens(tokens, c("Key", "Description", "Effort"))
     task.key <- c()
     task.description <- c()
     task.effort <- c()
     while (TRUE) { # TASK: key description effort
-        tokens <- trim.whitespace(scan(file, what=character(0),nlines=1,blank.lines.skip=FALSE,quiet=quiet,sep=","))
+        tokens <- trimws(scan(file, what=character(0),nlines=1,blank.lines.skip=FALSE,quiet=quiet,sep=","))
         if (tokens[1] == "Key")
             break
         if (3 == length(tokens)) {
@@ -277,7 +278,7 @@ read.burndown <- function(file, debug=FALSE)
     check.tokens(tokens, c("Key", "Done", "Time"))
     progress.key <- progress.done <- progress.time <- NULL
     while (TRUE) {
-        tokens <- trim.whitespace(scan(file, what=character(0),nlines=1,blank.lines.skip=FALSE,quiet=quiet, sep=","))
+        tokens <- trimws(scan(file, what=character(0),nlines=1,blank.lines.skip=FALSE,quiet=quiet, sep=","))
         if (is.na(tokens[1]))
             break
         key <- as.numeric(tokens[1])
@@ -291,7 +292,8 @@ read.burndown <- function(file, debug=FALSE)
         progress.done    <- c(progress.done,    done)
         progress.time    <- c(progress.time,    time)
     }
-    class(progress.time) <- "POSIXct"
+    # class(progress.time) <- "POSIXct"
+    progress.time <- as.POSIXct(progress.time, origin=as.POSIXct("1970-01-01 00:00.00", tz="UTC"))
     ## BUG: should ensure item is in task
     o <- order(progress.time)
     progress.key     <- progress.key[o]
@@ -299,13 +301,13 @@ read.burndown <- function(file, debug=FALSE)
     progress.time    <- progress.time[o]
     rval <- new("burndown")
     rval@data <- list(start=start,
-                      deadline=deadline,
-                      tasks=list(key=task.key,
-                                 description=task.description,
-                                 effort=task.effort),
-                      progress=list(key=progress.key,
-                                    progress=progress.done,
-                                    time=progress.time))
+        deadline=deadline,
+        tasks=list(key=task.key,
+            description=task.description,
+            effort=task.effort),
+        progress=list(key=progress.key,
+            progress=progress.done,
+            time=progress.time))
     rval
 }
 
@@ -318,35 +320,35 @@ read.burndown <- function(file, debug=FALSE)
 #' \code{\link{burndown-class}}.
 #' @param ... ignored.
 #' @author Dan Kelley
-#' @family things related to \code{burndown} data
+#' @family things related to burndown data
 #' @examples
 #' library(plan)
 #' data(burndown)
 #' summary(burndown)
 setMethod(f="summary",
-          signature="burndown",
-          definition=function(object, ...) {
-              cat(paste("Start,   ", format(object[["start"]])), "\n")
-              cat(paste("Deadline,", format(object[["deadline"]])), "\n")
-              num.tasks <- length(object[["tasks"]]$key)
-              dspace <- max(nchar(object[["tasks"]]$description))
-              cat(sprintf("Key, Description,%s %5s\n",
-                          paste(rep(" ", dspace - nchar("Description")), collapse=""),
-                          "Effort"))
-              for (i in 1:num.tasks) {
-                  space <- paste(rep(" ", dspace - nchar(object[["tasks"]]$description[i])), collapse="")
-                  cat(sprintf("%3s, %s,%s %s\n",
-                              object[["tasks"]]$key[i], object[["tasks"]]$description[i], space, object[["tasks"]]$effort[i]))
-              }
-              cat("Key, Done,  Time\n")
-              num.progress <- length(object[["progress"]]$key)
-              for (i in 1:num.progress) {
-                  cat(sprintf("%3s, %5s, ", object[["progress"]]$key[i], object[["progress"]]$progress[i]))
-                  cat(format((object[["progress"]]$time[i])))
-                  cat("\n")
-              }
-              invisible()
-          })
+    signature="burndown",
+    definition=function(object, ...) {
+        cat(paste("Start,   ", format(object[["start"]])), "\n")
+        cat(paste("Deadline,", format(object[["deadline"]])), "\n")
+        num.tasks <- length(object[["tasks"]]$key)
+        dspace <- max(nchar(object[["tasks"]]$description))
+        cat(sprintf("Key, Description,%s %5s\n",
+                paste(rep(" ", dspace - nchar("Description")), collapse=""),
+                "Effort"))
+        for (i in 1:num.tasks) {
+            space <- paste(rep(" ", dspace - nchar(object[["tasks"]]$description[i])), collapse="")
+            cat(sprintf("%3s, %s,%s %s\n",
+                    object[["tasks"]]$key[i], object[["tasks"]]$description[i], space, object[["tasks"]]$effort[i]))
+        }
+        cat("Key, Done,  Time\n")
+        num.progress <- length(object[["progress"]]$key)
+        for (i in 1:num.progress) {
+            cat(sprintf("%3s, %5s, ", object[["progress"]]$key[i], object[["progress"]]$progress[i]))
+            cat(format((object[["progress"]]$time[i])))
+            cat("\n")
+        }
+        invisible()
+    })
 
 #' Create a \code{burndown} object
 #'
@@ -362,7 +364,7 @@ setMethod(f="summary",
 #' converted to percentages
 #' @return A burndown object.
 #' @author Frank Schmitt
-#' @family things related to \code{burndown} data
+#' @family things related to burndown data
 #' @examples
 #' \dontrun{
 #' library(plan)
@@ -390,11 +392,9 @@ setMethod(f="summary",
 #' summary(b)
 #' plot(b)
 #' }
-as.burndown <- function(start,
-                        deadline,
-                        tasks,
-                        progress,
-                        progressInPercent=FALSE) {
+#' @export
+as.burndown <- function(start, deadline, tasks, progress, progressInPercent=FALSE)
+{
     progress_percentage <- progress
     # if progress was given in absolute values: calculate percentage
     if (!progressInPercent) {
@@ -404,14 +404,13 @@ as.burndown <- function(start,
             },
             progress$key,
             progress$progress
-        )
+            )
     }
     rval <- new("burndown")
     rval@data <- list(
         start = start,
         deadline = deadline,
         tasks = tasks,
-        progress = progress_percentage
-    )
+        progress = progress_percentage)
     rval
 }

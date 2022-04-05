@@ -66,13 +66,15 @@ plot(g, xlim=c(arrive, leave),
      ylabel=list(font=c(2,rep(1,3),2), justification=c(0,rep(1,3),0)))
 }
 \seealso{
-Other things related to \code{gantt} data: \code{\link{gantt-class}},
-  \code{\link{ganttAddTask}}, \code{\link{gantt}},
-  \code{\link{plot,gantt-method}},
-  \code{\link{read.gantt}},
-  \code{\link{summary,gantt-method}}
+Other things related to gantt data: 
+\code{\link{gantt-class}},
+\code{\link{ganttAddTask}()},
+\code{\link{gantt}},
+\code{\link{plot,gantt-method}},
+\code{\link{read.gantt}()},
+\code{\link{summary,gantt-method}}
 }
 \author{
 Dan Kelley
 }
-\concept{things related to \code{gantt} data}
+\concept{things related to gantt data}

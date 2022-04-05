@@ -84,12 +84,15 @@ plot(gantt)
 
 }
 \seealso{
-Other things related to \code{gantt} data: \code{\link{as.gantt}},
-  \code{\link{gantt-class}}, \code{\link{ganttAddTask}},
-  \code{\link{gantt}}, \code{\link{plot,gantt-method}},
-  \code{\link{summary,gantt-method}}
+Other things related to gantt data: 
+\code{\link{as.gantt}()},
+\code{\link{gantt-class}},
+\code{\link{ganttAddTask}()},
+\code{\link{gantt}},
+\code{\link{plot,gantt-method}},
+\code{\link{summary,gantt-method}}
 }
 \author{
 Dan Kelley
 }
-\concept{things related to \code{gantt} data}
+\concept{things related to gantt data}
