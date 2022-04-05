@@ -13,9 +13,9 @@ setMethod("initialize", "plan",
 #'
 #' @description Extract something from a plan object, avoiding using the "slot" notation.
 #'
-#' @param x A \code{plan} object, i.e. one inheriting from \code{\link{plan-class}}.
+#' @param x A [plan-class] object.
 #' @param i The item to extract.
-#' @param j Optional additional information on the \code{i} item.
+#' @param j Optional additional information on the `i` item.
 #' @param ... Optional additional information (ignored).
 setMethod(f="[[",
           signature(x="plan", i="ANY", j="ANY"),
@@ -33,11 +33,11 @@ setMethod(f="[[",
 #'
 #' @description Replace something within a plan object, avoiding using the "slot" notation.
 #'
-#' @param x A \code{plan} object, i.e. inheriting from \code{\link{plan-class}}.
+#' @param x A [plan-class] object.
 #' @param i The item to replace.
-#' @param j Optional additional information on the \code{i} item.
+#' @param j Optional additional information on the `i` item.
 #' @param ... Optional additional information (ignored).
-#' @param value The value to be placed into \code{x}, somewhere.
+#' @param value The value to be placed into `x`, somewhere.
 setMethod(f="[[<-",
           signature(x="plan", i="ANY", j="ANY"),
           function(x, i, j, ..., value) { # FIXME: use j for e.g. times

@@ -3,10 +3,9 @@
 \docType{class}
 \name{gantt-class}
 \alias{gantt-class}
-\title{Class to store \code{gantt} objects}
+\title{Class to store gantt objects}
 \description{
-These objects may be created with \code{\link{as.gantt}} or
-\code{\link{read.gantt}}.
+These objects may be created with \code{\link[=as.gantt]{as.gantt()}} or \code{\link[=read.gantt]{read.gantt()}}.
 }
 \seealso{
 Other things related to gantt data: 

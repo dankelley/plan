@@ -2,7 +2,7 @@
 % Please edit documentation in R/burndown.R
 \name{as.burndown}
 \alias{as.burndown}
-\title{Create a \code{burndown} object}
+\title{Create a burndown object}
 \usage{
 as.burndown(start, deadline, tasks, progress, progressInPercent = FALSE)
 }
@@ -22,13 +22,12 @@ converted to percentages}
 A burndown object.
 }
 \description{
-Create a \code{burndown} object from the given data.
+Create a \linkS4class{burndown} object from the given data.
 }
 \details{
-Creates a \code{burndown} object from the given data; progress may be given in percentage or absolute values.
+Creates a \linkS4class{burndown} object from the given data; progress may be given in percentage or absolute values.
 }
 \examples{
-\dontrun{
 library(plan)
 # same data as in tests/burndown.dat
 start <- as.POSIXct(strptime("2006-04-08 12:00:00", "\%Y-\%m-\%d \%H:\%M:\%S"))
@@ -53,7 +52,6 @@ progress <- data.frame(key = c(1, 2, 1, 2, 4, 5, 4, 1, 3, 3, 3, 2, 2, 1, 5, 5, 5
 b <- as.burndown(start, deadline, tasks, progress, progressInPercent = TRUE)
 summary(b)
 plot(b)
-}
 }
 \seealso{
 Other things related to burndown data: 

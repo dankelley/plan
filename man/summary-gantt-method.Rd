@@ -7,7 +7,7 @@
 \S4method{summary}{gantt}(object, ...)
 }
 \arguments{
-\item{object}{A \code{gantt} object, i.e. one inheriting from \code{\link{gantt-class}}.}
+\item{object}{A \linkS4class{gantt} object.}
 
 \item{...}{ignored.}
 }
@@ -23,7 +23,7 @@ data(gantt)
 summary(gantt)
 }
 \references{
-\code{http://alistair.cockburn.us/crystal/articles/evabc/earnedvalueandburncharts.htm}.
+\verb{http://alistair.cockburn.us/crystal/articles/evabc/earnedvalueandburncharts.htm}.
 }
 \seealso{
 Other things related to gantt data: 

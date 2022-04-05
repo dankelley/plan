@@ -19,42 +19,36 @@ A burndown object.
 Read a data file containing burndown information.
 }
 \details{
-Reads a \code{burndown} dataset.
+Reads a burndown dataset.
 
 A strict format is required, in which the following items must be present,
 in the stated order, and with nothing else in the file.  An example is given
 after the description.
-
 \itemize{
-
 \item Line 1: contains two comma-separated items: the string \code{Start},
 and a time expressed in ISO 8601 format (\code{YYYY-MM-DD} or
-\code{YYY-MM-DD hh:mm:ss}).  This line indicates the start of the project.
-
+\verb{YYY-MM-DD hh:mm:ss}).  This line indicates the start of the project.
 \item Line 2: as Line 1, but the string is to be \code{Start}, and the line
 indicates the deadline for the project.
-
 \item Line 3: a header line for a "tasks" list, comprising the following
 three words separated by commas: \code{Key}, \code{Description}, and
 \code{Effort}.
-
 \item Lines 4 to N: data lines, each containing three items: a numeric index
 "Key" for the task, a short "Description" of the task, and the estimated
 "Effort" for this task, expressed as a number. The keys must be distinct,
 and they must match the keys in the progress table (see below).  The
 description should be short enough to give a reasonable-size legend as
-created by \code{\link{plot,burndown-method}}.  The effort may be expressed in any
+created by \code{\link[=plot,burndown-method]{plot,burndown-method()}}.  The effort may be expressed in any
 convenient unit, e.g. the number of hours or days for the task, or as a
 percentage of the overall task.
-
 \item Line N+1: a header line for the "Progress" list, comprising the
 following four words separated by commas: \code{Key}, \code{Done}, and
 \code{Time}.
-
 \item Line N+2 to end: data lines holding Progress items. Each "Key" must
 match a key in the task list.  The "Done" column holds the percentage of the
 task that has been completed. The "Time" is in ISO 8601 format, as described
-above.  }
+above.
+}
 }
 \section{Sample data file}{
 
@@ -93,12 +87,11 @@ Key, Done, Time
 }
 
 \examples{
-\dontrun{
 library(plan)
-b <- read.burndown("burndown.dat")
+filename <- system.file("extdata", "burndown.dat", package="plan")
+b <- read.burndown(filename)
 summary(b)
 plot(b)
-}
 }
 \seealso{
 Other things related to burndown data: 

@@ -7,8 +7,7 @@
 \S4method{summary}{burndown}(object, ...)
 }
 \arguments{
-\item{object}{A \code{burndown} object, i.e. one inheriting from
-\code{\link{burndown-class}}.}
+\item{object}{A \linkS4class{burndown} object.}
 
 \item{...}{ignored.}
 }
