@@ -23,7 +23,7 @@ data(gantt)
 summary(gantt)
 }
 \references{
-\verb{http://alistair.cockburn.us/crystal/articles/evabc/earnedvalueandburncharts.htm}.
+\url{https://en.wikipedia.org/wiki/Burndown_chart}
 }
 \seealso{
 Other things related to gantt data: 
