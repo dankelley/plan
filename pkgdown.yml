@@ -1,0 +1,10 @@
+pandoc: 2.7.3
+pkgdown: 2.0.2
+pkgdown_sha: ~
+articles:
+  plan: plan.html
+last_built: 2022-04-06T17:01Z
+urls:
+  reference: https://dankelley.github.io/plan/reference
+  article: https://dankelley.github.io/plan/articles
+
