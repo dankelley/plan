@@ -55,40 +55,35 @@ into sub-tasks, and the remaining effort in each task is shown with a different
 colour in the chart. This is helpful in identifying tasks that may need more
 attention.
 
-The following plots the burndown chart
+The following plots a sample burndown chart; replace the `data()` call with a
+`read.burndown()` call, to create a chart of your own.
+
 ```{r}
 library("plan")
 data(burndown)
 plot(burndown)
 ```
 
-To work with your own files, use `read.burndown()`.
-
 # Gantt charts
 
 Gantt diagrams^[https://en.wikipedia.org/wiki/Gantt_Chart] indicate a timetable
 for completion of the components of a project. The sample dataset `gantt` is a
 hypothetical research plan for an MSc project; you can see how it is graphed
-with `example(plot.gantt)`.
-
-The following plots the built-in Gantt diagram. If this seems promising, the
-reader should continue reading, to learn how to make objects of `gantt-class`.
-If not, the best is to try some other software, because only minimal
-customization is permitted by the `plot,gantt-method`.
-
+with `example(plot.gantt)`, or by entering the following code.
 ```{r fig.height=4, fig.width=6, dev.args=list(pointsize=10)}
 library("plan")
 data(gantt)
 plot(gantt)
 ```
 
-There are three ways to create objects of `gantt-class`: (a) write information
-in a text file and use `read.gantt()`, (b) use `as.gantt()` to assemble the
-object in one (somewhat complicated) step, or (c) use `new()` to create an
-object and then `ganttAddTask()` to add tasks one by one. The third approach
-may be the easiest for beginners, so it is illustrated below, with a sketch of
-a typical oceanography MSc program. Note that a legend is added, along with an
-indication of the time at which the graph was prepared.
+Moving beyond this built-in dataset, note that there are 3 main ways to create
+`gantt-class` objects: (a) write information in a text file and use
+`read.gantt()`, (b) use `as.gantt()` to assemble the object in one (somewhat
+complicated) step, or (c) use `new()` to create an object and then
+`ganttAddTask()` to add tasks one by one. The third approach may be the easiest
+for beginners, so it is illustrated below, with a sketch of a typical
+oceanography MSc program. Note that a legend is added, along with an indication
+of the time at which the graph was prepared.
 
 
 ```{r fig.height=4, fig.width=6, dev.args=list(pointsize=10)}
