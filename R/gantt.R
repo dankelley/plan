@@ -372,7 +372,7 @@ setMethod(f="plot",
 #' @author Dan Kelley
 #' @family things related to gantt data
 #' @references
-#' `http://alistair.cockburn.us/crystal/articles/evabc/earnedvalueandburncharts.htm`.
+#' \url{https://en.wikipedia.org/wiki/Burndown_chart}
 #' @examples
 #' library(plan)
 #' data(gantt)

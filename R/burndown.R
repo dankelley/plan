@@ -33,7 +33,7 @@ setMethod(f="initialize",
 #' @author Dan Kelley
 #' @family things related to burndown data
 #' @references
-#' \url{http://alistair.cockburn.us/crystal/articles/evabc/earnedvalueandburncharts.htm}.
+#' \url{https://en.wikipedia.org/wiki/Burndown_chart}
 #' @examples
 #' library(plan)
 #' data(burndown)
