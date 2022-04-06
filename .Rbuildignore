@@ -1,3 +1,4 @@
+^.github$
 ^check_package.R$
 .travis.yml
 ^.*\.Rproj$
@@ -7,3 +8,4 @@ _layouts
 revdep
 ^cran-comments.md$
 ^cran-comments\.md$
+^CRAN-SUBMISSION$
