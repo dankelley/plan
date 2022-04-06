@@ -1,2 +1,4 @@
-destination: docs
+url: https://dankelley.github.io/plan/
+template:
+  bootstrap: 5
 
