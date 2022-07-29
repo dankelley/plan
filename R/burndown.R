@@ -20,9 +20,9 @@ setMethod(f="initialize",
 #' [hcl()] scheme will be used, to generate colours that are
 #' distinct, that show up reasonably well on a monitor.
 #' @param draw.plan boolean, set to `TRUE` to draw the plan, as a
-#' descending line with a horizontal intercept.
-#' @param draw.regression boolean, set to `TRUE` to draw a regression line
-#' of actual overall progress.
+#' blue descending line with a horizontal intercept.
+#' @param draw.regression boolean, set to `TRUE` to draw a red dashed
+#' line indicating the overall progress, as determined by regression.
 #' @param draw.lastupdate boolean, set to `TRUE` to draw the last update
 #' (which otherwise requires a sharp eye).
 #' @param t.stop a POSIX time, the maximum time for graph (defaults to deadline
@@ -120,13 +120,13 @@ setMethod(f="plot",
         intercept <- totalEffort[1] - slope * as.numeric(t[1])
         ##t.done <- floor(-intercept / slope)
         if (draw.regression)
-            abline(a=intercept, b=slope, col="red",lwd=2,lty=2)
+            abline(a=intercept, b=slope, col=2,lwd=2,lty=2)
         ##class(t.done) <- "POSIXct"
         ##cat(paste("NOTE: predicted time of completion is", format(t.done)))
         ## Indicate plan
         if (draw.plan) {
             lines(c(t[1],x[["deadline"]]),c(sum(x[["tasks"]]$effort),0),col="red",lwd=3)
-            abline(h=0,col="red",lwd=3)
+            abline(h=0,col=4,lwd=3)
         }
         final.effort <-  sum(e.matrix[dim(e.matrix)[1],])
         if (draw.lastupdate) {
