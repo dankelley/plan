@@ -125,8 +125,8 @@ setMethod(f="plot",
         ##cat(paste("NOTE: predicted time of completion is", format(t.done)))
         ## Indicate plan
         if (draw.plan) {
-            lines(c(t[1],x[["deadline"]]),c(sum(x[["tasks"]]$effort),0),col="red",lwd=3)
-            abline(h=0,col=4,lwd=3)
+            lines(c(t[1],x[["deadline"]]),c(sum(x[["tasks"]]$effort),0),col=4,lwd=3)
+            abline(h=0,col=4,lwd=1)
         }
         final.effort <-  sum(e.matrix[dim(e.matrix)[1],])
         if (draw.lastupdate) {
