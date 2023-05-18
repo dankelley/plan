@@ -51,7 +51,9 @@ version of \code{\link[=read.gantt]{read.gantt()}}.
 }
 }
 \section{Sample data file}{
-\preformatted{Key, Description,                 Start,        End, Done, NeededBy
+
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{Key, Description,                 Start,        End, Done, NeededBy
   1, Assemble equipment,     2008-01-01, 2008-03-28, 90
   2, Test methods,           2008-02-28, 2008-03-28, 30
   3, Field sampling,         2008-04-01, 2008-08-14, 0
@@ -64,7 +66,7 @@ version of \code{\link[=read.gantt]{read.gantt()}}.
  10, Thesis on display,      2009-04-01, 2009-04-15, 0
  11, Defend thesis,          2009-04-16, 2009-04-17, 0
  12, Finalize thesis,        2009-04-18, 2009-05-07, 0
-}
+}\if{html}{\out{</div>}}
 }
 
 \examples{
