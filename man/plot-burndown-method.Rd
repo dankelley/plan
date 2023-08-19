@@ -26,10 +26,10 @@ file (which will be at the bottom of the chart).  If not specified, the
 distinct, that show up reasonably well on a monitor.}
 
 \item{draw.plan}{boolean, set to \code{TRUE} to draw the plan, as a
-descending line with a horizontal intercept.}
+blue descending line with a horizontal intercept.}
 
-\item{draw.regression}{boolean, set to \code{TRUE} to draw a regression line
-of actual overall progress.}
+\item{draw.regression}{boolean, set to \code{TRUE} to draw a red dashed
+line indicating the overall progress, as determined by regression.}
 
 \item{draw.lastupdate}{boolean, set to \code{TRUE} to draw the last update
 (which otherwise requires a sharp eye).}
