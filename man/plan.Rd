@@ -3,12 +3,22 @@
 \docType{package}
 \name{plan}
 \alias{plan}
+\alias{plan-package}
 \title{Plan, a package for project planning}
 \description{
 This package provides tools for project planning, e.g. burndown charts,
 gantt diagrams, etc.; see \linkS4class{burndown} and
 \linkS4class{gantt} for entries to the documentation.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/dankelley/plan}
+  \item \url{https://dankelley.github.io/plan/}
+}
+
+}
 \author{
 Dan Kelley
 }
+\keyword{internal}

@@ -31,5 +31,9 @@ NULL
 #' @name plan
 #' @docType package
 #' @author Dan Kelley
+#' @keywords internal
+"_PACKAGE"
+## usethis namespace: start
+## usethis namespace: end
 NULL
 

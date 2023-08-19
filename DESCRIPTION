@@ -1,7 +1,7 @@
 Package: plan
 Type: Package
 Title: Tools for Project Planning
-Version: 0.4-4
+Version: 0.4-5
 Author: Dan Kelley <Dan.Kelley@Dal.Ca> [aut,cre],
   Frank Schmitt <frankschmitt@gmx.de> [aut]
 Maintainer: Dan Kelley <Dan.Kelley@Dal.Ca>
