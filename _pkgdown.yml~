@@ -1,0 +1,11 @@
+url: https://dankelley.github.io/plan/
+destination: docs
+
+template:
+  bootstrap: 5
+
+reference:
+- title: All functions
+- contents:
+  - matches(".*")
+

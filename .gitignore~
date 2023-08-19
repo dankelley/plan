@@ -1,0 +1,10 @@
+plan.html
+*~
+plan.pdf
+.Rhistory
+*swp
+.Rproj.user
+.Rapp.history
+revdep
+Rplots.pdf
+docs
