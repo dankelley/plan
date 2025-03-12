@@ -88,7 +88,7 @@ Key, Done, Time
 
 \examples{
 library(plan)
-filename <- system.file("extdata", "burndown.dat", package="plan")
+filename <- system.file("extdata", "burndown.dat", package = "plan")
 b <- read.burndown(filename)
 summary(b)
 plot(b)

@@ -138,8 +138,8 @@ setMethod(
             polygon(xx, yy, col = col[i])
         }
         # Indicate prediction (possibly with a regression line)
-        totalEffort <- c()
-        for (i in seq_along(dim(e.matrix)[1])) {
+        totalEffort <- NULL
+        for (i in seq_len(dim(e.matrix)[1])) {
             totalEffort <- c(totalEffort, sum(e.matrix[i, ]))
         }
         effortAnomaly <- totalEffort - totalEffort[1]
