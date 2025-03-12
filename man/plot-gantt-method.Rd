@@ -91,7 +91,7 @@ vector of colours, one for each item in the gantt table.}
 \item{ylabels}{A \link{list} with elements \code{col} for colour,
 \code{cex} for character-expansion factor, \code{font} for font, and \code{justification}
 for the placement in the margin (\code{0} means left-justified, and \code{1}
-means right-justified. (NOTE: left-justification works poorly in RStudio, but
+means right-justified. (Left-justification works poorly in RStudio, but
 properly in other systems.)
 It usually makes sense for the elements in \code{ylabels} to be vectors of the same
 length as the topic list. However, shorter vectors are permitted, and they lengthened by
@@ -148,32 +148,35 @@ plot(gantt)
 # 2. Plot with two events
 event.label <- c("Proposal", "AGU")
 event.time <- c("2008-01-28", "2008-12-10")
-plot(gantt, event.label=event.label,event.time=event.time)
+plot(gantt, event.label = event.label, event.time = event.time)
 
 # 3. Control x axis (months, say)
-plot(gantt,labels=paste("M",1:6,sep=""))
+plot(gantt, labels = paste("M", 1:6, sep = ""))
 
 # 4. Control task colours
 plot(gantt,
-     col.done=c("black", "red", rep("black", 10)),
-     col.notdone=c("lightgray", "pink", rep("lightgray", 10)))
+    col.done = c("black", "red", rep("black", 10)),
+    col.notdone = c("lightgray", "pink", rep("lightgray", 10))
+)
 
 # 5. Control event colours (garish, to illustrate)
-plot(gantt, event.time=event.time, event.label=event.label,
-     lwd.eventLine=1:2, lty.eventLine=1:2,
-     col.eventLine=c("pink", "lightblue"),
-     col.event=c("red", "blue"), font.event=1:2, cex.event=1:2)
+plot(gantt,
+    event.time = event.time, event.label = event.label,
+    lwd.eventLine = 1:2, lty.eventLine = 1:2,
+    col.eventLine = c("pink", "lightblue"),
+    col.event = c("red", "blue"), font.event = 1:2, cex.event = 1:2
+)
 
 # 6. Top task is in bold font and red colour
-plot(gantt,ylabels=list(col="red",font=2))
+plot(gantt, ylabels = list(col = "red", font = 2))
 
 # 7. Demonstrate zero-time item (which becomes a heading)
 gantt[["description"]][1] <- "Preliminaries"
 gantt[["end"]][1] <- gantt[["start"]][1]
-plot(gantt, ylabel=list(font=2, justification=0))
+plot(gantt, ylabel = list(font = 2, justification = 0))
 
 # 8. Arrows at task ends
-plot(gantt, arrows=c("right","left","left","right"))
+plot(gantt, arrows = c("right", "left", "left", "right"))
 }
 \references{
 Gantt diagrams are described on wikipedia
@@ -182,9 +185,9 @@ Gantt diagrams are described on wikipedia
 \seealso{
 Other things related to gantt data: 
 \code{\link{as.gantt}()},
+\code{\link{gantt}},
 \code{\link{gantt-class}},
 \code{\link{ganttAddTask}()},
-\code{\link{gantt}},
 \code{\link{read.gantt}()},
 \code{\link{summary,gantt-method}}
 }

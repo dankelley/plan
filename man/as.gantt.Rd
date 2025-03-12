@@ -48,27 +48,37 @@ startThesisWork <- arrive + 2 * month # assumes no thesis work until 2 months in
 endThesisWork <- leave - 4 * month
 startWriting <- leave - 36 * month
 endWriting <- leave
-g <- as.gantt(key=1:8, c("Academic",
-              "Term 1 classes",
-              "Term 2 classes",
-              "Qualifying Examination",
-              "Research",
-              "Proposal Defence",
-              "Thesis Work",
-              "Paper/Thesis Writing"),
-              c(startT1, startT1, startT2, startQE, startProposal, startProposal,
-                startThesisWork, startWriting),
-              c(startT1, endT1, endT2, endQE, startProposal, endProposal,
-                endThesisWork, endWriting),
-              done=rep(0, 7))
-plot(g, xlim=c(arrive, leave),
-     ylabel=list(font=c(2,rep(1,3),2), justification=c(0,rep(1,3),0)))
+g <- as.gantt(
+    key = 1:8, c(
+        "Academic",
+        "Term 1 classes",
+        "Term 2 classes",
+        "Qualifying Examination",
+        "Research",
+        "Proposal Defence",
+        "Thesis Work",
+        "Paper/Thesis Writing"
+    ),
+    c(
+        startT1, startT1, startT2, startQE, startProposal, startProposal,
+        startThesisWork, startWriting
+    ),
+    c(
+        startT1, endT1, endT2, endQE, startProposal, endProposal,
+        endThesisWork, endWriting
+    ),
+    done = rep(0, 7)
+)
+plot(g,
+    xlim = c(arrive, leave),
+    ylabel = list(font = c(2, rep(1, 3), 2), justification = c(0, rep(1, 3), 0))
+)
 }
 \seealso{
 Other things related to gantt data: 
+\code{\link{gantt}},
 \code{\link{gantt-class}},
 \code{\link{ganttAddTask}()},
-\code{\link{gantt}},
 \code{\link{plot,gantt-method}},
 \code{\link{read.gantt}()},
 \code{\link{summary,gantt-method}}

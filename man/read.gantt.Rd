@@ -71,7 +71,7 @@ version of \code{\link[=read.gantt]{read.gantt()}}.
 
 \examples{
 library(plan)
-filename <- system.file("extdata", "gantt.dat", package="plan")
+filename <- system.file("extdata", "gantt.dat", package = "plan")
 g <- read.gantt(filename)
 summary(g)
 plot(g)
@@ -80,9 +80,9 @@ plot(g)
 \seealso{
 Other things related to gantt data: 
 \code{\link{as.gantt}()},
+\code{\link{gantt}},
 \code{\link{gantt-class}},
 \code{\link{ganttAddTask}()},
-\code{\link{gantt}},
 \code{\link{plot,gantt-method}},
 \code{\link{summary,gantt-method}}
 }

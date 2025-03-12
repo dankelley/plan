@@ -96,8 +96,8 @@ plot(b)
 \seealso{
 Other things related to burndown data: 
 \code{\link{as.burndown}()},
-\code{\link{burndown-class}},
 \code{\link{burndown}},
+\code{\link{burndown-class}},
 \code{\link{plot,burndown-method}},
 \code{\link{summary,burndown-method}}
 }

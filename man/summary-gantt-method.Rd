@@ -28,9 +28,9 @@ summary(gantt)
 \seealso{
 Other things related to gantt data: 
 \code{\link{as.gantt}()},
+\code{\link{gantt}},
 \code{\link{gantt-class}},
 \code{\link{ganttAddTask}()},
-\code{\link{gantt}},
 \code{\link{plot,gantt-method}},
 \code{\link{read.gantt}()}
 }

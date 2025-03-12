@@ -2,8 +2,8 @@
 % Please edit documentation in R/plan-package.R
 \docType{package}
 \name{plan}
-\alias{plan}
 \alias{plan-package}
+\alias{plan}
 \title{Plan, a package for project planning}
 \description{
 This package provides tools for project planning, e.g. burndown charts,

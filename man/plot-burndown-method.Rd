@@ -58,8 +58,8 @@ plot(burndown)
 \seealso{
 Other things related to burndown data: 
 \code{\link{as.burndown}()},
-\code{\link{burndown-class}},
 \code{\link{burndown}},
+\code{\link{burndown-class}},
 \code{\link{read.burndown}()},
 \code{\link{summary,burndown-method}}
 }

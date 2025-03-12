@@ -59,14 +59,14 @@ g <- ganttAddTask(g, "Write papers & thesis", "2017-05-01", "2018-04-01")
 g <- ganttAddTask(g, "Defend thesis", "2018-05-01", "2018-05-15")
 # Set 'font' for bold-faced headings
 font <- ifelse(is.na(g[["start"]]), 2, 1)
-plot(g, ylabel=list(font=font))
+plot(g, ylabel = list(font = font))
 
 }
 \seealso{
 Other things related to gantt data: 
 \code{\link{as.gantt}()},
-\code{\link{gantt-class}},
 \code{\link{gantt}},
+\code{\link{gantt-class}},
 \code{\link{plot,gantt-method}},
 \code{\link{read.gantt}()},
 \code{\link{summary,gantt-method}}

@@ -1,13 +1,14 @@
 #' Class to store burndown objects
 #' @family things related to burndown data
-setClass("burndown", contains="plan")
+setClass("burndown", contains = "plan")
 
-setMethod(f="initialize",
-    signature="burndown",
-    definition=function(.Object)
-    {
-        return(.Object)
-    })
+setMethod(
+    f = "initialize",
+    signature = "burndown",
+    definition = function(.Object) {
+        .Object
+    }
+)
 
 #' Draw a burndown chart
 #'
@@ -53,31 +54,36 @@ setMethod(f="initialize",
 #' @aliases plot.burndown
 #' @export
 #' @importFrom stats lm
-setMethod(f="plot",
-    signature=signature("burndown"),
-    definition=function(x, col=NULL, draw.plan=TRUE,
-        draw.regression=TRUE,
-        draw.lastupdate=FALSE,
-        t.stop="",
-        y.name="Remaining Effort", debug=FALSE, ...)
-    {
+setMethod(
+    f = "plot",
+    signature = signature("burndown"),
+    definition = function(x, col = NULL, draw.plan = TRUE,
+                          draw.regression = TRUE,
+                          draw.lastupdate = FALSE,
+                          t.stop = "",
+                          y.name = "Remaining Effort", debug = FALSE, ...) {
         opar <- par(no.readonly = TRUE)
         on.exit(opar)
         num.items <- length(x[["tasks"]]$key)
         num.progress <- length(x[["progress"]]$key)
         if (is.null(col)) {
-            #col <- heat.colors(num.items)
-            col <- hcl(h = 360*(1:num.items)/num.items, c=70,l=80)
+            # col <- heat.colors(num.items)
+            col <- hcl(h = 360 * (1:num.items) / num.items, c = 70, l = 80)
         }
-        if (debug)
+        if (debug) {
             cat("Progress:\n")
+        }
         t <- x[["start"]]
         effort.remaining <<- x[["tasks"]]$effort
         e <- effort.remaining
         if (debug) {
-            cat("TIME:");print(t);cat("\n")
-            cat("effort remaining:\n");print(effort.remaining);cat("\n")
-            cat(sprintf("    %5s\t%20s\t%15s\n","Key","Percent Complete","Time"))
+            cat("TIME:")
+            print(t)
+            cat("\n")
+            cat("effort remaining:\n")
+            print(effort.remaining)
+            cat("\n")
+            cat(sprintf("    %5s\t%20s\t%15s\n", "Key", "Percent Complete", "Time"))
         }
         num.progress <- length(x[["progress"]]$key)
         for (i in 1:num.progress) {
@@ -88,18 +94,25 @@ setMethod(f="plot",
             }
             t <- c(t, x[["progress"]]$time[i])
             k <- x[["progress"]]$key[i]
-            effort.remaining[k] <- x[["tasks"]]$effort[k] * (1 - x[["progress"]]$progress[i]/100)
+            effort.remaining[k] <- x[["tasks"]]$effort[k] * (1 - x[["progress"]]$progress[i] / 100)
             if (debug) {
-                cat(paste("k=",k,"\n"))
-                cat("TIME:\n");print(x[["progress"]]$time[i]);cat("\n")
-                cat("effort remaining:\n");print(effort.remaining);cat("\n")
+                cat(paste("k=", k, "\n"))
+                cat("TIME:\n")
+                print(x[["progress"]]$time[i])
+                cat("\n")
+                cat("effort remaining:\n")
+                print(effort.remaining)
+                cat("\n")
             }
-            e <- c(e,effort.remaining)
+            e <- c(e, effort.remaining)
         }
-        e.matrix <- matrix(e,ncol=num.items,byrow=TRUE)
-        if (debug)
+        e.matrix <- matrix(e, ncol = num.items, byrow = TRUE)
+        if (debug) {
             cat("BEFORE t.stop='", format(t.stop), "' (class ",
-                paste(class(t.stop), collapse=","), ")\n", sep="")
+                paste(class(t.stop), collapse = ","), ")\n",
+                sep = ""
+            )
+        }
         time.max <- if (inherits(t.stop, "POSIXt")) {
             t.stop
         } else if (is.character(t.stop) && t.stop[1] != "") {
@@ -107,53 +120,63 @@ setMethod(f="plot",
         } else {
             x[["deadline"]][1]
         }
-        if (debug)
-            cat("AFTER time.max='", format(time.max), "'\n", sep="")
+        if (debug) {
+            cat("AFTER time.max='", format(time.max), "'\n", sep = "")
+        }
         time.range <- range(c(t[1], time.max))
-        plot(time.range, range(c(0,sum(x[["tasks"]]$effort))),type='n',
-            xlab="", ylab=y.name,
-            xaxs="i")
+        plot(time.range, range(c(0, sum(x[["tasks"]]$effort))),
+            type = "n",
+            xlab = "", ylab = y.name,
+            xaxs = "i"
+        )
         xx <- c(t, rev(t))
-        bottom <- rep(0,1+num.progress)
+        bottom <- rep(0, 1 + num.progress)
         for (i in 1:num.items) {
-            y <- e.matrix[,i] + bottom
+            y <- e.matrix[, i] + bottom
             yy <- c(y, rev(bottom))
             bottom <- y
-            polygon(xx,yy,col=col[i])
+            polygon(xx, yy, col = col[i])
         }
         # Indicate prediction (possibly with a regression line)
-        totalEffort <- c();
-        for (i in 1:dim(e.matrix)[1])
-            totalEffort <- c(totalEffort,sum(e.matrix[i,]))
+        totalEffort <- c()
+        for (i in seq_along(dim(e.matrix)[1])) {
+            totalEffort <- c(totalEffort, sum(e.matrix[i, ]))
+        }
         effortAnomaly <- totalEffort - totalEffort[1]
         tAnomaly <- t - t[1]
         m <- lm(effortAnomaly ~ tAnomaly - 1)
         slope <- m$coefficients[1][[1]]
         intercept <- totalEffort[1] - slope * as.numeric(t[1])
-        #t.done <- floor(-intercept / slope)
-        if (draw.regression)
-            abline(a=intercept, b=slope, col=2,lwd=2,lty=2)
-        #class(t.done) <- "POSIXct"
-        #cat(paste("NOTE: predicted time of completion is", format(t.done)))
+        # t.done <- floor(-intercept / slope)
+        if (draw.regression) {
+            abline(a = intercept, b = slope, col = 2, lwd = 2, lty = 2)
+        }
+        # class(t.done) <- "POSIXct"
+        # cat(paste("NOTE: predicted time of completion is", format(t.done)))
         # Indicate plan
         if (draw.plan) {
-            lines(c(t[1],x[["deadline"]]),c(sum(x[["tasks"]]$effort),0),col=4,lwd=3)
-            abline(h=0,col=4,lwd=1)
+            lines(c(t[1], x[["deadline"]]), c(sum(x[["tasks"]]$effort), 0), col = 4, lwd = 3)
+            abline(h = 0, col = 4, lwd = 1)
         }
-        final.effort <-  sum(e.matrix[dim(e.matrix)[1],])
+        final.effort <- sum(e.matrix[dim(e.matrix)[1], ])
         if (draw.lastupdate) {
-            points(t[length(t)],final.effort,col="yellow",cex=2.5,pch=19)
-            points(t[length(t)],final.effort,col="blue",cex=2.6)
-            #lines(c(t[length(t)],time.max),rep(final.effort,2),col=gray(0.9),lwd=3)#,col="red",lwd=3)
+            points(t[length(t)], final.effort, col = "yellow", cex = 2.5, pch = 19)
+            points(t[length(t)], final.effort, col = "blue", cex = 2.6)
+            # lines(c(t[length(t)],time.max),rep(final.effort,2),col=gray(0.9),lwd=3)#,col="red",lwd=3)
         }
         # legend
-        cex <- if (length(x[["tasks"]]$description) < 5) 1 else 4/5
-        legend("topright",legend=rev(x[["tasks"]]$description),fill=rev(col),cex=cex,y.intersp=1.5*cex)
-        mtext(paste(paste(format(time.range), collapse=" to "),
-                attr(x[["ts"]]$time[1], "tzone")),
-            side=3, cex=cex, adj=0)
+        cex <- if (length(x[["tasks"]]$description) < 5) 1 else 4 / 5
+        legend("topright", legend = rev(x[["tasks"]]$description), fill = rev(col), cex = cex, y.intersp = 1.5 * cex)
+        mtext(
+            paste(
+                paste(format(time.range), collapse = " to "),
+                attr(x[["ts"]]$time[1], "tzone")
+            ),
+            side = 3, cex = cex, adj = 0
+        )
         invisible(x)
-    })
+    }
+)
 
 
 #' Scan burndown data file
@@ -237,13 +260,12 @@ setMethod(f="plot",
 #' @family things related to burndown data
 #' @examples
 #' library(plan)
-#' filename <- system.file("extdata", "burndown.dat", package="plan")
+#' filename <- system.file("extdata", "burndown.dat", package = "plan")
 #' b <- read.burndown(filename)
 #' summary(b)
 #' plot(b)
 #' @export
-read.burndown <- function(file, debug=FALSE)
-{
+read.burndown <- function(file, debug = FALSE) {
     if (is.character(file)) {
         file <- file(file, "r")
         on.exit(close(file))
@@ -255,27 +277,36 @@ read.burndown <- function(file, debug=FALSE)
     }
     quiet <- !debug
     # Start, ISdate
-    tokens <- trimws(scan(file, what='char', sep=",", nlines=1,quiet=quiet,blank.lines.skip=TRUE))
+    tokens <- trimws(scan(file, what = "char", sep = ",", nlines = 1, quiet = quiet, blank.lines.skip = TRUE))
     name <- tokens[1]
-    if (name != "Start") stop("First line of file must be 'Start' followed by an ISO date but got '",
-        paste(tokens, collapse=","))
+    if (name != "Start") {
+        stop(
+            "First line of file must be 'Start' followed by an ISO date but got '",
+            paste(tokens, collapse = ",")
+        )
+    }
     start <- as.POSIXct(tokens[2])
     # Deadline, ISOdate
-    tokens <- trimws(scan(file,what='char',sep=",",nlines=1,quiet=quiet,blank.lines.skip=TRUE))
+    tokens <- trimws(scan(file, what = "char", sep = ",", nlines = 1, quiet = quiet, blank.lines.skip = TRUE))
     name <- tokens[1]
     deadline <- as.POSIXct(tokens[2])
-    if (name != "Deadline") stop("Second line of file must be 'Deadline' followed by an ISO date, but got '",
-        paste(tokens, collapse=","), "'")
+    if (name != "Deadline") {
+        stop(
+            "Second line of file must be 'Deadline' followed by an ISO date, but got '",
+            paste(tokens, collapse = ","), "'"
+        )
+    }
     # Header
-    tokens <- trimws(scan(file,what='char',sep=',',nlines=1,quiet=quiet,blank.lines.skip=TRUE))
+    tokens <- trimws(scan(file, what = "char", sep = ",", nlines = 1, quiet = quiet, blank.lines.skip = TRUE))
     check.tokens(tokens, c("Key", "Description", "Effort"))
     task.key <- c()
     task.description <- c()
     task.effort <- c()
     while (TRUE) { # TASK: key description effort
-        tokens <- trimws(scan(file, what=character(0),nlines=1,blank.lines.skip=FALSE,quiet=quiet,sep=","))
-        if (tokens[1] == "Key")
+        tokens <- trimws(scan(file, what = character(0), nlines = 1, blank.lines.skip = FALSE, quiet = quiet, sep = ","))
+        if (tokens[1] == "Key") {
             break
+        }
         if (3 == length(tokens)) {
             task.key <- c(task.key, as.numeric(tokens[1]))
             task.description <- c(task.description, tokens[2])
@@ -286,12 +317,17 @@ read.burndown <- function(file, debug=FALSE)
     check.tokens(tokens, c("Key", "Done", "Time"))
     progress.key <- progress.done <- progress.time <- NULL
     while (TRUE) {
-        tokens <- trimws(scan(file, what=character(0),nlines=1,blank.lines.skip=FALSE,quiet=quiet, sep=","))
-        if (is.na(tokens[1]))
+        tokens <- trimws(scan(file, what = character(0), nlines = 1, blank.lines.skip = FALSE, quiet = quiet, sep = ","))
+        if (is.na(tokens[1])) {
             break
+        }
         key <- as.numeric(tokens[1])
         if (!(key %in% task.key)) {
-            msg <- paste("Progress key",key,"not in the list of task keys\n\tOffending line in data file follows\n\t",tokens[1]," ",tokens[2], " ", tokens[3])
+            msg <- paste(
+                "Progress key", key,
+                "not in the list of task keys\n\tOffending line in data file follows\n\t",
+                tokens[1], " ", tokens[2], " ", tokens[3]
+            )
             stop(msg)
         }
         done <- as.numeric(tokens[2])
@@ -301,21 +337,27 @@ read.burndown <- function(file, debug=FALSE)
         progress.time <- c(progress.time, time)
     }
     # class(progress.time) <- "POSIXct"
-    progress.time <- as.POSIXct(progress.time, origin=as.POSIXct("1970-01-01 00:00.00", tz="UTC"))
+    progress.time <- as.POSIXct(progress.time, origin = as.POSIXct("1970-01-01 00:00.00", tz = "UTC"))
     # BUG: should ensure item is in task
     o <- order(progress.time)
     progress.key <- progress.key[o]
     progress.done <- progress.done[o]
     progress.time <- progress.time[o]
     rval <- new("burndown")
-    rval@data <- list(start=start,
-        deadline=deadline,
-        tasks=list(key=task.key,
-            description=task.description,
-            effort=task.effort),
-        progress=list(key=progress.key,
-            progress=progress.done,
-            time=progress.time))
+    rval@data <- list(
+        start = start,
+        deadline = deadline,
+        tasks = list(
+            key = task.key,
+            description = task.description,
+            effort = task.effort
+        ),
+        progress = list(
+            key = progress.key,
+            progress = progress.done,
+            time = progress.time
+        )
+    )
     rval
 }
 
@@ -336,20 +378,25 @@ read.burndown <- function(file, debug=FALSE)
 #' library(plan)
 #' data(burndown)
 #' summary(burndown)
-setMethod(f="summary",
-    signature="burndown",
-    definition=function(object, ...) {
+setMethod(
+    f = "summary",
+    signature = "burndown",
+    definition = function(object, ...) {
         cat(paste("Start,   ", format(object[["start"]])), "\n")
         cat(paste("Deadline,", format(object[["deadline"]])), "\n")
         num.tasks <- length(object[["tasks"]]$key)
         dspace <- max(nchar(object[["tasks"]]$description))
-        cat(sprintf("Key, Description,%s %5s\n",
-                paste(rep(" ", dspace - nchar("Description")), collapse=""),
-                "Effort"))
+        cat(sprintf(
+            "Key, Description,%s %5s\n",
+            paste(rep(" ", dspace - nchar("Description")), collapse = ""),
+            "Effort"
+        ))
         for (i in 1:num.tasks) {
-            space <- paste(rep(" ", dspace - nchar(object[["tasks"]]$description[i])), collapse="")
-            cat(sprintf("%3s, %s,%s %s\n",
-                    object[["tasks"]]$key[i], object[["tasks"]]$description[i], space, object[["tasks"]]$effort[i]))
+            space <- paste(rep(" ", dspace - nchar(object[["tasks"]]$description[i])), collapse = "")
+            cat(sprintf(
+                "%3s, %s,%s %s\n",
+                object[["tasks"]]$key[i], object[["tasks"]]$description[i], space, object[["tasks"]]$effort[i]
+            ))
         }
         cat("Key, Done,  Time\n")
         num.progress <- length(object[["progress"]]$key)
@@ -359,7 +406,8 @@ setMethod(f="summary",
             cat("\n")
         }
         invisible()
-    })
+    }
+)
 
 #' Create a burndown object
 #'
@@ -391,29 +439,39 @@ setMethod(f="summary",
 #' # same data as in tests/burndown.dat
 #' start <- as.POSIXct(strptime("2006-04-08 12:00:00", "%Y-%m-%d %H:%M:%S"))
 #' deadline <- as.POSIXct(strptime("2006-04-11 20:00:00", "%Y-%m-%d %H:%M:%S"))
-#' tasks <- data.frame(key = c(1, 2, 3, 4, 5, 6),
-#'     description = c("code read.burndown()", "code summary.burndown()", 
-#'         "code plot.burndown()", "create R package", 
-#'         "write documentation", "set up website"),
+#' tasks <- data.frame(
+#'     key = c(1, 2, 3, 4, 5, 6),
+#'     description = c(
+#'         "code read.burndown()", "code summary.burndown()",
+#'         "code plot.burndown()", "create R package",
+#'         "write documentation", "set up website"
+#'     ),
 #'     effort = c(4, 1, 5, 2, 2, 1),
-#'     stringsAsFactors = FALSE)
-#' progress <- data.frame(key = c(1, 2, 1, 2, 4, 5, 4, 1, 3, 3, 3, 2, 2, 1, 5, 5, 5, 1, 3, 6),
-#'     progress = c(5, 5, 10, 50, 5, 5, 100, 50, 5, 30, 80, 60, 
-#'         100, 70, 30, 90, 100, 100, 100, 100),
-#'     time = structure(c(1144494000, 1144495800, 1144497600, 1144501200, 
-#'             1144517400, 1144519200, 1144523760, 1144566600, 
-#'             1144568460, 1144570680, 1144573200, 1144576800, 
+#'     stringsAsFactors = FALSE
+#' )
+#' progress <- data.frame(
+#'     key = c(1, 2, 1, 2, 4, 5, 4, 1, 3, 3, 3, 2, 2, 1, 5, 5, 5, 1, 3, 6),
+#'     progress = c(
+#'         5, 5, 10, 50, 5, 5, 100, 50, 5, 30, 80, 60,
+#'         100, 70, 30, 90, 100, 100, 100, 100
+#'     ),
+#'     time = structure(
+#'         c(
+#'             1144494000, 1144495800, 1144497600, 1144501200,
+#'             1144517400, 1144519200, 1144523760, 1144566600,
+#'             1144568460, 1144570680, 1144573200, 1144576800,
 #'             1144577400, 1144578600, 1144583400, 1144585200,
-#'             1144585800, 1144586100, 1144586400, 1144591200), 
-#'         class = "POSIXct"),
+#'             1144585800, 1144586100, 1144586400, 1144591200
+#'         ),
+#'         class = "POSIXct"
+#'     ),
 #'     stringsAsFactors = FALSE
 #' )
 #' b <- as.burndown(start, deadline, tasks, progress, progressInPercent = TRUE)
 #' summary(b)
 #' plot(b)
 #' @export
-as.burndown <- function(start, deadline, tasks, progress, progressInPercent=FALSE)
-{
+as.burndown <- function(start, deadline, tasks, progress, progressInPercent = FALSE) {
     progress_percentage <- progress
     # if progress was given in absolute values: calculate percentage
     if (!progressInPercent) {
@@ -430,6 +488,7 @@ as.burndown <- function(start, deadline, tasks, progress, progressInPercent=FALS
         start = start,
         deadline = deadline,
         tasks = tasks,
-        progress = progress_percentage)
+        progress = progress_percentage
+    )
     rval
 }

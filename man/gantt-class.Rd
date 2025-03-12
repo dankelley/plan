@@ -10,8 +10,8 @@ These objects may be created with \code{\link[=as.gantt]{as.gantt()}} or \code{\
 \seealso{
 Other things related to gantt data: 
 \code{\link{as.gantt}()},
-\code{\link{ganttAddTask}()},
 \code{\link{gantt}},
+\code{\link{ganttAddTask}()},
 \code{\link{plot,gantt-method}},
 \code{\link{read.gantt}()},
 \code{\link{summary,gantt-method}}
